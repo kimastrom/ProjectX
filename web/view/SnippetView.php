@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__).'/../model/SyntaxHighlight.php';
 
 class SnippetView {
 	
@@ -7,13 +8,17 @@ class SnippetView {
 	 * @param Snippet a snippet Object
 	 * @return String
 	 */
+	 //Todo: This function should also take an argument ($asnippet_language) ex php, javascript or css
+	 //This variable is used by syntax highlighter.
 	public function singleView($aSnippet) {
+		$sh = new SyntaxHighlight();
+		
 		$html =  "<h2>".$aSnippet->getTitle()."</h2>
 		<div class='snippet-desc'>
 			<p>".$aSnippet->getDesc()."</p>	
 		</div>
 		<div class='snippet-code'>
-			<code>".$aSnippet->getCode()."</code>
+			<code>".$sh->geshiHighlight('css', $aSnippet->getCode())."</code>
 		</div>
 		<div class='snippet-author'>
 			<span>".$aSnippet->getAuthor()."</span>
