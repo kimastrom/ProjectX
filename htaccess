@@ -1,0 +1,20 @@
+.htaccess
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ $1.php [L,QSA]
+# http://domain/about -> http://domain/about.php
+ 
+--------------------------------------------------
+ 
+.htaccess
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+# http://domain/about -> http://domain/index.php?q=about
+ 
+<?php
+// $url_data is an array
+$url_data = explode("/",$HTTP_SERVER_VARS['PATH_INFO']);
+?>
