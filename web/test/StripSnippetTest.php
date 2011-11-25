@@ -1,5 +1,5 @@
 <?php
-	require_once dirname(__FILE__) . '/../StripSnippet.php';
+	require_once dirname(__FILE__) . '/../model/StripSnippet.php';
 	
 	/**
 	 * 
