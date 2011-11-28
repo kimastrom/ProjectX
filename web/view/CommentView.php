@@ -1,8 +1,11 @@
 <?php
+require_once dirname(__FILE__).'/../model/Captcha.php';
+
 class CommentView
 {
     public function doCommentForm()
     {
+		$captcha = new Captcha();
         $form = ("
 					<form action='' method='POST'>
                         <label for='commentText'>Kommentar: </label><br/> 
@@ -11,6 +14,9 @@ class CommentView
                         <label for='author'>Namn:(ange siffran 6 så länge)</label><br/> 
                         <input type='text' name='commentAuthor' value = ''/>                        
                         <br/>
+						<img src='secure.jpg' alt='Captcha image'/><br/>
+						<label for='secure'>Ange svaret till bilden:</label><br/>
+						<input type='text' name='secure' value='' /><br/>
     					<input type='submit' name='submitComment' value='Skriv'/>
 					</form>
 			    ");
@@ -95,6 +101,15 @@ class CommentView
         if(isset($_POST['commentAuthor']))
         {
             return trim($_POST['commentAuthor']);
+        }
+        else return false;
+    }
+	
+	public function getCaptchaAnswer()
+    {
+        if(isset($_POST['secure']))
+        {
+            return trim($_POST['secure']);
         }
         else return false;
     }

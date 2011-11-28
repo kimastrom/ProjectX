@@ -21,10 +21,12 @@ class MasterController {
     }
     
     public function doControll() {
-        
+        session_start();
         //user tries to add a comment for a single snippet
         if($this->mCommentView->triedToSubmitComment()) {
-            $this->mCommentHandler->addComment($this->mCommentView->whichSnippetToComment(),$this->mCommentView->getCommentText(),$this->mCommentView->getAuthorId());
+			if($this->mCommentView->getCaptchaAnswer() == $_SESSION['security_number']) {
+				$this->mCommentHandler->addComment($this->mCommentView->whichSnippetToComment(),$this->mCommentView->getCommentText(),$this->mCommentView->getAuthorId());
+			}
         }
         
         //user or admin tries to remove his own snippet (we will know that he has right to do it in a future)
