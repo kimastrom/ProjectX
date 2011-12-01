@@ -9,22 +9,20 @@ class SnippetView
      * @param Snippet a snippet Object
      * @return String
      */
-    //Todo: This function should also take an argument ($asnippet_language) ex php, javascript or css
-    //This variable is used by syntax highlighter.
-    public function singleView($aSnippet)
+    public function singleView($snippet)
     {
 
         $sh = new Functions();
 
-        $html = "<h2>" . $aSnippet->getTitle() . "</h2>
+        $html = "<h2>" . $snippet->getTitle() . "</h2>
 		<div class='snippet-desc'>
-			<p>" . $aSnippet->getDesc() . "</p>	
+			<p>" . $snippet->getDesc() . "</p>	
 		</div>
 		<div class='snippet-code'>
-			<code>" . $sh->geshiHighlight('css', $aSnippet->getCode()) . "</code>
+			<code>" . $sh->geshiHighlight($snippet->getCode(), $snippet->getLanguage()) . "</code>
 		</div>
 		<div class='snippet-author'>
-			<span>" . $aSnippet->getAuthor() . "</span>
+			<span>" . $snippet->getAuthor() . "</span>
 		</div>";
 
         return $html;
@@ -35,11 +33,11 @@ class SnippetView
      * @param array $aSnippets is an array of snippets
      * @return string
      */
-    public function listView($aSnippets)
+    public function listView($snippets)
     {
         $html = '';
 
-        foreach ($aSnippets as $snippet) {
+        foreach ($snippets as $snippet) {
             $html .= '
                 <div class="snippet-list-item">
                     <div class="snippet-title">
@@ -86,7 +84,7 @@ class SnippetView
         return $view;
     }
 
-    public function listSnippets($aSnippets)
+    public function listSnippets($snippets)
     {
         $view = '
 			<div id="listSnippetsButtons">
@@ -103,7 +101,7 @@ class SnippetView
 					</thead>
 					<tbody>
 		';
-        foreach ($aSnippets as &$snippets) {
+        foreach ($snippets as &$snippets) {
             $view .= '			
 						<form action="" method="post">
 							<tr>
@@ -121,23 +119,23 @@ class SnippetView
         return $view;
     }
 
-    public function updateSnippet($aSnippet)
+    public function updateSnippet($snippet)
     {
         $view = '
 			<div id="updateSnippetContainer">
 				<form action="" method="post">
 					<div id="updateSnippetNameDiv">
 						<p>Name:</p>
-						<input type="text" name="updateSnippetNameInput" id="updateSnippetNameInput" value="' . $aSnippet[0]->getSnippetName() . '" /> 
+						<input type="text" name="updateSnippetNameInput" id="updateSnippetNameInput" value="' . $snippet[0]->getSnippetName() . '" /> 
 					</div>
 
 					<div id="updateSnippetCodeDiv">
 						<p>Snippet:</p>
-						<textarea cols="50" rows="50" name="updateSnippetCodeInput" id="updateSnippetCodeInput">' . $aSnippet[0]->getSnippetCode() . '</textarea>
+						<textarea cols="50" rows="50" name="updateSnippetCodeInput" id="updateSnippetCodeInput">' . $snippet[0]->getSnippetCode() . '</textarea>
 					</div>
 
 					<div id="updateSnippetButton">
-						<input type="hidden" name="updateSnippetID" value="' . $aSnippet[0]->getSnippetID() . '" />
+						<input type="hidden" name="updateSnippetID" value="' . $snippet[0]->getSnippetID() . '" />
 						<input type="submit" name="updateSnippetUpdateButton" id="updateSnippetUpdateButton" value="Update snippet" />
 					</div>
 				</form>
