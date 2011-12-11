@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.4.5
 -- http://www.phpmyadmin.net
 --
 -- Värd: 127.0.0.1
--- Skapad: 28 november 2011 kl 12:33
--- Serverversion: 5.1.54
--- PHP-version: 5.3.5
+-- Skapad: 11 dec 2011 kl 23:39
+-- Serverversion: 5.5.16
+-- PHP-version: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -22,7 +23,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Struktur för tabell `comment`
+-- Tabellstruktur `comment`
 --
 
 CREATE TABLE IF NOT EXISTS `comment` (
@@ -32,48 +33,50 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `userId` int(11) NOT NULL,
   PRIMARY KEY (`commentId`),
   KEY `snippetId` (`snippetId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=137 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=158 ;
 
 --
--- Data i tabell `comment`
+-- Dumpning av Data i tabell `comment`
 --
 
 INSERT INTO `comment` (`snippetId`, `commentId`, `commentText`, `userId`) VALUES
-(1, 129, 'detta är min första kommentar till opacityHack:-)', 6),
-(2, 133, 'detta är min andra kommentar till test snippet 2', 6),
-(10, 136, 'asd', 6);
+(2, 140, 'yhjyu yjyj', 6),
+(2, 141, 'och nu?', 6),
+(2, 142, 'och nu?', 6),
+(2, 143, 'vad gör vi nu då???,,', 6),
+(8, 154, 'g', 6),
+(8, 155, 'g', 6),
+(33, 156, 'vcbvb', 6),
+(33, 157, 'vcbvb', 6);
 
 -- --------------------------------------------------------
 
 --
--- Struktur för tabell `snippet`
+-- Tabellstruktur `snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `snippet` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `author` varchar(50) NOT NULL,
-  `code` varchar(2500) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `description` varchar(500) NOT NULL,
-  `language` varchar(25) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+  `snippetId` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `code` varchar(2500) CHARACTER SET utf8 COLLATE utf8_swedish_ci NOT NULL,
+  `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_swedish_ci NOT NULL,
+  `desc` varchar(500) CHARACTER SET utf8 COLLATE utf8_swedish_ci NOT NULL,
+  `snippetLang` varchar(25) CHARACTER SET utf8 COLLATE utf8_swedish_ci NOT NULL,
+  PRIMARY KEY (`snippetId`),
+  KEY `userId` (`userId`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
 
 --
--- Data i tabell `snippet`
+-- Dumpning av Data i tabell `snippet`
 --
 
-INSERT INTO `snippet` (`id`, `author`, `code`, `title`, `description`, `language`) VALUES
-(1, 'Kim Åström', 'selector {   filter: alpha(opacity=60); /* MSIE/PC */   -moz-opacity: 0.6; /* Mozilla 1.6 and older */   opacity: 0.6; }', 'opacityHack', 'a hack for op', 'css'),
-(2, 'Marta', 'selector { code }', 'test snippet 2', 'test snippet 2', 'css'),
-(12, 'kimsan', 'as', 'as', 'as', 'as'),
-(11, 'kimsan', 'hej snippet', 'en title', 'en desc', 'java'),
-(10, 'kimsan', 'da codeasdasd', 'Titasdle', 'desasdc', 'csasds');
+INSERT INTO `snippet` (`snippetId`, `userId`, `code`, `title`, `desc`, `snippetLang`) VALUES
+(38, 6, 'kkl', 'Min snippet', 'snippet desc', 'snippet lang');
 
 -- --------------------------------------------------------
 
 --
--- Struktur för tabell `user`
+-- Tabellstruktur `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -83,9 +86,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
--- Data i tabell `user`
+-- Dumpning av Data i tabell `user`
 --
 
 INSERT INTO `user` (`userId`, `userName`) VALUES
 (6, 'mania'),
 (7, 'Marta');
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
