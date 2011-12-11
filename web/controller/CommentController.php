@@ -14,25 +14,23 @@ class CommentController
         $commentHandler = new CommentHandler($this->mDbHandler);
         $commentView = new CommentView();
 
-        if ($commentView->triesToEditComment()) 
-        {
+        if ($commentView->triesToEditComment()) {
             $xhtml .= $commentView->editComment($commentHandler->GetCommentToEditByCommentId($commentView->WhichCommentToEdit()));
         } 
-        else 
-        {
+        else {
             $xhtml .= $commentView->doCommentForm();
         }
         
-        if ($commentView->triedToSubmitComment()) 
-        {
+        if ($commentView->triedToSubmitComment()) {
             $text = $commentView->getCommentText();
             $author = $commentView->getAuthorId();
             $id = $commentView->whichSnippetToComment();
             $commentHandler->addComment($id, $text, $author);
-            if ($commentView->getCaptchaAnswer() == $_SESSION['security_number']) 
-            {
-                $commentHandler->addComment($id, $text, $author);
-            }
+            //Det vill inte fungera med captcha??? why??
+//            if ($commentView->getCaptchaAnswer() == $_SESSION['security_number']) 
+//            {
+//                $commentHandler->addComment($id, $text, $author);
+//            }
         }
         
         /**

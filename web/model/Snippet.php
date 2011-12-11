@@ -2,24 +2,21 @@
 
 class Snippet
 {
-
-    private $mID;
-    private $mAuthor;
+    private $mSnippetId;
+    private $mUserId;
     private $mCode;
     private $mTitle;
     private $mDesc;
-    private $mLanguage;
+    private $mSnippetLang;
 
-    public function __construct($aAuthor, $aCode, $aTitle, $aDesc, $aLanguage, $aID = null)
+    public function __construct( $aSnippetId, $aUserId, $aCode, $aTitle, $aDesc, $aSnippetLang )
     {
-        if ($aID != null) {
-            $this->mID = $aID;
-        }
-        $this->mAuthor = $aAuthor;
+        $this->mSnippetId = $aSnippetId;
+        $this->mUserId = $aUserId;
         $this->mCode = $aCode;
         $this->mTitle = $aTitle;
         $this->mDesc = $aDesc;
-        $this->mLanguage = $aLanguage;
+        $this->mSnippetLang = $aSnippetLang;
     }
 
     /**
@@ -27,15 +24,20 @@ class Snippet
      */
     public function getSnippetId()
     {
-        return $this->mID;
+        return $this->mSnippetId;
     }
-
+    
+    public function setUser($aUserId)
+    {
+        $this->mUserId = $aUserId;
+    }
+    
     /**
      * @return String The author of the snippet
      */
-    public function getSnippetAuthor()
+    public function getUser()
     {
-        return $this->mAuthor;
+        return $this->mUserId;
     }
 
     /**
@@ -67,7 +69,7 @@ class Snippet
      */
     public function getSnippetLanguage()
     {
-        return $this->mLanguage;
+        return $this->mSnippetLang;
     }
 
 }

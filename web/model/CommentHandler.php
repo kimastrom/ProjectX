@@ -22,8 +22,6 @@ class CommentHandler
      */
     public function getAllCommentsForSnippet($aSnippetId)
     {
-
-        $commentsArray = array();
         $sqlQuery = "   SELECT comment.snippetId, comment.commentId, comment.commentText, comment.userId, user.userName
                         FROM comment
                         INNER JOIN user ON user.userId = comment.userId
@@ -146,8 +144,8 @@ class CommentHandler
         $sqlQuery = "   SELECT comment.snippetId, comment.commentId, comment.commentText, comment.userId, user.userName
                         FROM comment
                         INNER JOIN user ON user.userId = comment.userId
-                        WHERE commentId = ?
-                    ";
+                        WHERE commentId = ?";
+                        
         $stmt = $this->mDbHandler->PrepareStatement($sqlQuery);
         $stmt->bind_param('i', $aCommentId);
         $stmt->execute();

@@ -22,6 +22,7 @@ class CommentView
                         <img src='secure.jpg' alt='Captcha image'/><br/>
                         <label for='secure'>Ange svaret till bilden:</label><br/>
                         <input type='text' name='secure' value='' /><br/>
+                        
                         <input type='submit' name='submitComment' value='Skriv'/>
                     </form>
                     ");
@@ -44,11 +45,13 @@ class CommentView
                 $message .= "<p>komentarens text: " . $aComments[$i]->getCommentText() . "</p>";
                 $message .= "<p> Kommentaren skrivet av: " . $aComments[$i]->getUser()->getUserName() . "</p>";
                 $message .= "</div>";
-
-                $message .= "<a onclick=\"javascript: return confirm('Vill du verkligen ta bort kommentar? [" . $aComments[$i]->getCommentId() . "]')\" href='index.php?snippet=" . $aComments[$i]->getSnippetId() . "&controller=commentcontroller&deleteComment=" . $aComments[$i]->getCommentId() . "'>Radera</a>";
-
-                $message .= "</br><a onclick=\"javascript: return confirm('Vill du verkligen editera kommentar? [" . $aComments[$i]->getCommentId() . "]')\" href='index.php?snippet=" . $aComments[$i]->getSnippetId() . "&controller=commentcontroller&editComment=" . $aComments[$i]->getCommentId() . "'>Redigera</a>";
-
+                
+                $message .= "<a onclick=\"javascript: return confirm('Vill du verkligen ta bort kommentar? [" . $aComments[$i]->getCommentId() . "]')\" href='index.php?snippet=" . 
+                            $aComments[$i]->getSnippetId() . "&deleteComment=" . $aComments[$i]->getCommentId() . "'>Radera kommentar</a>";
+                
+                $message .= "</br><a onclick=\"javascript: return confirm('Vill du verkligen editera kommentar? [" . $aComments[$i]->getCommentId() . "]')\" href='index.php?snippet=" . 
+                            $aComments[$i]->getSnippetId() . "&editComment=" . $aComments[$i]->getCommentId() . "'>Redigera kommentar</a>";
+                
                 $message .= "</br>";
                 $message .= "<hr>";
             }

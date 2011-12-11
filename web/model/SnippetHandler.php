@@ -2,114 +2,114 @@
 
 require_once 'DbHandler.php';
 require_once 'Snippet.php';
+require_once 'User.php';
 
 class SnippetHandler
 {
-
     private $mDbHandler;
 
     public function __construct()
     {
         $this->mDbHandler = new DbHandler();
     }
-
-    /**
-     *Get a snippet by id
-     * @param int $aID id of a snippet
-     * @return Snippet
-     */
-    public function getSnippetByID($aID)
-    {
-        $snippet = null;
-        if ($stmt = $this->mDbHandler->PrepareStatement("SELECT * FROM snippet WHERE id = ?")) {
-
-            $stmt->bind_param("i", $aID);
-            $stmt->execute();
-
-            $stmt->bind_result($id, $author, $code, $title, $desc, $language);
-            while ($stmt->fetch()) {
-                $snippet = new Snippet($author, $code, $title, $desc, $language, $id);
-            }
-
-            $stmt->close();
-
-        }
-        $this->mDbHandler->Close();
-        return $snippet;
-    }
-
+    
     /**
      * Get all the snippets
-     * @return array
+     * @return array of all snippets
      */
     public function getAllSnippets()
     {
-        $snippets = array();
+        $sqlQuery = "   SELECT snippet.snippetId ,snippet.userId, snippet.code, snippet.title, snippet.desc, snippet.snippetLang ,user.userName
+                        FROM snippet
+                        INNER JOIN user ON user.userId = snippet.userId
+                        ORDER by snippet.snippetId DESC";
+        $stmt = $this->mDbHandler->PrepareStatement($sqlQuery);
+        $stmt->execute();
+        $stmt->bind_result($aSnippetId, $aUserId, $aCode, $aTitle, $aDesc, $aLang, $aUserName);
 
-        $this->mDbHandler->__wakeup();
-        if ($stmt = $this->mDbHandler->PrepareStatement("SELECT * FROM snippet")) {
-            $stmt->execute();
+        $objects = array();
 
-            $stmt->bind_result($id, $code, $author, $title, $description, $language);
-            while ($stmt->fetch()) {
-                $snippet = new Snippet($code, $author, $title, $description, $language, $id);
-                array_push($snippets, $snippet);
-            }
-
-            $stmt->close();
+        while ($stmt->fetch()) {
+            $user = new User($aUserId, $aUserName);
+            $snippet = new Snippet($aSnippetId, $aUserId, $aCode, $aTitle, $aDesc, $aLang);
+            $snippet->SetUser($user);
+            $objects[] = $snippet;
         }
+        $stmt->close();
 
-        $this->mDbHandler->close();
-
-        return $snippets;
+        return $objects;
     }
-
-    public function createSnippet(Snippet $aSnippet)
+    
+    /**
+     * SnippetHandler::getSnippetById()
+     * 
+     * @param int $aSnippetId
+     * @return Snippet object
+     */
+    public function getSnippetById($aSnippetId)
     {
-        $this->mDbHandler->__wakeup();
-        $author = $aSnippet->getSnippetAuthor();
-        $code = $aSnippet->getSnippetCode();
-        $title = $aSnippet->getSnippetTitle();
-        $desc = $aSnippet->getSnippetDesc();
-        $language = $aSnippet->getSnippetLanguage();
+        $sqlQuery = "   SELECT snippet.snippetId ,snippet.userId, snippet.code, snippet.title, snippet.desc, snippet.snippetLang ,user.userName
+                        FROM snippet
+                        INNER JOIN user ON user.userId = snippet.userId
+                        WHERE snippetId = $aSnippetId";
+        $stmt = $this->mDbHandler->PrepareStatement($sqlQuery);
+        $stmt->execute();
+        $stmt->bind_result( $aSnippetId, $aUserId, $aCode, $aTitle, $aDesc, $aLang, $aUserName );
 
-        if ($databaseQuery = $this->mDbHandler->PrepareStatement("INSERT INTO snippet (author, code, title, description, language) VALUES (?, ?, ?, ?, ?)")) {
-            $databaseQuery->bind_param('sssss', $author, $code, $title, $desc, $language);
-            $databaseQuery->execute();
-            if ($databaseQuery->affected_rows == null) {
-                $databaseQuery->close();
-                return false;
-            }
-            $databaseQuery->close();
+        $objects = array();
+
+        while ($stmt->fetch()) {
+            $user = new User($aUserId, $aUserName);
+            $snippet = new Snippet($aSnippetId, $aUserId, $aCode, $aTitle, $aDesc, $aLang);
+            $snippet->SetUser($user);
+            $objects[] = $snippet;
+        }
+        $stmt->close();
+        return $objects;
+    }
+    
+    /**
+     * SnippetHandler::addSnippet()
+     * 
+     * @param mixed $aUserId
+     * @param mixed $aCode
+     * @param mixed $aTitle
+     * @param mixed $aDesc
+     * @param mixed $aLang
+     * @return true if success, false if fail
+     * create a new snippet in the db
+     */
+    public function addSnippet($aUserId, $aCode, $aTitle, $aDesc, $aLang)
+    {
+        $sqlQuery = "INSERT INTO snippet (snippet.userId, snippet.code, snippet.title, snippet.desc, snippet.snippetLang) VALUES(?,?,?,?,?)";
+        if ($stmt = $this->mDbHandler->PrepareStatement($sqlQuery)) {
+            $stmt->bind_param("issss", $aUserId, $aCode, $aTitle, $aDesc, $aLang);
+            $stmt->execute();
+            $stmt->close();
+            return true;
         } else {
             return false;
         }
-
-        $this->mDbHandler->close();
-        return true;
     }
-
-    public function updateSnippet($aSnippetName, $aSnippetCode, $aSnippetID)
+    
+    /**
+     * SnippetHandler::deleteSnippet()
+     * 
+     * @param int $aSnippetId
+     * @return deletes a snippet with sine given id
+     */
+    public function deleteSnippet($aSnippetId)
     {
-        $databaseQuery = $this->mDbHandler->PrepareStatement("UPDATE SnippetsTable SET snippetName = ?, snippetCode = ? WHERE snippetID = ?");
-        $databaseQuery->bind_param('ssi', $$aSnippetName, $aSnippetCode, $aSnippetID);
-        $databaseQuery->execute();
-        if ($databaseQuery->affected_rows == null) {
-            return false;
-        }
-        $databaseQuery->close();
-        return true;
-    }
+        $sqlQuery = "DELETE FROM snippet WHERE snippetId=?";
 
-    public function deleteSnippet($aSnippetID)
-    {
-        $databaseQuery = $this->mDbHandler->PrepareStatement("DELETE FROM SnippetsTable WHERE snippetID = ?");
-        $databaseQuery->bind_param('i', $aSnippetID);
-        $databaseQuery->execute();
-        if ($databaseQuery->affected_rows == null) {
-            return false;
-        }
-        $databaseQuery->close();
-    }
+        if ($stmt = $this->mDbHandler->PrepareStatement($sqlQuery)) {
+            $stmt->bind_param("i", $aSnippetId);
 
+            if ($stmt->execute()) {
+                $stmt->close();
+                return true;
+            }
+        }
+        return false;
+    }
 }

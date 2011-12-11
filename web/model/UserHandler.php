@@ -23,7 +23,7 @@ class UserHandler
             $stmt->execute();
             $stmt->bind_result($result[0], $result[1]);
             while ($stmt->fetch()) {
-                $resultObject = new TestComment($result[0], $result[1]);
+                $resultObject = new User($result[0], $result[1]);
                 $userArray[] = $resultObject;
             }
             $stmt->close();

@@ -22,60 +22,49 @@ class SnippetController
         $this->mCommentController = new CommentController($this->mDbHandler);
         $this->mHtml = '';
     }
-    public function doControll(){  
+    public function doControll() {
         
         if (isset($_GET['snippet'])) {
             
-            $this->mHtml .= $this->mSnippetView->singleView($this->mSnippetHandler->getSnippetByID($_GET['snippet']));
-            $this->mHtml .= "<br /><a href='index.php'>Till startsidan</a>";
+            $this->mHtml .= $this->mSnippetView->singleView($this->mSnippetHandler->getSnippetById($this->mSnippetView->getSnippetId()));
+            $this->mHtml .= "<br /><a href='index.php'>Till startsidan</a><br /><br />";
             $this->mHtml .= $this->mCommentController->doControll();
         }
         else{
             
             $this->mHtml .= $this->mSnippetView->listView($this->mSnippetHandler->getAllSnippets());
-            $this->mHtml .= "<br /><a href='?page=addsnippet'>Add snippet</a>";
         }
         
-        if(isset($_GET['page']) && $_GET['page'] == 'addsnippet'){
+        if(isset($_GET['ctrl']) && $_GET['ctrl'] == 'createNewSnippetView') {
+          
+          $this->mHtml = null;
+          $this->mHtml .= $this->mSnippetView->addSnippet();
+          $this->mHtml .= "<br /><a href='index.php'>Till startsidan</a><br />";
+        }
+        
+        if($this->mSnippetView->triedToSubmitSnippet()) {
             
-            $this->mHtml = null;
-            $this->mHtml .= $this->mSnippetView->createSnippet();
-            $this->mHtml .= "<br /><a href='index.php'>Till startsidan</a>";
-                    
-            if ($this->mSnippetView->triedToCreateSnippet()) {
+            $snippetAuthor = $this->mSnippetView->getAuthorId();
+            $snippetCode = $this->mSnippetView->getSnippetCode();
+            $snippetTitle = $this->mSnippetView->getSnippetTitle();
+            $snippetDesc = $this->mSnippetView->getSnippetDesc();
+            $snippetLanguage = $this->mSnippetView->getSnippetLanguage();
+            
+            if($this->mSnippetHandler->addSnippet($snippetAuthor, $snippetCode, $snippetTitle, $snippetDesc, $snippetLanguage)) {
                 
-                $snippet = new Snippet( 'kimsan', 
-                                        $this->mSnippetView->getCreateSnippetCode(), 
-                                        $this->mSnippetView->getSnippetTitle(), 
-                                        $this->mSnippetView->getSnippetDescription(), 
-                                        $this->mSnippetView->getSnippetLanguage());
-                $this->mSnippetHandler->createSnippet($snippet);
+                header('Location: index.php');
             }
+        }
+        
+        if($this->mSnippetView->triesToRemoveSnippet()) {
+            $this->mSnippetHandler->deleteSnippet($this->mSnippetView->getSnippetId());
+        }
+        
+        if(isset($_GET['snippet']) && isset($_GET['deleteSnippet'])) {
+            
+            header('Location: index.php');
         }
  
         return $this->mHtml;
     }
-    
-      public  function listSnippets(){
-        
-         if ($this->mSnippetView->triedToGotoCreateView() == true) {
-             return $this->mSnippetView->createSnippet();
-         } else if ($this->mSnippetView->triedTocreateSnippet() == true) {
-             $snippet = new Snippet(    'kimsan', 
-                                        $this->mSnippetView->getCreateSnippetCode(), 
-                                        $this->mSnippetView->getSnippetTitle(), 
-                                        $this->mSnippetView->getSnippetDescription(), 
-                                        $this->mSnippetView->getSnippetLanguage());
-             $this->mSnippetHandler->createSnippet($snippet);
-
-         } else if ($this->mSnippetView->triedToDeleteSnippet() == true) {
-             $this->mSnippetHandler->deleteSnippet($this->mSnippetView->getSnippetID());
-         } else if ($this->mSnippetView->triedToChangeSnippet() == true) {
-             return $this->mSnippetView->updateSnippet($this->mSnippetHandler->getSingleSnippetData($this->mSnippetView->getSnippetIDLink()));
-         } else if ($this->mSnippetView->triedToSaveSnippet() == true) {
-             $this->mSnippetHandler($this->mSnippetView->getUpdateSnippetID, $this->mSnippetView->getUpdateSnippetName, $this->mSnippetView->getUpdateSnippetCode);
-             echo 'Snippet has been updated!';
-         }
-          return $this->mSnippetView->createSnippet();
-      }
- }  
+}
