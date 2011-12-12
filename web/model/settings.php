@@ -2,17 +2,17 @@
 
 class Settings
 {
-    private $m_dbname = "";
-    private $m_password = "";
-    private $m_host = "";
-    private $m_username = "";
+    private $_dbname = "";
+    private $_password = "";
+    private $_host = "";
+    private $_username = "";
 
     public function __construct()
     {
-        $this->m_dbname = "projectx";
-        $this->m_password = "";
-        $this->m_host = "127.0.0.1";
-        $this->m_username = "root";
+        $this->_dbname = "projectx";
+        $this->_password = "";
+        $this->_host = "127.0.0.1";
+        $this->_username = "root";
     }
 
     /**
@@ -21,7 +21,7 @@ class Settings
      */
     public function GetDbName()
     {
-        return $this->m_dbname;
+        return $this->_dbname;
     }
 
     /**
@@ -30,7 +30,7 @@ class Settings
      */
     public function GetPassword()
     {
-        return $this->m_password;
+        return $this->_password;
     }
 
     /**
@@ -39,7 +39,7 @@ class Settings
      */
     public function GetHost()
     {
-        return $this->m_host;
+        return $this->_host;
     }
 
     /**
@@ -48,7 +48,7 @@ class Settings
      */
     public function GetUsername()
     {
-        return $this->m_username;
+        return $this->_username;
     }
 
 }

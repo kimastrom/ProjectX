@@ -1,4 +1,5 @@
 <?php
+
 require_once dirname(__FILE__) . '/../model/SnippetHandler.php';
 require_once dirname(__FILE__) . '/../view/SnippetView.php';
 require_once dirname(__FILE__) . '/../model/DbHandler.php';
@@ -8,63 +9,50 @@ require_once dirname(__FILE__) . '/../view/CommentView.php';
 
 class SnippetController
 {
-    private $mDbHandler;
-    private $mSnippetHandler;
-    private $mSnippetView;
-    private $mHtml;
-    private $mCommentController;
+    private $_dbHandler;
+    private $_snippetHandler;
+    private $_snippetView;
+    private $_html;
+    private $_commentController;
 
-    public function __construct(){
-        
-        $this->mDbHandler = new DbHandler();
-        $this->mSnippetHandler = new SnippetHandler($this->mDbHandler);
-        $this->mSnippetView = new SnippetView();
-        $this->mCommentController = new CommentController($this->mDbHandler);
-        $this->mHtml = '';
+    public function __construct()
+    {
+
+        $this->_dbHandler = new DbHandler();
+        $this->_snippetHandler = new SnippetHandler($this->_dbHandler);
+        $this->_snippetView = new SnippetView();
+        $this->_commentController = new CommentController($this->_dbHandler);
+        $this->_html = '';
     }
-    public function doControll() {
-        
+
+    public function doControll()
+    {
+
         if (isset($_GET['snippet'])) {
-            
-            $this->mHtml .= $this->mSnippetView->singleView($this->mSnippetHandler->getSnippetById($this->mSnippetView->getSnippetId()));
-            $this->mHtml .= "<br /><a href='index.php'>Till startsidan</a><br /><br />";
-            $this->mHtml .= $this->mCommentController->doControll();
+
+            $this->_html .= $this->_snippetView->singleView($this->_snippetHandler->getSnippetByID($_GET['snippet']));
+            $this->_html .= "<br /><a href='index.php'>Till startsidan</a>";
+            $this->_html .= $this->_commentController->doControll();
+        } else {
+
+            $this->_html .= $this->_snippetView->listView($this->_snippetHandler->getAllSnippets());
+            $this->_html .= "<br /><a href='?page=addsnippet'>Add snippet</a>";
         }
-        else{
-            
-            $this->mHtml .= $this->mSnippetView->listView($this->mSnippetHandler->getAllSnippets());
-        }
-        
-        if(isset($_GET['ctrl']) && $_GET['ctrl'] == 'createNewSnippetView') {
-          
-          $this->mHtml = null;
-          $this->mHtml .= $this->mSnippetView->addSnippet();
-          $this->mHtml .= "<br /><a href='index.php'>Till startsidan</a><br />";
-        }
-        
-        if($this->mSnippetView->triedToSubmitSnippet()) {
-            
-            $snippetAuthor = $this->mSnippetView->getAuthorId();
-            $snippetCode = $this->mSnippetView->getSnippetCode();
-            $snippetTitle = $this->mSnippetView->getSnippetTitle();
-            $snippetDesc = $this->mSnippetView->getSnippetDesc();
-            $snippetLanguage = $this->mSnippetView->getSnippetLanguage();
-            
-            if($this->mSnippetHandler->addSnippet($snippetAuthor, $snippetCode, $snippetTitle, $snippetDesc, $snippetLanguage)) {
-                
-                header('Location: index.php');
+
+        if (isset($_GET['page']) && $_GET['page'] == 'addsnippet') {
+
+            $this->_html = null;
+            $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
+            $this->_html .= "<br /><a href='index.php'>Till startsidan</a>";
+
+            if ($this->_snippetView->triedToCreateSnippet()) {
+
+                $snippet = new Snippet('kimsan', $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage());
+                $this->_snippetHandler->createSnippet($snippet);
             }
         }
-        
-        if($this->mSnippetView->triesToRemoveSnippet()) {
-            $this->mSnippetHandler->deleteSnippet($this->mSnippetView->getSnippetId());
-        }
-        
-        if(isset($_GET['snippet']) && isset($_GET['deleteSnippet'])) {
-            
-            header('Location: index.php');
-        }
- 
-        return $this->mHtml;
+
+        return $this->_html;
     }
+
 }

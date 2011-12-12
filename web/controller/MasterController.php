@@ -5,27 +5,21 @@ require_once dirname(__FILE__) . '/SnippetController.php';
 
 class MasterController
 {
-    private $mSnippetController;
-    private $mHtml;
-    
-    private $mSnippethandler;
-    
+    private $_snippetController;
+    private $_html;
+
     public function __construct()
     {
-        $this->mSnippetController = new SnippetController();
-        $this->mHtml = '';
-        
-        $this->mSnippethandler = new SnippetHandler();
+        $this->_snippetController = new SnippetController();
+        $this->_html = '';
     }
-    //I Master Controllen ska bara andra controller istanseras som behövs vis starten av applikationen
-    //alla andra controllers instanseras senare vid behov
-    public function doControll(){
-      ob_start();
-      
-      $this->mHtml .= $this->mSnippetController->doControll();
-      
-      //$this->mSnippethandler->addComment(1, "gugguy", 7);
-      //$this->mSnippethandler->deleteSnippet(15);
-      return $this->mHtml;
+
+    public function doControll()
+    {
+        session_start();
+        $this->_html .= $this->_snippetController->doControll();
+        $this->_html .= "<br /><a href='index.php'>Till startsidan</a> <br /><a href='?page=addsnippet'>Add snippet</a>";
+        return $this->_html;
     }
+
 }

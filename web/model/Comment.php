@@ -2,11 +2,15 @@
 
 class Comment
 {
-    private $mSnippetId = null;
-    private $mCommentId = null;
-    private $mUserId = null;
-    private $mCommentText = null;
-    private $mUser = null;
+
+    private $_snippetId;
+    private $_commentId;
+    private $_userId;
+    private $_commentText;
+    private $_user;
+    private $_getCommentUp;
+    private $_getCommentDown;
+    private $__commentDate;
 
     /**
      * Comment::__construct()
@@ -16,12 +20,12 @@ class Comment
      * @param int $aUserId
      * @param int $aCommentText
      */
-    public function __construct($aSnippetId, $aCommentId, $aUserId, $aCommentText)
+    public function __construct($snippetId, $commentId, $userId, $commentText)
     {
-        $this->mSnippetId = $aSnippetId;
-        $this->mCommentId = $aCommentId;
-        $this->mUserId = $aUserId;
-        $this->mCommentText = $aCommentText;
+        $this->_snippetId = $snippetId;
+        $this->_commentId = $commentId;
+        $this->_userId = $userId;
+        $this->_commentText = $commentText;
     }
 
     /**
@@ -29,9 +33,9 @@ class Comment
      * settr User object
      * @param User
      */
-    public function setUser($aUser)
+    public function setUser($user)
     {
-        $this->mUser = $aUser;
+        $this->_user = $user;
     }
 
     /**
@@ -41,7 +45,7 @@ class Comment
      */
     public function getUser()
     {
-        return $this->mUser;
+        return $this->_user;
     }
 
     /**
@@ -51,7 +55,7 @@ class Comment
      */
     public function getSnippetId()
     {
-        return $this->mSnippetId;
+        return $this->_snippetId;
     }
 
     /**
@@ -61,7 +65,7 @@ class Comment
      */
     public function getCommentDate()
     {
-        return $this->mCommentDate;
+        return $this->_commentDate;
     }
 
     /**
@@ -71,7 +75,7 @@ class Comment
      */
     public function getCommentId()
     {
-        return $this->mCommentId;
+        return $this->_commentId;
     }
 
     /**
@@ -81,7 +85,7 @@ class Comment
      */
     public function getUserId()
     {
-        return $this->mUserId;
+        return $this->_userId;
     }
 
     /**
@@ -91,7 +95,7 @@ class Comment
      */
     public function getCommentText()
     {
-        return $this->mCommentText;
+        return $this->_commentText;
     }
 
     /**
@@ -101,7 +105,7 @@ class Comment
      */
     public function getCommentUp()
     {
-        return $this->mCommentUp;
+        return $this->_getCommentUp;
     }
 
     /**
@@ -111,7 +115,7 @@ class Comment
      */
     public function getCommentDown()
     {
-        return $this->mCommentDown;
+        return $this->_getCommentDownt;
     }
 
 }

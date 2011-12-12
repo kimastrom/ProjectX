@@ -5,8 +5,8 @@ require_once 'settings.php';
 class DbHandler
 {
 
-    private $mMySqliObject = null;
-    private $mSettings = null;
+    private $_mySqliObject = null;
+    private $_settings = null;
 
     public function __construct()
     {
@@ -15,10 +15,10 @@ class DbHandler
 
     public function connect()
     {
-        $this->mSettings = new Settings();
-        $this->mMySqliObject = new mysqli($this->mSettings->GetHost(), $this->mSettings->GetUsername(), $this->mSettings->GetPassword(), $this->mSettings->GetDbName());
+        $this->_settings = new Settings();
+        $this->_mySqliObject = new mysqli($this->_settings->GetHost(), $this->_settings->GetUsername(), $this->_settings->GetPassword(), $this->_settings->GetDbName());
 
-        $this->mMySqliObject->set_charset("utf8");
+        $this->_mySqliObject->set_charset("utf8");
 
         if (mysqli_connect_errno()) {
             exit();
@@ -34,17 +34,17 @@ class DbHandler
 
     public function close()
     {
-        $this->mMySqliObject->Close();
+        $this->_mySqliObject->Close();
     }
 
-    public function prepareStatement($aSqlStatement)
+    public function prepareStatement($sqlStatement)
     {
-        return $this->mMySqliObject->prepare($aSqlStatement);
+        return $this->_mySqliObject->prepare($sqlStatement);
     }
 
     public function error()
     {
-        return $this->mMySqliObject->error;
+        return $this->_mySqliObject->error;
     }
 
 }

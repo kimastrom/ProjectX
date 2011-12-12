@@ -2,28 +2,28 @@
 
 class User
 {
-    private $mUserId = null;
-    private $mUserName = null;
+    private $_userID = null;
+    private $_userName = null;
 
     /**
      * User::__construct()
      *
      * @return new User object
      */
-    public function __construct($aUserId, $aUserName)
+    public function __construct( $userID, $userName )
     {
-        $this->mUserId = $aUserId;
-        $this->mUserName = $aUserName;
+        $this->_userID = $userID;
+        $this->_userName = $userName;
     }
 
     /**
-     * User::getUserId()
+     * User::getUserID()
      *
      * @return int, id of the user
      */
-    public function getUserId()
+    public function getUserID()
     {
-        return $this->mUserId;
+        return $this->_userId;
     }
 
     /**
@@ -33,7 +33,7 @@ class User
      */
     public function getUserName()
     {
-        return $this->mUserName;
+        return $this->_userName;
     }
 
 }

@@ -7,11 +7,11 @@ require_once 'User.php';
 class CommentHandler
 {
 
-    private $mDbHandler;
+    private $_dbHandler;
     
     public function __construct()
     {
-        $this->mDbHandler = new DbHandler();
+        $this->_dbHandler = new DbHandler();
     }
 
     /**
@@ -20,23 +20,25 @@ class CommentHandler
      * @return an array with all comments for one snippet
      * together with data of the User object
      */
-    public function getAllCommentsForSnippet($aSnippetId)
+    public function getAllCommentsForSnippet($snippetId)
     {
+
+        $commentsArray = array();
         $sqlQuery = "   SELECT comment.snippetId, comment.commentId, comment.commentText, comment.userId, user.userName
                         FROM comment
                         INNER JOIN user ON user.userId = comment.userId
-                        WHERE snippetId = $aSnippetId
+                        WHERE snippetId = $snippetId
                         ORDER by comment.commentId DESC
         ";
-        $stmt = $this->mDbHandler->PrepareStatement($sqlQuery);
+        $stmt = $this->_dbHandler->PrepareStatement($sqlQuery);
         $stmt->execute();
-        $stmt->bind_result($aSnippetId, $aCommentId, $aCommentText, $aUserId, $aUserName);
+        $stmt->bind_result($snippetId, $commentId, $commentText, $userId, $userName);
 
         $objects = array();
 
         while ($stmt->fetch()) {
-            $user = new User($aUserId, $aUserName);
-            $comment = new Comment($aSnippetId, $aCommentId, $aUserId, $aCommentText);
+            $user = new User($userId, $userName);
+            $comment = new Comment($snippetId, $commentId, $userId, $commentText);
             $comment->SetUser($user);
             $objects[] = $comment;
         }
@@ -52,12 +54,12 @@ class CommentHandler
      * use it if you want to add a new commet för a snippet
      * @param snippetId, commentText and userId
      */
-    public function addComment($aSnippetId, $aCommentText, $aUserId)
+    public function addComment($snippetId, $commentText, $userId)
     {
 
         $sqlQuery = "INSERT INTO comment (snippetId, commentText, userId) VALUES(?,?,?)";
-        if ($stmt = $this->mDbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param("isi", $aSnippetId, $aCommentText, $aUserId);
+        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
+            $stmt->bind_param("isi", $snippetId, $commentText, $userId);
             $stmt->execute();
             $stmt->close();
             return true;
@@ -73,13 +75,13 @@ class CommentHandler
      * use it if you want to update a comment that exists in the database
      * @param commentId, commentText
      */
-    public function updateComment($aCommentId, $aCommentText)
+    public function updateComment($commentId, $commentText)
     {
 
         $sqlQuery = "UPDATE comment SET commentText=? WHERE commentId=?";
 
-        if ($stmt = $this->mDbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param("si", $aCommentText, $aCommentId);
+        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
+            $stmt->bind_param("si", $commentText, $commentId);
 
             if ($stmt->execute()) {
                 $stmt->close();
@@ -96,13 +98,13 @@ class CommentHandler
      * use it if you want to delete a comment
      * @param an id of the comment to delete
      */
-    public function deleteComment($aCommentId)
+    public function deleteComment($commentId)
     {
 
         $sqlQuery = "DELETE FROM comment WHERE commentId=?";
 
-        if ($stmt = $this->mDbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param("i", $aCommentId);
+        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
+            $stmt->bind_param("i", $commentId);
 
             if ($stmt->execute()) {
                 $stmt->close();
@@ -123,7 +125,7 @@ class CommentHandler
 
         $sqlQuery = "DELETE FROM comment";
 
-        if ($stmt = $this->mDbHandler->PrepareStatement($sqlQuery)) {
+        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
             $stmt->execute();
             $stmt->close();
             return true;
@@ -138,24 +140,24 @@ class CommentHandler
      * @param id of the comment you want to edit
      *
      */
-    public function getCommentToEditByCommentId($aCommentId)
+    public function getCommentByID($commentId)
     {
 
         $sqlQuery = "   SELECT comment.snippetId, comment.commentId, comment.commentText, comment.userId, user.userName
                         FROM comment
                         INNER JOIN user ON user.userId = comment.userId
-                        WHERE commentId = ?";
-                        
-        $stmt = $this->mDbHandler->PrepareStatement($sqlQuery);
-        $stmt->bind_param('i', $aCommentId);
+                        WHERE commentId = ?
+                    ";
+        $stmt = $this->_dbHandler->PrepareStatement($sqlQuery);
+        $stmt->bind_param('i', $commentId);
         $stmt->execute();
-        $stmt->bind_result($aSnippetId, $aCommentId, $aCommentText, $aUserId, $aUserName);
+        $stmt->bind_result($snippetId, $commentId, $commentText, $userId, $userName);
 
         $comment = null;
 
         if ($stmt->fetch()) {
-            $user = new User($aUserId, $aUserName);
-            $comment = new Comment($aSnippetId, $aCommentId, $aUserId, $aCommentText);
+            $user = new User($userId, $userName);
+            $comment = new Comment($snippetId, $commentId, $userId, $commentText);
             $comment->SetUser($user);
         }
         $stmt->close();

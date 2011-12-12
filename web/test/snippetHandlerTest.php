@@ -5,18 +5,18 @@ require_once dirname(__FILE__) . '/../model/SnippetHandler.php';
 class SnippetHandlerTest extends unitTestcase
 {
 
-    private $mSnippetHandler;
+    private $_snippetHandler;
 
     function __construct()
     {
-        $this->mSnippetHandler = new SnippetHandler();
+        $this->_snippetHandler = new SnippetHandler();
     }
 
     public function testIfGetSnippetByIDreturnCorrectObject()
     {
-        $snippet = $this->mSnippetHandler->getSnippetByID(1);
-        $this->assertTrue(is_object($snippet));
-        $this->assertEqual(1, $snippet->getID());
+        $snippetA = $this->_snippetHandler->getNrOfSnippets(1);
+        $snippetB = $this->_snippetHandler->getSnippetByID($snippetA[0]->getID());
+        $this->assertEqual($snippetA[0]->getID(), $snippetB->getID());
     }
 
 }
