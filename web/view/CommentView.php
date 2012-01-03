@@ -11,20 +11,17 @@ class CommentView
     public function doCommentForm()
     {
         $captcha = new Captcha();
-        $form = ("
+        $form = "<div id='comment'>
+                    <h3>Post a comment</h3>
                     <form action='' method='POST'>
-                        <label for='commentText'>Kommentar: </label><br/>
-                        <textarea name='commentText' rows = '5' cols ='40' maxlength='1500'></textarea>
-                        <br/>
-                        <label for='author'>Namn:(ange siffran 6 så länge)</label><br/>
-                        <input type='text' name='commentAuthor' value = ''/>
-                        <br/>
-                        <img src='secure.jpg' alt='Captcha image'/><br/>
-                        <label for='secure'>Ange svaret till bilden:</label><br/>
-                        <input type='text' name='secure' value='' /><br/>
-                        <input type='submit' name='submitComment' value='Skriv'/>
+                        <input type='text' name='commentAuthor' value='6'/>
+                        <textarea name='commentText' maxlength='1500' placeholder='Your comment'></textarea>
+                        <label for='secure'></label>
+                        <img src='secure.jpg' alt='Captcha image'/>
+                        <input type='text' name='secure' placeholder='Are you a human?' />
+                        <input type='submit' name='submitComment' value='Post comment'/>
                     </form>
-                    ");
+                </div>";
         return $form;
     }
 
@@ -39,21 +36,16 @@ class CommentView
         $message = "";
         if (!empty($comments)) {
             for ($i = 0; $i < count($comments); $i++) {
-                $message .= "<div>";
-                $message .= "<p>kommentar till snippetId: " . $comments[$i]->getSnippetId() . "</p>";
-                $message .= "<p>komentarens text: " . $comments[$i]->getCommentText() . "</p>";
-                $message .= "<p> Kommentaren skrivet av: " . $comments[$i]->getUser()->getUserName() . "</p>";
+                $message .= "<div class='comments'>";
+                $message .= "<p class='snippet-author'>" . $comments[$i]->getUser()->getUserName() . "</p>";
+                $message .= "<p class='date'>2012-01-01</p>";
+                $message .= "<p class='text'>" . $comments[$i]->getCommentText() . "</p>";
+                $message .= "<a onclick=\"javascript: return confirm('Vill du verkligen ta bort kommentar? [" . $comments[$i]->getCommentId() . "]')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&controller=commentcontroller&deleteComment=" . $comments[$i]->getCommentId() . "'>Radera</a> ";
+                $message .= "<a onclick=\"javascript: return confirm('Vill du verkligen editera kommentar? [" . $comments[$i]->getCommentId() . "]')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&controller=commentcontroller&editComment=" . $comments[$i]->getCommentId() . "'>Redigera</a>";
                 $message .= "</div>";
-
-                $message .= "<a onclick=\"javascript: return confirm('Vill du verkligen ta bort kommentar? [" . $comments[$i]->getCommentId() . "]')\" href='index.php?snippet=" . $comments[$i]->getSnippetId() . "&controller=commentcontroller&deleteComment=" . $comments[$i]->getCommentId() . "'>Radera</a>";
-
-                $message .= "</br><a onclick=\"javascript: return confirm('Vill du verkligen editera kommentar? [" . $comments[$i]->getCommentId() . "]')\" href='index.php?snippet=" . $comments[$i]->getSnippetId() . "&controller=commentcontroller&editComment=" . $comments[$i]->getCommentId() . "'>Redigera</a>";
-
-                $message .= "</br>";
-                $message .= "<hr>";
             }
         } else {
-            $message .= "<br/>Det finns inga kommentarer för denna snippet.";
+            $message .= "<p>There is no comments for this snippet.</p>";
         }
 
         return $message;
@@ -68,19 +60,16 @@ class CommentView
     public function editComment($comment)
     {
         if ($comment) {
-            $form = "
+            $form = "<div id='comment'>
+                        <h3>Update your comment</h3>
                         <form action='' method='POST'>
-                        <label for='commentText'>Kommentar: </label><br/>
-                        <textarea name='commentText' rows ='5' cols ='40' maxlength='1500'>" . $comment->getCommentText() . "</textarea>
-                        <br/>
-                        <label for='author'>Namn:(man kan ej redigera vem som skrev, det är redan skrivet av någon)</label><br/>
-                        <input type='text' name='commentAuthor' readonly='readonly' value = '" . $comment->getUser()->getUserName() . "'/>
-                        <br/>
-                        <input type='submit' name='updateComment' value='Skriv'/>
+                            <input type='text' name='commentAuthor' placeholder='Name' value='" . $comment->getUser()->getUserName() . "' readonly='readonly'/>
+                            <textarea name='commentText' maxlength='1500' placeholder='Your comment'>" . $comment->getCommentText() . "</textarea>
+                            <input type='submit' name='updateComment' value='Update comment'/>
                         </form>
-                        ";
+                    </div>";
         } else {
-            $form = "Kommentaren du försöker redigera finns inte!";
+            $form = "The comment you tries to edit does not exist.";
         }
         return $form;
     }

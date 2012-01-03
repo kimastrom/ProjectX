@@ -10,15 +10,31 @@ class MasterController
 
     public function __construct()
     {
-        $this->_snippetController = new SnippetController();
         $this->_html = '';
     }
 
     public function doControll()
     {
         session_start();
-        $this->_html .= $this->_snippetController->doControll();
-        $this->_html .= "<br /><a href='index.php'>Till startsidan</a> <br /><a href='?page=addsnippet'>Add snippet</a>";
+        if (isset($_GET['page'])) {
+            if ($_GET['page'] == 'listsnippets') {
+                $this->_snippetController = new SnippetController();
+                $this->_html .= $this->_snippetController->doControll('list');
+            }
+            else if ($_GET['page'] == 'addsnippet') {
+                $this->_snippetController = new SnippetController();
+                $this->_html .= $this->_snippetController->doControll('add');
+            }
+        } else {
+            $this->_html = '<div class="search">
+                <img src="content/image/logo.png" />
+                <input type="text" />
+                <input type="submit" value="Search" class="searchbutton" /><br />
+                
+                <a href="#">Advanced search</a> &bull; <a href="#">Browse</a>
+            </div>';
+        }
+        
         return $this->_html;
     }
 

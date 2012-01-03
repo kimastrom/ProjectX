@@ -1,0 +1,187 @@
+/*
+ * BODY
+ * ---------------------------- */
+body {
+    font-family: Arial;
+    font-size: 13px;
+    background: #19556f;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 10px 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 22px;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+input, textarea, select  {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/*
+ * TOPBAR
+ * ---------------------------- */
+.topbar {
+    height: 30px;
+    background: #041721;
+    color: #fff;
+}
+
+.topbar a {
+    color: #fff;
+    font-family: Arial;
+    font-size: 14px;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.topbar ul {
+    list-style-type: none;
+}
+
+.topbar li {
+    display: inline;
+}
+
+.topbar .right {
+    float: right;
+}
+
+.topbar-inner {
+    width: 940px;
+    line-height: 30px;
+    margin: 0 auto;
+}
+
+/*
+ * CONTAINER
+ * ---------------------------- */
+.container {
+    width:  940px;
+    background: #fff;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+a {
+    color: #000;
+}
+
+/*
+ * SEARCH
+ * ---------------------------- */
+
+.content .search {
+    text-align: center;
+    margin: 100px 0;
+}
+
+.content .search img {
+    display: block;
+    margin: 0 auto 20px auto;
+}
+
+.content .search input[type="text"] {
+    width: 250px;
+    margin-bottom: 10px;
+    display: inline;
+}
+
+.content .search input[type="submit"] {
+    border: 0;
+    background: #0d3b51;
+    color: #fff;
+    padding: 3px 10px;
+    display: inline;
+}
+
+.content .search a {
+    font-style: italic;
+}
+
+/*
+ * SNIPPET LIST
+ * ---------------------------- */
+.snippet-list-item {
+    border-top: dashed 1px #ddd;
+    margin: 5px 0;
+}
+
+.snippet-title {
+    font-size: 18px;
+    text-transform: uppercase;
+    margin: 5px 0;
+}
+
+.snippet-title a {
+    text-decoration: none;
+}
+
+.snippet-description {
+    font-size: 15px;
+    margin: 5px 0;
+}
+
+.snippet-list-item .snippet-author, .snippet-tags {
+    font-size: 12px;
+}
+
+.snippet-description:first-letter, .snippet-author:first-letter {
+    text-transform: capitalize;
+}
+
+.snippet-tags {
+    margin: 5px 0 10px;
+}
+
+/*
+ * CODE
+ * ---------------------------- */
+.snippet-code {
+    font-size: 13px;
+    margin: 10px 0;
+}
+
+code ol {
+    list-style-type: decimal;
+    margin-left: 50px;
+}
+
+/*
+ * COMMENTS
+ * ---------------------------- */
+textarea {
+    width: 500px;
+    height: 200px;
+}
+
+.comments {
+    border-top: solid 3px #ddd;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.snippet-author, .comments .date {
+    font-weight: bold;
+    display: inline;
+}
+
+.comments .date {
+    float: right;   
+}
+
+.comments .text {
+    word-wrap: break-word;
+    margin-top: 10px;
+}

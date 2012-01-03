@@ -44,6 +44,7 @@ class Functions
     {
 
         $geshi = new GeSHi($code, $lang);
+        $geshi->set_header_type(GESHI_HEADER_DIV);
         $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
         return $geshi->parse_code();
     }

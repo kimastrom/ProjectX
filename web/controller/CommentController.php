@@ -10,21 +10,14 @@ class CommentController
 
     public function doControll()
     {
-        $html = "";
+        $html = "<h2>Comments</h2>";
         $commentHandler = new CommentHandler($this->_dbHandler);
         $commentView = new CommentView();
-
-        if ($commentView->triesToEditComment()) {
-            $html .= $commentView->editComment($commentHandler->getCommentByID($commentView->WhichCommentToEdit()));
-        } else {
-            $html .= $commentView->doCommentForm();
-        }
 
         if ($commentView->triedToSubmitComment()) {
             $text = $commentView->getCommentText();
             $author = $commentView->getAuthorId();
             $id = $commentView->whichSnippetToComment();
-            $commentHandler->addComment($id, $text, $author);
             if ($commentView->getCaptchaAnswer() == $_SESSION['security_number']) {
                 $commentHandler->addComment($id, $text, $author);
             }
@@ -39,6 +32,13 @@ class CommentController
         }
 
         $html .= $commentView->showAllCommentsForSnippet($commentHandler->getAllCommentsForSnippet($commentView->whichSnippetToComment()));
+        
+        if ($commentView->triesToEditComment()) {
+            $html .= $commentView->editComment($commentHandler->getCommentByID($commentView->WhichCommentToEdit()));
+        } else {
+            $html .= $commentView->doCommentForm();
+        }
+        
         return $html;
     }
 

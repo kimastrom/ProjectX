@@ -10,11 +10,48 @@ $_html = $_mc->doControll();
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>title</title>
-        <link rel="stylesheet" href="style.css">
+        <title>Snippt</title>
+        <link rel="stylesheet" href="content/css/reset.css">
+        <link rel="stylesheet" href="content/css/style.css">
         <script src="script.js"></script>
     </head>
     <body>
-        <?php echo $_html;?>
+        <div class="topbar-wrapper">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <ul class="nav">
+                        <li>
+                            <a href="index.php">Home</a> /
+                        </li>
+                        <li>
+                            <a href="?page=listsnippets">Snippets</a> /
+                        </li>
+                        <li>
+                        <a href='?page=addsnippet'>Add snippet</a> /
+                        </li>
+                        <li>
+                            <a href="#">News</a> /
+                        </li>
+                        <li>
+                            <a href="#">Downloads</a> /
+                        </li>
+                        <li>
+                            <a href="#">About</a> /
+                        </li>
+                        <li>
+                            <a href="#">Register</a>
+                        </li>
+                        <li class="right">
+                            <a href="#">Log in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="content">
+                <?php echo $_html;?>
+            </div>
+        </div>
     </body>
 </html>
