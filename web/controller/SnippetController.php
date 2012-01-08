@@ -49,13 +49,14 @@ class SnippetController
                 $this->_pagingHandler->setOffset($_GET['pagenumber']);
                 
                 if ($_GET['pagenumber'] - 1 == 0) {
-                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), 1,$this->_pagingHandler->getLinks(), $this->_pagingHandler->getNext());
+                    
+                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), 1,$this->_pagingHandler->getLinks(), $this->_pagingHandler->getNext(), false, true);
                 } else if ($_GET['pagenumber'] == $this->_pagingHandler->getTotal()) {
                   
-                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getTotal());    
+                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getTotal(), true, false);    
                 } else {
                     
-                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getNext());    
+                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getNext(), true, true);    
                 }
             }
         } else if ($page == 'add') {
