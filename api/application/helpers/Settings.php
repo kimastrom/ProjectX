@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Settings
+ * 
+ * @package ProjectX 
+ * @author ProjectX
+ * @copyright ProjectX
+ * @version 2012
+ * @access public
+ */
 class Settings
 {
     private $m_dbname = "";
@@ -7,17 +16,23 @@ class Settings
     private $m_host = "";
     private $m_username = "";
 
+    /**
+     * Settings::__construct()
+     * 
+     * @return
+     */
     public function __construct()
     {
         $this->m_dbname = "projectx";
         $this->m_host = "localhost";
         $this->m_username = "root";
-		$this->m_password = "";
+        $this->m_password = "";
     }
 
     /**
-     * return database name
-     * @return string
+     * Settings::GetDbName()
+     * 
+     * @return
      */
     public function GetDbName()
     {
@@ -25,8 +40,9 @@ class Settings
     }
 
     /**
-     * return database password
-     * @return string
+     * Settings::GetPassword()
+     * 
+     * @return
      */
     public function GetPassword()
     {
@@ -34,8 +50,9 @@ class Settings
     }
 
     /**
-     * return database hostname
-     * @return string
+     * Settings::GetHost()
+     * 
+     * @return
      */
     public function GetHost()
     {
@@ -43,8 +60,9 @@ class Settings
     }
 
     /**
-     * return database usernme
-     * @return string
+     * Settings::GetUsername()
+     * 
+     * @return
      */
     public function GetUsername()
     {
