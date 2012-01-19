@@ -150,6 +150,43 @@ a {
 }
 
 /*
+ * RATING
+ * ---------------------------- */
+
+#rating {
+    margin: 10px 0;
+}
+
+#rating button {
+    background: none;
+    border: none;
+}
+
+#ratingbars {
+    width: 200px;
+    height: 5px;
+    background: #CCCCCC;
+    border: solid 1px #000;
+    margin: 5px 0;
+}
+
+#ratingbars .likes { 
+    background-color: #7FAF1B;
+    float: left;
+    height: 5px;
+}
+
+#ratingbars .dislikes {
+    background-color: #A40802;
+    float: left;
+    height: 5px;
+}
+
+#message {
+    clear: both;
+}
+
+/*
  * CODE
  * ---------------------------- */
 .snippet-code {

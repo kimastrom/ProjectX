@@ -35,6 +35,7 @@ class SnippetController
             if (isset($_GET['snippet'])) {
     
                 $this->_html .= $this->_snippetView->singleView($this->_snippetHandler->getSnippetByID($_GET['snippet']));
+                $this->_html .= $this->_snippetView->rateSnippet($_GET['snippet'], $this->_snippetHandler->getSnippetRating($_GET['snippet']));
                 $this->_html .= $this->_commentController->doControll();
             } else {
                 

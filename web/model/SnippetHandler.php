@@ -200,7 +200,37 @@ class SnippetHandler
         return $languages;
     }
     
-        public function searchByTitle($title) {
+
+    /**
+     * returns array with total votes, likes and dislikes
+     * @param int id of snippet
+     * @return Array
+     */
+    public function getSnippetRating($id) {
+        $rating = array();
+        
+        $this->_dbHandler->__wakeup();
+        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT COUNT(IF(`rating` = 1, 1, null)) AS Likes, COUNT(IF(`rating` = 0, 1, null)) AS Dislikes FROM `rating` WHERE `snippetId` = ?")) {
+            $stmt->bind_param("i", $id);    
+            $stmt->execute();
+
+            $stmt->bind_result($likes, $dislikes);
+            if ($stmt->fetch()) {
+                $rating['total'] = $likes + $dislikes;
+                $rating['likes'] = $likes;
+                $rating['dislikes'] = $dislikes;
+            }
+
+            $stmt->close();
+
+        }
+        
+        $this->_dbHandler->Close();
+        
+        return $rating;
+    }
+    
+    public function searchByTitle($title) {
         $titles = array();
         $this->_dbHandler->__wakeup();
         if ($stmt = $this->_dbHandler->PrepareStatement("SELECT id, author,code,title,description,language FROM (snippet) WHERE MATCH title AGAINST (?) ")) {

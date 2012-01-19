@@ -13,7 +13,7 @@ $_html = $_mc->doControll();
         <title>Snippt</title>
         <link rel="stylesheet" href="content/css/reset.css">
         <link rel="stylesheet" href="content/css/style.css">
-        <script src="script.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="topbar-wrapper">

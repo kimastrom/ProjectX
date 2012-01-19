@@ -123,6 +123,56 @@ class SnippetView
 		';
         return $view;
     }
+    
+
+    /**
+     * Creates HTML for voting with jquery ajax
+     * @param int $snippet_id, array $rating with total, likes and dislikes
+     * @return string
+     */
+    public function rateSnippet($snippet_id, $rating) {
+        $html = '<div id="rating">
+                    <button name="like" type="button" id="like"><img src="content/image/like.png" title="Like!" /></button>
+                    <button name="dislike" type="button" id="dislike"><img src="content/image/dislike.png" title="Dislike!" /></button>
+                
+                    <div id="ratingbars">
+                        <div class="likes" style="width: ' . ($rating['total'] != 0 ? round($rating['likes'] / $rating['total'] * 100) : 0) . '%"></div>
+                        <div class="dislikes" style="width: ' . ($rating['total'] != 0 ? round($rating['dislikes'] / $rating['total'] * 100) : 0) . '%"></div>
+                    </div>
+                    <p>' . $rating['likes'] . ' likes, ' . $rating['dislikes'] . ' dislikes</p>
+                    <div id="message"></div>
+                </div>';
+        $html .= "<script>
+                    $('#like').click(function(){
+                         $.ajax({ type: 'POST',
+                            url: 'model/RateSnippet.php',
+                            data: {
+                                'snippet_id': " . $snippet_id . ",
+                                rating: 1
+                            },
+                            dataType: 'html',
+                            success: function(data) {
+                                $('#message').html(data);
+                            }
+                        });
+                    });
+                    $('#dislike').click(function(){
+                        $.ajax({ type: 'POST',
+                            url: 'model/RateSnippet.php',
+                            data: {
+                                'snippet_id': " . $snippet_id . ",
+                                rating: 0
+                            },
+                            dataType: 'html',
+                            success: function(data) {
+                                $('#message').html(data);
+                            }
+                        });
+                    });
+                </script>";
+                
+        return $html;
+    }
 
     public function triedToCreateSnippet()
     {
