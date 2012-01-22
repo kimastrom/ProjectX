@@ -114,6 +114,12 @@ a {
     font-style: italic;
 }
 
+.content .search .langDropdown {
+    padding: 2px;
+    text-align: left;
+    display: inline;
+}
+
 /*
  * SNIPPET LIST
  * ---------------------------- */

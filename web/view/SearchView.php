@@ -3,28 +3,20 @@
 class SearchView {
     
     public function doSearchForm($langs) {
-        /*$searchForm = '<div class="search">';
-        $searchForm .= '  <form name="form" action="" method="POST">
-                            <input type="text" name="q" />';
-        $searchForm .= '    <select class="langDropdown" id="lang" name="lang">';
-                        		foreach($langs as $lang)
-                        		{
-                                    $searchForm .= "<option value='".$lang->getLangId()."'>".$lang->getLanguage()."</option>";
-                        		}
-		$searchForm .= '    </select>';  
-        $searchForm .= '    <input type="submit" name="submitSearch" value="Search" class="searchbutton" />';                                                          
-        $searchForm .= '   </form>';
-        $searchForm .= '</div>';
-        return $searchForm;*/
-            $searchForm = '<div class="search">
-                <form name="searchForm" action"" method="POST">
-                <img src="content/image/logo.png" />
-                <input type="text" name="q" />
-                <input type="submit" name="submitSearch" value="Search" class="searchbutton" /><br />
-                </form>
-                <a href="#">Advanced search</a> &bull; <a href="#">Browse</a>
-                
-            </div>';
+            $searchForm =       '<div class="search">
+                                    <form name="searchForm" action"" method="POST">
+                                    <img src="content/image/logo.png" />
+                                    <input type="text" name="q" />';
+                $searchForm .=      '<select class="langDropdown" id="lang" name="lang">';
+                            		foreach($langs as $lang)
+                            		{
+                                        $searchForm .= "<option value='".$lang->getLangId()."'>".$lang->getLanguage()."</option>";
+                            		}
+                $searchForm .=      '</select>';     
+                $searchForm .=      '<input type="submit" name="submitSearch" value="Search" class="searchbutton" /><br />
+                                    </form>
+                                    <a href="#">Advanced search</a> &bull; <a href="#">Browse</a>
+                                </div>';
             return $searchForm;
     }
     

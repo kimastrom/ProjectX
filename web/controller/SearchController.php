@@ -31,21 +31,10 @@ class SearchController
             $lang = $this->_searchView->getSearchLang();
             //För pageningen
             $arrToPreventError = array(1,1,1,1,1);
-            /**
-             * OBS! Följande kod är bortkommenterat eftersom jag inte vet vilka kriterier man vill söka efter
-             * just nu kan man skriva ord från title, code eller desc samt välja språk (PHP som första val)
-             */
-            //$this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->searchByTitle($searchQuery));
-            $this->_html .= $this->_snippetView->listView($this->_snippetHandler->searchByTitle($searchQuery),1,$arrToPreventError,1,false,false);
-            //$this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->searchByDescription($searchQuery));
-            //$this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->searchByCode($searchQuery));
-            //$this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearch($searchQuery));
-            //$this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearchWithLang($searchQuery, $lang));            
             
-            
+            //makes a full serch for description, code and titel, user must choose a lang or PHP as dafault
+            $this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearchWithLang($searchQuery, $lang),1,$arrToPreventError,1,false,false);  
         }
-        
         return $this->_html;
     }
-    
 }
