@@ -32,7 +32,7 @@ class SnippetView
      * @param array $aSnippets is an array of snippets
      * @return string
      */
-    public function listView($snippets, $previousLink, $links, $nextLink, $showPrevious, $showNext)
+    public function listView($snippets, $previousLink, $links, $beforeLinks, $afterLinks, $nextLink, $showPrevious, $showNext)
     {
         $html = '<h1>Snippets</h1>';
 
@@ -55,26 +55,41 @@ class SnippetView
         }
 
         if ($showPrevious == true) {
-
-            $html .= '<a href="?page=listsnippets&pagenumber=' . $previousLink . '">Previous</a> ';
+            if($_GET['pagenumber'] != 2) {
+                $html .= ' | <a href="?page=listsnippets&pagenumber=1">First</a> ';    
+            }
+            
+            $html .= ' | <a href="?page=listsnippets&pagenumber=' . $previousLink . '"><</a> | ';
         }
         if (isset($_GET['pagenumber'])) {
-            foreach ($links as $i) {
+            foreach ($beforeLinks as $i) {
+                if ($i > 0) {
+                    $html .= '<a href="?page=listsnippets&pagenumber=' . $i . '">' . $i . '</a> ';    
+                }
+            }
 
+            foreach ($links as $i) {
                 if ($i == $_GET['pagenumber']) {
 
                     $html .= '<a href="?page=listsnippets&pagenumber=' . $i . '"><span id="activePage">' . $i . '</span></a> ';
-                } else {
+                }
+            }
 
-                    $html .= '<a href="?page=listsnippets&pagenumber=' . $i . '">' . $i . '</a> ';
+            foreach ($afterLinks as $i) {
+                if ($i < (count($links) + 1 )) {
+                    $html .= '<a href="?page=listsnippets&pagenumber=' . $i . '">' . $i . '</a> ';    
                 }
             }
         }
+        
         if ($showNext == true) {
-
-            $html .= ' <a href="?page=listsnippets&pagenumber=' . $nextLink . '">Next</a><br>';
+            $html .= ' | <a href="?page=listsnippets&pagenumber=' . $nextLink . '">></a> ';
+            
+            if ($_GET['pagenumber'] != (count($links) - 1)) {
+                $html .= ' | <a href="?page=listsnippets&pagenumber=' . count($links). '">Last</a> | ';
+            }    
         }
-
+        
         return $html;
     }
 

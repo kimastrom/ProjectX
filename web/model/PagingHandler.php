@@ -22,8 +22,7 @@ class PagingHandler {
     * Sets the offset
     * @param int $offset is the new offset
     */
-    public function setOffset($offset) {
-           
+    public function setOffset($offset) { 
         $this->_offset = ($offset - 1) * $this->_limit;
     }
     
@@ -32,7 +31,6 @@ class PagingHandler {
     * @param int $page is the new page
     */
     public function setPage($page) {
-          
         $this->_page = $page;
     }
     
@@ -41,22 +39,43 @@ class PagingHandler {
     * @return int
     */
     public function getTotal() {
-            
         return $this->_totalPages; 
     }
     
     /**
-    * Returns an array of links
+    * Returns all the links
     * @return Array
     */
     public function getLinks() {
-           
         for ($i = 1; $i <= $this->_totalPages; $i++) {
-            
             $links[$i] = $i;
         }
         
         return $links;    
+    }
+    
+    /**
+    * Returns links before active page
+    * @return Array
+    */
+    public function getBeforeLinks() {
+        for ($i = ($this->_page - 3); $i <= ($this->_page - 1); $i++) {
+            $beforeLinks[$i] = $i;
+        }
+        
+        return $beforeLinks;    
+    }
+    
+    /**
+    * Returns links after active page
+    * @return Array
+    */
+    public function getAfterLinks() {
+        for ($i = ($this->_page + 1); $i <= ($this->_page + 3); $i++) {
+            $afterLinks[$i] = $i;
+        }
+        
+        return $afterLinks;    
     }
 
     /**
@@ -64,9 +83,7 @@ class PagingHandler {
     * @return Int 
     */
     public function getPrevious() {
-            
         if ($this->_page < 1) {
-            
             $this->_page = 1;
             return $this->_page;
         }
@@ -79,9 +96,7 @@ class PagingHandler {
     * @return Int
     */
     public function getNext() {
-        
         if ($this->_page > $this->_totalPages) {
-            
             return false;
         }
         
@@ -93,18 +108,15 @@ class PagingHandler {
     * @return Array 
     */
     public function fetchSnippets() {
-        
         $this->_limit += $this->_offset;
         
         if ($this->_limit > $this->_totalSnippets) {
-            
             $this->_limit = $this->_totalSnippets;    
         }
         
         $snippetsToShow = array();
         
         for ($i = $this->_offset; $i < $this->_limit; $i++) {
-        
             array_push($snippetsToShow, $this->_snippets[$i]);     
         }
         

@@ -31,37 +31,28 @@ class SnippetController
     public function doControll($page)
     {
         if ($page == 'list') {
-            
             if (isset($_GET['snippet'])) {
-    
                 $this->_html .= $this->_snippetView->singleView($this->_snippetHandler->getSnippetByID($_GET['snippet']));
                 $this->_html .= $this->_snippetView->rateSnippet($_GET['snippet'], $this->_snippetHandler->getSnippetRating($_GET['snippet']));
                 $this->_html .= $this->_commentController->doControll();
             } else {
-                
-                if (isset($_GET['pagenumber']) == false || $_GET['pagenumber'] < 1) {
-                    
+                if (isset($_GET['pagenumber']) == false || $_GET['pagenumber'] < 1) {        
                     $_GET['pagenumber'] = 1;
                 } else {
-                    
                     $this->_pagingHandler->setPage($_GET['pagenumber']);
                 }
                 
                 $this->_pagingHandler->setOffset($_GET['pagenumber']);
                 
                 if ($_GET['pagenumber'] - 1 == 0) {
-                    
-                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), 1,$this->_pagingHandler->getLinks(), $this->_pagingHandler->getNext(), false, true);
+                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), 1,$this->_pagingHandler->getLinks(), $this->_pagingHandler->getBeforeLinks(), $this->_pagingHandler->getAfterLinks(),  $this->_pagingHandler->getNext(), false, true);
                 } else if ($_GET['pagenumber'] == $this->_pagingHandler->getTotal()) {
-                  
-                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getTotal(), true, false);    
+                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getBeforeLinks(), $this->_pagingHandler->getAfterLinks(), $this->_pagingHandler->getTotal(), true, false);    
                 } else {
-                    
-                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getNext(), true, true);    
+                    $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getBeforeLinks(), $this->_pagingHandler->getAfterLinks(), $this->_pagingHandler->getNext(), true, true);    
                 }
             }
         } else if ($page == 'add') {
-
             $this->_html = null;
             $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
 
