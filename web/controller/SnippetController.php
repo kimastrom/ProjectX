@@ -19,7 +19,6 @@ class SnippetController
 
     public function __construct()
     {
-        
         $this->_dbHandler = new DbHandler();
         $this->_snippetHandler = new SnippetHandler($this->_dbHandler);
         $this->_snippetView = new SnippetView();
@@ -57,8 +56,7 @@ class SnippetController
             $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
 
             if ($this->_snippetView->triedToCreateSnippet()) {
-
-                $snippet = new Snippet('kimsan', $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage());
+                $snippet = new Snippet('kimsan', $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), null, $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate());
                 $this->_snippetHandler->createSnippet($snippet);
             }
         }

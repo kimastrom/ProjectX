@@ -17,10 +17,10 @@ class User
      */
     public function __construct($id, $name, $username, $email)
     {
-        $this->_email = $email;
+        $this->_id = $id;
         $this->_name = $name;
         $this->_username = $username;
-        $this->_id = $id;
+        $this->_email = $email;
     }
 
     public function getName()
