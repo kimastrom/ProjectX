@@ -7,7 +7,8 @@ require_once ('application/helpers/DbHandler.php');
 /**
  * @see SnippetObject.php
  */
-require_once ('SnippetObject.php');
+
+require_once ('Snippet.php');
 
 /**
  * Snippets class
@@ -55,7 +56,8 @@ require_once ('SnippetObject.php');
 class Snippets
 {
     private $_dbHandler;
-    private $_snippetObject;
+    private $_snippetHandler;
+    private $_snippet;
 
     /**
      * Snippets::__construct()
@@ -65,52 +67,75 @@ class Snippets
     public function __construct()
     {
         $this->_dbHandler = new DbHandler();
-        $this->_snippetObject = new SnippetObject();
+        $this->_snippetHandler = new SnippetHandler();
+        $this->_snippet = new Snippet();
     }
 
     /**
      * Snippets::index()
      * 
-     * @return Array $snippets
+     * @param mixed $request_data
+     * @return
      */
-    public function index()
+    public function index($request_data = null)
     {
-        foreach ($_REQUEST as $action => $value) {
-            if (is_array($this->_snippetObject->__isset('_' . $action))) {
-                return $this->_snippetObject->__isset('_' . $action);
+        return $this->_snippetHandler->getSnipppet($request_data);
+    }
+
+    /**
+     * Snippets::post()
+     * 
+     * @param mixed $request_data
+     * @return
+     */
+    public function post($request_data = null)
+    {
+        $this->setValues($request_data);
+        return $this->_snippetHandler->createSnippet($this->_snippet);
+    }
+
+    /**
+     * Snippets::put()
+     * 
+     * @param mixed $request_data
+     * @return
+     */
+    public function put($request_data = null)
+    {
+        $this->setValues($request_data);
+        return $this->_snippetHandler->updateSnippet($this->_snippet);
+    }
+
+    /**
+     * Snippets::delete()
+     * 
+     * @param mixed $id
+     * @param mixed $userid
+     * @param mixed $apikey
+     * @return
+     */
+    public function delete($id = null, $userid = null, $apikey = null)
+    {
+        $request_data = array('id' => $id, 'userid' => $userid, 'apikey' => $apikey);
+
+        $this->setValues($request_data);
+        return $this->_snippetHandler->deleteSnippet($this->_snippet);
+    }
+
+    /**
+     * Snippets::setValues()
+     * 
+     * @param mixed $values
+     * @return
+     */
+    public function setValues($values)
+    {
+        foreach ($values as $action => $value) {
+            if (is_array($this->_snippet->__isset('_' . $action))) {
+                return $this->_snippet->__isset('_' . $action);
             } else {
-                $this->_snippetObject->__set('_' . $action, $value);
+                $this->_snippet->__set('_' . $action, $value);
             }
-        }
-
-        $snippets = array();
-        $select = $this->_snippetObject->select();
-
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->PrepareStatement($select[0])) {
-            if ($select[1] != '') {
-                call_user_func_array('mysqli_stmt_bind_param', array_merge(array($stmt, $select[1]), $select[2]));
-            }
-            $stmt->execute();
-
-            $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date,
-                $ratingId, $userId, $snippetId, $rating, $rating_created_date, $userId, $username,
-                $email, $password, $apikey, $languageid, $language);
-            while ($stmt->fetch()) {
-                $snippet = array('language' => $language, 'title' => $title, 'description' => $description,
-                    'code' => $code, 'username' => $username, 'id' => $id, 'date' => $date, 'rating' =>
-                    $rating);
-                array_push($snippets, $snippet);
-            }
-
-            $stmt->close();
-        }
-        $this->_dbHandler->close();
-
-        if (count($snippets) > 0) {
-            return $snippets;
-        } else {
-            throw new RestException(404);
         }
     }
 }

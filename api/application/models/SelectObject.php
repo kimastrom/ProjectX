@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SnippetObject
+ * SelectObject
  * 
  * @category projectX
  * @package  ProjectX
@@ -11,7 +11,7 @@
  * @version $Id$
  * @access public
  */
-class SnippetObject
+class SelectObject
 {
     private $_username;
     private $_date;
@@ -26,7 +26,7 @@ class SnippetObject
     private $_description;
 
     /**
-     * SnippetObject::__construct()
+     * SelectObject::__construct()
      * 
      * @return
      */
@@ -46,7 +46,7 @@ class SnippetObject
     }
 
     /**
-     * SnippetObject::__get()
+     * SelectObject::__get()
      * 
      * @param mixed $property
      * @return
@@ -61,7 +61,7 @@ class SnippetObject
     }
 
     /**
-     * SnippetObject::__set()
+     * SelectObject::__set()
      * 
      * @param mixed $property
      * @param mixed $value
@@ -79,7 +79,7 @@ class SnippetObject
     }
 
     /**
-     * SnippetObject::__isset()
+     * SelectObject::__isset()
      * 
      * @param mixed $property
      * @return
@@ -94,7 +94,7 @@ class SnippetObject
     }
 
     /**
-     * SnippetObject::select()
+     * SelectObject::select()
      * 
      * @return
      */
@@ -102,7 +102,7 @@ class SnippetObject
     {
         $select = "SELECT * FROM snippet LEFT JOIN rating ON snippet.id = rating.snippetId 
 					INNER JOIN user ON snippet.userId = user.userId 
-        			INNER JOIN snippet_language ON snippet.languageId = snippet_language.id";
+        			INNER JOIN snippet_language ON snippet.languageId = snippet_language.snippet_languageid";
         $type = '';
         $paramvalue = array();
 

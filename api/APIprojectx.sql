@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.0
+-- version 3.4.5
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jan 17, 2012 at 05:29 PM
--- Server version: 5.1.44
--- PHP Version: 5.2.13
+-- Värd: localhost
+-- Skapad: 31 jan 2012 kl 15:52
+-- Serverversion: 5.5.16
+-- PHP-version: 5.2.9
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,13 +17,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `projectx`
+-- Databas: `projectx`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comment`
+-- Tabellstruktur `comment`
 --
 
 CREATE TABLE IF NOT EXISTS `comment` (
@@ -36,15 +37,10 @@ CREATE TABLE IF NOT EXISTS `comment` (
   KEY `userId` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `comment`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rating`
+-- Tabellstruktur `rating`
 --
 
 CREATE TABLE IF NOT EXISTS `rating` (
@@ -58,17 +54,10 @@ CREATE TABLE IF NOT EXISTS `rating` (
   KEY `snippetId` (`snippetId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
---
--- Dumping data for table `rating`
---
-
-INSERT INTO `rating` (`ratingId`, `userId`, `snippetId`, `rating`, `rating_created_date`) VALUES
-(10, 2, 14, 4, '2012-01-12 11:28:12');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `snippet`
+-- Tabellstruktur `snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `snippet` (
@@ -82,23 +71,23 @@ CREATE TABLE IF NOT EXISTS `snippet` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `languageId` (`languageId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=76 ;
 
 --
--- Dumping data for table `snippet`
+-- Dumpning av Data i tabell `snippet`
 --
 
 INSERT INTO `snippet` (`id`, `userId`, `code`, `title`, `description`, `languageId`, `date`) VALUES
 (13, 1, '<?php \n# Start a session \nsession_start(); \n# Check if a user is logged in \nfunction isLogged(){ \n    if($_SESSION[''logged'']){ # When logged in this variable is set to TRUE \n        return TRUE; \n    }else{ \n        return FALSE; \n    } \n} \n\n# Log a user Out \nfunction logOut(){ \n    $_SESSION = array(); \n    if (isset($_COOKIE[session_name()])) { \n        setcookie(session_name(), '''', time()-42000, ''/''); \n    } \n    session_destroy(); \n} \n\n# Session Logout after in activity \nfunction sessionX(){ \n    $logLength = 1800; # time in seconds :: 1800 = 30 minutes \n    $ctime = strtotime("now"); # Create a time from a string \n    # If no session time is created, create one \n    if(!isset($_SESSION[''sessionX''])){  \n        # create session time \n        $_SESSION[''sessionX''] = $ctime;  \n    }else{ \n        # Check if they have exceded the time limit of inactivity \n        if(((strtotime("now") - $_SESSION[''sessionX'']) > $logLength) && isLogged()){ \n            # If exceded the time, log the user out \n            logOut(); \n            # Redirect to login page to log back in \n            header("Location: /login.php"); \n            exit; \n        }else{ \n            # If they have not exceded the time limit of inactivity, keep them logged in \n            $_SESSION[''sessionX''] = $ctime; \n        } \n    } \n} \n# Run Session logout check \nsessionX(); \n?>', 'php', 'en php snippet', 1, '2011-12-21'),
 (14, 2, 'public class MyClass : IDisposable\n{\n   public event EventHandler Disposing;	 \n \n   public void Dispose()\n   {\n      // release any resources here\n      if (Disposing != null)\n      { \n         // someone is subscribed, throw event\n         Disposing (this, new EventArgs());\n      }\n   }\n \n   public static void Main( )\n   {\n      using (MyClass myClass = new MyClass ())\n      {\n         // subscribe to event with anonymous delegate\n         myClass.Disposing += delegate \n            { Console.WriteLine ("Disposing!"); };\n      }\n   }\n}', 'csharp', 'en csharp snippet', 2, '2011-12-20'),
-(39, 5, 'echo "DjCool";', 'php echo', 'This snippet echoes out the coolest name', 1, '2012-01-06'),
-(42, 5, 'echo "DjCool is the best DJ!";', 'The best Dj-script', 'A cool echo-script', 1, '2012-01-06'),
-(44, 2, 'TestCoder', 'CoderTest', 'TestererCoderer', 1, '2012-01-16');
+(42, 5, 'sddsdsds', 'KissochBajs4', 'Dromedarpuckel56', 2, '2012-01-06'),
+(44, 2, 'sddsdsds', 'Bajsa', 'p-tag', 2, '2012-01-16'),
+(74, 2, 'sddsdsds', 'U', 'p-tag', 2, '0000-00-00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `snippettag`
+-- Tabellstruktur `snippettag`
 --
 
 CREATE TABLE IF NOT EXISTS `snippettag` (
@@ -109,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `snippettag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `snippettag`
+-- Dumpning av Data i tabell `snippettag`
 --
 
 INSERT INTO `snippettag` (`snippetId`, `tagId`) VALUES
@@ -120,27 +109,27 @@ INSERT INTO `snippettag` (`snippetId`, `tagId`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `snippet_language`
+-- Tabellstruktur `snippet_language`
 --
 
 CREATE TABLE IF NOT EXISTS `snippet_language` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `snippet_languageid` int(11) NOT NULL AUTO_INCREMENT,
   `language` varchar(50) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`snippet_languageid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `snippet_language`
+-- Dumpning av Data i tabell `snippet_language`
 --
 
-INSERT INTO `snippet_language` (`id`, `language`) VALUES
+INSERT INTO `snippet_language` (`snippet_languageid`, `language`) VALUES
 (1, 'php'),
 (2, 'csharp');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tag`
+-- Tabellstruktur `tag`
 --
 
 CREATE TABLE IF NOT EXISTS `tag` (
@@ -150,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `tag` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `tag`
+-- Dumpning av Data i tabell `tag`
 --
 
 INSERT INTO `tag` (`tagId`, `tag`) VALUES
@@ -160,55 +149,59 @@ INSERT INTO `tag` (`tagId`, `tag`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Tabellstruktur `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) CHARACTER SET latin1 NOT NULL,
   `email` varchar(70) CHARACTER SET latin1 NOT NULL,
-  `password` varchar(100) CHARACTER SET latin1 NOT NULL,
   `apikey` varchar(100) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`userId`)
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `apikey` (`apikey`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `user`
+-- Dumpning av Data i tabell `user`
 --
 
-INSERT INTO `user` (`userId`, `username`, `email`, `password`, `apikey`) VALUES
-(1, 'Soem name', 'mail@mail.com', 'msdmsksdm', '23434jdkfdjfkfdslfds'),
-(2, 'username', 'dsds.@mail.com', 'dsdfdfsdfdf', '5435gdfhghdghdf'),
-(5, 'DjCool', 'djcool@djcool.dj', 'cool', 'awdkam235kmdam24');
+INSERT INTO `user` (`userId`, `username`, `email`, `apikey`) VALUES
+(1, 'Soem name', 'mail@mail.com', '23434jdkfdjfkfdslfds'),
+(2, 'username', 'dsds.@mail.com', '5435gdfhghdghdf'),
+(5, 'DjCool', 'djcool@djcool.dj', 'awdkam235kmdam24');
 
 --
--- Constraints for dumped tables
+-- Restriktioner för dumpade tabeller
 --
 
 --
--- Constraints for table `comment`
+-- Restriktioner för tabell `comment`
 --
 ALTER TABLE `comment`
   ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`snippetId`) REFERENCES `snippet` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `rating`
+-- Restriktioner för tabell `rating`
 --
 ALTER TABLE `rating`
   ADD CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`snippetId`) REFERENCES `snippet` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `snippet`
+-- Restriktioner för tabell `snippet`
 --
 ALTER TABLE `snippet`
   ADD CONSTRAINT `snippet_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `snippet_ibfk_2` FOREIGN KEY (`languageId`) REFERENCES `snippet_language` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `snippet_ibfk_2` FOREIGN KEY (`languageId`) REFERENCES `snippet_language` (`snippet_languageid`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `snippettag`
+-- Restriktioner för tabell `snippettag`
 --
 ALTER TABLE `snippettag`
   ADD CONSTRAINT `snippettag_ibfk_1` FOREIGN KEY (`snippetId`) REFERENCES `snippet` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `snippettag_ibfk_2` FOREIGN KEY (`tagId`) REFERENCES `tag` (`tagId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
