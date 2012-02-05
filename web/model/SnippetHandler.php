@@ -2,15 +2,18 @@
 
 require_once 'DbHandler.php';
 require_once 'Snippet.php';
+require_once 'API.php';
 
 class SnippetHandler
 {
 
     private $_dbHandler;
+    private $_api;
 
     public function __construct()
     {
         $this->_dbHandler = new DbHandler();
+        $this->_api = new API();
     }
 
     /**
@@ -47,22 +50,13 @@ class SnippetHandler
     public function getAllSnippets()
     {
         $snippets = array();
-        $created = 
         
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet")) {
-            $stmt->execute();
+        $jsonsnippet = json_decode(file_get_contents($this->_api->GetURL() . "snippets"));
 
-            $stmt->bind_result($id, $code, $author, $title, $description, $language, $created, $updated);
-            while ($stmt->fetch()) {
-                $snippet = new Snippet($code, $author, $title, $description, $language, $created, $updated, $id);
-                array_push($snippets, $snippet);
-            }
-
-            $stmt->close();
+        foreach ($jsonsnippet as $snippet) {
+            $snippets[] = new Snippet($snippet->username, $snippet->code, $snippet->title, $snippet->description, $snippet->languageid, $snippet->date, "0000-00-00 00:00:00", $snippet->id);
         }
-        $this->_dbHandler->close();
-
+        
         return $snippets;
     }
 
