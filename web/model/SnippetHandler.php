@@ -21,25 +21,36 @@ class SnippetHandler
      * @param int $aID id of a snippet
      * @return Snippet
      */
+//    public function getSnippetByID($id)
+//    {
+//        
+//        $snippet = null;
+//        $this->_dbHandler->__wakeup();
+//        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet WHERE id = ?")) {
+//
+//            $stmt->bind_param("i", $id);
+//            $stmt->execute();
+//
+//            $stmt->bind_result($snippetID, $author, $code, $title, $desc, $language, $created, $updated);
+//            while ($stmt->fetch()) {
+//                $snippet = new Snippet($author, $code, $title, $desc, $language, $created, $updated, $snippetID);
+//            }
+//
+//            $stmt->close();
+//
+//        }
+//        $this->_dbHandler->Close();
+//        return $snippet;
+//    }
     public function getSnippetByID($id)
     {
-        
         $snippet = null;
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet WHERE id = ?")) {
-
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-
-            $stmt->bind_result($snippetID, $author, $code, $title, $desc, $language, $created, $updated);
-            while ($stmt->fetch()) {
-                $snippet = new Snippet($author, $code, $title, $desc, $language, $created, $updated, $snippetID);
-            }
-
-            $stmt->close();
-
+        $json = json_decode(file_get_contents($this->_api->GetURL() . "snippets/?id=".$id));
+        foreach($json as $j)
+        {
+            $snippet = new Snippet($j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, "0000-00-00 00:00:00", $j->id);
         }
-        $this->_dbHandler->Close();
+        
         return $snippet;
     }
 
