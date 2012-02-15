@@ -1,22 +1,12 @@
 <?php
 
-/**
- * SelectObject
- * 
- * @category projectX
- * @package  ProjectX
- * @author   Pontus <bopontuskarlsson@hotmail.com>
- * @author   Tomas <tompen@telia.com>
- * @copyright 2012
- * @version $Id$
- * @access public
- */
-class SelectObject
+class RequestObject
 {
     private $_username;
     private $_date;
     private $_sort;
     private $_language;
+    private $_languageid;
     private $_datefrom;
     private $_dateto;
     private $_code;
@@ -24,18 +14,18 @@ class SelectObject
     private $_rating;
     private $_id;
     private $_description;
-
-    /**
-     * SelectObject::__construct()
-     * 
-     * @return
-     */
+    private $_desc;
+    private $_page;
+    private $_limit;
+    private $_phrase;
+    
     public function __construct()
     {
         $this->_username = null;
         $this->_date = null;
         $this->_sort = null;
         $this->_language = null;
+        $this->_languageid = null;
         $this->_datefrom = null;
         $this->_dateto = null;
         $this->_code = null;
@@ -43,14 +33,12 @@ class SelectObject
         $this->_rating = null;
         $this->_id = null;
         $this->_description = null;
+        $this->_desc = null;
+        $this->_page = null;
+        $this->_limit = null;
+        $this->_phrase = null;
     }
 
-    /**
-     * SelectObject::__get()
-     * 
-     * @param mixed $property
-     * @return
-     */
     public function __get($property)
     {
         if (property_exists($this, $property)) {
@@ -60,13 +48,6 @@ class SelectObject
         }
     }
 
-    /**
-     * SelectObject::__set()
-     * 
-     * @param mixed $property
-     * @param mixed $value
-     * @return
-     */
     public function __set($property, $value)
     {
         if (property_exists($this, $property)) {
@@ -78,12 +59,6 @@ class SelectObject
         return $this;
     }
 
-    /**
-     * SelectObject::__isset()
-     * 
-     * @param mixed $property
-     * @return
-     */
     public function __isset($property)
     {
         if (property_exists($this, $property)) {
@@ -92,12 +67,7 @@ class SelectObject
             return array('error' => $property . ' is not a valid action!');
         }
     }
-
-    /**
-     * SelectObject::select()
-     * 
-     * @return
-     */
+    
     public function select()
     {
         $select = "SELECT * FROM snippet LEFT JOIN rating ON snippet.id = rating.snippetId 
@@ -113,7 +83,7 @@ class SelectObject
 
         foreach ($this as $key => $value) {
             if ($value != null) {
-                if ($key != '_datefrom' && $key != '_dateto' && $key != '_sort') {
+                if ($key != '_datefrom' && $key != '_dateto' && $key != '_sort' && $key != '_desc' && $key != '_page' && $key != '_limit') {
                     if ($first) {
                         $select .= ' WHERE ' . substr($key, 1) . ' = ?';
                         $first = false;
@@ -140,6 +110,7 @@ class SelectObject
                 }
             }
         }
+        
         if ($datefrom && $dateto) {
             if ($first) {
                 $select .= ' WHERE snippet.date BETWEEN ? AND ?';
@@ -152,7 +123,18 @@ class SelectObject
         }
         if ($sort) {
             $select .= ' ORDER BY ' . $sortvalue;
+            if ($this->__isset('_desc')) {
+                $select .= ' DESC';
+            }   
         }
+        if ($this->__isset('_limit')) {
+            if ($this->__isset('_page')) {
+                $select .= ' LIMIT ' . (((int)$this->__get('_page')-1) * (int)$this->__get('_limit')) . ', ' . (int)$this->__get('_limit');
+            } else {
+                $select .= ' LIMIT ' . (int)$this->__get('_limit');
+            }
+        } 
+                
         return array($select, $type, $paramvalue);
     }
 }

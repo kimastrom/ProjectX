@@ -1,8 +1,7 @@
 <?php
 
-class Snippet
+class SnippetObject
 {
-
     private $_id;
     private $_userid;
     private $_code;
@@ -10,6 +9,7 @@ class Snippet
     private $_desc;
     private $_languageid;
     private $_apikey;
+    private $_date;
 
     public function __construct()
     {
@@ -20,6 +20,7 @@ class Snippet
         $this->_desc = null;
         $this->_languageid = null;
         $this->_apikey = null;
+        $this->_date = date("Y-m-d");
     }
     
     public function __get($property)

@@ -6,7 +6,7 @@
 
         //set POST variables
         $url = 'localhost/api/snippets';
-        $fields = array('id'=>'42', 'userid' => '2', 'code' => 'sddsdsds', 'desc' => 'Dromedarpuckel3', 'title' => 'Bajsa4', 'languageid' => '2', 'apikey' => '5435gdfhghdghdf');
+        $fields = array('id'=>'76', 'userid' => '2', 'code' => 'Yo! Yo! Yo! Pants is my favourite', 'desc' => 'Cool blue Pants', 'title' => 'Yo! I need new pants!', 'languageid' => '2', 'apikey' => '5435gdfhghdghdf');
 
         tourl($url, $fields);
         

@@ -1,33 +1,32 @@
 <?php
 
-require_once dirname(__file__) . '/../helpers/DbHandler.php';
-require_once 'Snippet.php';
-require_once ('SelectObject.php');
+require_once APPLICATION_PATH . '/helpers/DbHandler.php';
+require_once 'RequestObject.php';
 
-class SnippetHandler
+class SnippetModel
 {
 
     private $_dbHandler;
-    private $_selectObject;
+    private $_requestObject;
 
     public function __construct()
     {
         $this->_dbHandler = new DbHandler();
-        $this->_selectObject = new SelectObject();
+        $this->_requestObject = new RequestObject();
     }
 
-    public function getSnipppet($request)
+    public function getSnippet($request)
     {
         foreach ($request as $action => $value) {
-            if (is_array($this->_selectObject->__isset('_' . $action))) {
-                return $this->_selectObject->__isset('_' . $action);
+            if (is_array($this->_requestObject->__isset('_' . $action))) {
+                return $this->_requestObject->__isset('_' . $action);
             } else {
-                $this->_selectObject->__set('_' . $action, $value);
+                $this->_requestObject->__set('_' . $action, $value);
             }
         }
 
         $snippets = array();
-        $select = $this->_selectObject->select();
+        $select = $this->_requestObject->select();
 
         $this->_dbHandler->__wakeup();
         if ($stmt = $this->_dbHandler->PrepareStatement($select[0])) {
@@ -37,13 +36,13 @@ class SnippetHandler
             }
             $stmt->execute();
 
-            $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date,
+            $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated,
                 $ratingId, $userId, $snippetId, $rating, $rating_created_date, $userId, $username,
                 $email, $apikey, $languageid, $language);
             while ($stmt->fetch()) {
-                $snippet = array('language' => $language, 'languageid' => $languageid, 'title' => $title, 'description' => $description,
-                    'code' => $code, 'username' => $username, 'id' => $id, 'date' => $date, 'rating' =>
-                    $rating);
+                $snippet = array('language' => $language, 'languageid' => $languageid, 'title' =>
+                    $title, 'description' => $description, 'code' => $code, 'username' => $username,
+                    'id' => $id, 'date' => $date, 'updated' => $updated, 'rating' => $rating);
                 array_push($snippets, $snippet);
             }
 
@@ -69,8 +68,8 @@ class SnippetHandler
         $databaseQuery->close();
         return false;
     }
-    
-    public function createSnippet(Snippet $snippet)
+
+    public function createSnippet(SnippetObject $snippet)
     {
         $this->_dbHandler->__wakeup();
 
@@ -81,10 +80,11 @@ class SnippetHandler
         $id = $snippet->__get('_id');
         $userid = $snippet->__get('_userid');
         $apikey = $snippet->__get('_apikey');
+        $date = $snippet->__get('_date');
 
         if ($this->validateUser($userid, $apikey)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO snippet (userid, code, title, description, languageid) VALUES (?, ?, ?, ?, ?)")) {
-                $databaseQuery->bind_param('sssss', $userid, $code, $title, $desc, $languageid);
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO snippet (userid, code, title, description, languageid, date) VALUES (?, ?, ?, ?, ?, ?)")) {
+                $databaseQuery->bind_param('ssssss', $userid, $code, $title, $desc, $languageid, $date);
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {
                     $databaseQuery->close();
@@ -102,10 +102,10 @@ class SnippetHandler
         }
     }
 
-    public function updateSnippet(Snippet $snippet)
+    public function updateSnippet(SnippetObject $snippet)
     {
         $this->_dbHandler->__wakeup();
-        
+
         $id = $snippet->__get('_id');
         $code = $snippet->__get('_code');
         $title = $snippet->__get('_title');
@@ -116,7 +116,8 @@ class SnippetHandler
 
         if ($this->validateUser($userid, $apikey)) {
             if ($databaseQuery = $this->_dbHandler->PrepareStatement("UPDATE snippet SET userid = ?, code= ?, title= ?, description= ?, languageid= ? WHERE id = ? AND userid = ?")) {
-                $databaseQuery->bind_param('sssssss', $userid, $code, $title, $desc, $languageid, $id, $userid);
+                $databaseQuery->bind_param('sssssss', $userid, $code, $title, $desc, $languageid,
+                    $id, $userid);
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {
                     $databaseQuery->close();
@@ -134,14 +135,14 @@ class SnippetHandler
         }
     }
 
-    public function deleteSnippet(Snippet $snippet)
+    public function deleteSnippet(SnippetObject $snippet)
     {
         $this->_dbHandler->__wakeup();
-        
+
         $id = $snippet->__get('_id');
         $userid = $snippet->__get('_userid');
         $apikey = $snippet->__get('_apikey');
-        
+
         if ($this->validateUser($userid, $apikey)) {
             if ($databaseQuery = $this->_dbHandler->PrepareStatement("DELETE FROM snippet WHERE id = ? AND userid = ?")) {
                 $databaseQuery->bind_param('ss', $id, $userid);

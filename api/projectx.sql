@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Värd: localhost
--- Skapad: 31 jan 2012 kl 15:52
+-- Skapad: 14 feb 2012 kl 15:56
 -- Serverversion: 5.5.16
 -- PHP-version: 5.2.9
 
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `rating` (
   PRIMARY KEY (`ratingId`),
   KEY `userId` (`userId`),
   KEY `snippetId` (`snippetId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -68,21 +68,23 @@ CREATE TABLE IF NOT EXISTS `snippet` (
   `description` varchar(500) CHARACTER SET latin1 NOT NULL,
   `languageId` int(11) NOT NULL,
   `date` date NOT NULL,
+  `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `languageId` (`languageId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
 
 --
 -- Dumpning av Data i tabell `snippet`
 --
 
-INSERT INTO `snippet` (`id`, `userId`, `code`, `title`, `description`, `languageId`, `date`) VALUES
-(13, 1, '<?php \n# Start a session \nsession_start(); \n# Check if a user is logged in \nfunction isLogged(){ \n    if($_SESSION[''logged'']){ # When logged in this variable is set to TRUE \n        return TRUE; \n    }else{ \n        return FALSE; \n    } \n} \n\n# Log a user Out \nfunction logOut(){ \n    $_SESSION = array(); \n    if (isset($_COOKIE[session_name()])) { \n        setcookie(session_name(), '''', time()-42000, ''/''); \n    } \n    session_destroy(); \n} \n\n# Session Logout after in activity \nfunction sessionX(){ \n    $logLength = 1800; # time in seconds :: 1800 = 30 minutes \n    $ctime = strtotime("now"); # Create a time from a string \n    # If no session time is created, create one \n    if(!isset($_SESSION[''sessionX''])){  \n        # create session time \n        $_SESSION[''sessionX''] = $ctime;  \n    }else{ \n        # Check if they have exceded the time limit of inactivity \n        if(((strtotime("now") - $_SESSION[''sessionX'']) > $logLength) && isLogged()){ \n            # If exceded the time, log the user out \n            logOut(); \n            # Redirect to login page to log back in \n            header("Location: /login.php"); \n            exit; \n        }else{ \n            # If they have not exceded the time limit of inactivity, keep them logged in \n            $_SESSION[''sessionX''] = $ctime; \n        } \n    } \n} \n# Run Session logout check \nsessionX(); \n?>', 'php', 'en php snippet', 1, '2011-12-21'),
-(14, 2, 'public class MyClass : IDisposable\n{\n   public event EventHandler Disposing;	 \n \n   public void Dispose()\n   {\n      // release any resources here\n      if (Disposing != null)\n      { \n         // someone is subscribed, throw event\n         Disposing (this, new EventArgs());\n      }\n   }\n \n   public static void Main( )\n   {\n      using (MyClass myClass = new MyClass ())\n      {\n         // subscribe to event with anonymous delegate\n         myClass.Disposing += delegate \n            { Console.WriteLine ("Disposing!"); };\n      }\n   }\n}', 'csharp', 'en csharp snippet', 2, '2011-12-20'),
-(42, 5, 'sddsdsds', 'KissochBajs4', 'Dromedarpuckel56', 2, '2012-01-06'),
-(44, 2, 'sddsdsds', 'Bajsa', 'p-tag', 2, '2012-01-16'),
-(74, 2, 'sddsdsds', 'U', 'p-tag', 2, '0000-00-00');
+INSERT INTO `snippet` (`id`, `userId`, `code`, `title`, `description`, `languageId`, `date`, `updated`) VALUES
+(13, 1, '<?php \n# Start a session \nsession_start(); \n# Check if a user is logged in \nfunction isLogged(){ \n    if($_SESSION[''logged'']){ # When logged in this variable is set to TRUE \n        return TRUE; \n    }else{ \n        return FALSE; \n    } \n} \n\n# Log a user Out \nfunction logOut(){ \n    $_SESSION = array(); \n    if (isset($_COOKIE[session_name()])) { \n        setcookie(session_name(), '''', time()-42000, ''/''); \n    } \n    session_destroy(); \n} \n\n# Session Logout after in activity \nfunction sessionX(){ \n    $logLength = 1800; # time in seconds :: 1800 = 30 minutes \n    $ctime = strtotime("now"); # Create a time from a string \n    # If no session time is created, create one \n    if(!isset($_SESSION[''sessionX''])){  \n        # create session time \n        $_SESSION[''sessionX''] = $ctime;  \n    }else{ \n        # Check if they have exceded the time limit of inactivity \n        if(((strtotime("now") - $_SESSION[''sessionX'']) > $logLength) && isLogged()){ \n            # If exceded the time, log the user out \n            logOut(); \n            # Redirect to login page to log back in \n            header("Location: /login.php"); \n            exit; \n        }else{ \n            # If they have not exceded the time limit of inactivity, keep them logged in \n            $_SESSION[''sessionX''] = $ctime; \n        } \n    } \n} \n# Run Session logout check \nsessionX(); \n?>', 'php', 'en php snippet', 1, '2011-12-21', '0000-00-00 00:00:00'),
+(14, 2, 'public class MyClass : IDisposable\n{\n   public event EventHandler Disposing;	 \n \n   public void Dispose()\n   {\n      // release any resources here\n      if (Disposing != null)\n      { \n         // someone is subscribed, throw event\n         Disposing (this, new EventArgs());\n      }\n   }\n \n   public static void Main( )\n   {\n      using (MyClass myClass = new MyClass ())\n      {\n         // subscribe to event with anonymous delegate\n         myClass.Disposing += delegate \n            { Console.WriteLine ("Disposing!"); };\n      }\n   }\n}', 'csharp', 'en csharp snippet', 2, '2011-12-20', '0000-00-00 00:00:00'),
+(42, 5, 'sddsdsds', 'KissochBajs4', 'Dromedarpuckel56', 2, '2012-01-06', '0000-00-00 00:00:00'),
+(44, 2, 'sddsdsds', 'Bajsa', 'p-tag', 2, '2012-01-16', '0000-00-00 00:00:00'),
+(74, 2, 'sddsdsds', 'U', 'p-tag', 2, '0000-00-00', '0000-00-00 00:00:00'),
+(76, 2, 'Yo! Yo! Yo! Pants is my favourite', 'Yo! I need new pants!', 'Cool blue Pants', 2, '2012-02-14', '2012-02-14 14:35:56');
 
 -- --------------------------------------------------------
 
