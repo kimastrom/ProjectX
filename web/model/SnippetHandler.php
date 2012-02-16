@@ -42,6 +42,7 @@ class SnippetHandler
 //        $this->_dbHandler->Close();
 //        return $snippet;
 //    }
+    //by API
     public function getSnippetByID($id)
     {
         $snippet = null;
@@ -53,11 +54,33 @@ class SnippetHandler
         
         return $snippet;
     }
-
-    /**
-     * Get all the snippets
-     * @return array
-     */
+//    public function getAllSnippets()
+//    {
+//        $snippets = array();
+//        $created = 
+//        
+//        $this->_dbHandler->__wakeup();
+//        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet")) {
+//            $stmt->execute();
+//
+//            $stmt->bind_result($id, $code, $author, $title, $description, $language, $created, $updated);
+//            while ($stmt->fetch()) {
+//                $snippet = new Snippet($code, $author, $title, $description, $language, $id, $created, $updated);
+//                array_push($snippets, $snippet);
+//            }
+//
+//            $stmt->close();
+//        }
+//        $this->_dbHandler->close();
+//
+//        return $snippets;
+//    }
+    
+    //by API
+//    /**
+//     * Get all the snippets
+//     * @return array
+//     */
     public function getAllSnippets()
     {
         $snippets = array();
