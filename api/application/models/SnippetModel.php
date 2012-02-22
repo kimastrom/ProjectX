@@ -80,11 +80,12 @@ class SnippetModel
         $id = $snippet->__get('_id');
         $userid = $snippet->__get('_userid');
         $apikey = $snippet->__get('_apikey');
-        $date = $snippet->__get('_date');
+		$date = $snippet->__get('_date');
+		$updated = $snippet->__get('_updated');
 
         if ($this->validateUser($userid, $apikey)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO snippet (userid, code, title, description, languageid, date) VALUES (?, ?, ?, ?, ?, ?)")) {
-                $databaseQuery->bind_param('ssssss', $userid, $code, $title, $desc, $languageid, $date);
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO snippet (userid, code, title, description, languageid, date, updated) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+                $databaseQuery->bind_param('sssssss', $userid, $code, $title, $desc, $languageid, $date, $updated);
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {
                     $databaseQuery->close();

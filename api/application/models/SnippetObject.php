@@ -10,6 +10,7 @@ class SnippetObject
     private $_languageid;
     private $_apikey;
     private $_date;
+	private $_updated;
 
     public function __construct()
     {
@@ -21,6 +22,7 @@ class SnippetObject
         $this->_languageid = null;
         $this->_apikey = null;
         $this->_date = date("Y-m-d");
+		$this->_updated = date("Y-m-d h:i:s");
     }
     
     public function __get($property)

@@ -6,7 +6,7 @@
 
         //set POST variables
         $url = 'localhost/ProjectX/api/snippets';
-        $fields = array('id'=>'77', 'userid' => '2', 'code' => 'Yo! Green is good', 'desc' => 'Cool blue and green Pants', 'title' => 'Yo! I need new pants!', 'languageid' => '2', 'apikey' => '5435gdfhghdghdf');
+        $fields = array('userid' => '2', 'code' => 'sddsdsds', 'desc' => 'kanelhaxa', 'title' => 'DjSlim with Slimliftpants', 'languageid' => '2', 'apikey' => '5435gdfhghdghdf');
 
         tourl($url, $fields);
         
@@ -21,9 +21,9 @@
         rtrim($fields, '&');
 
         $post = curl_init();
-        
+
         curl_setopt($post, CURLOPT_URL, $url);
-        curl_setopt($post, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($post, CURLOPT_POST, count($data));
         curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
 
