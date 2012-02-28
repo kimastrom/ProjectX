@@ -14,6 +14,7 @@ class SnippetObject
 
     public function __construct()
     {
+		$datetime = date("Y-m-d h:i:s");
         $this->_id = null;
         $this->_userid = null;
         $this->_code = null;
@@ -21,8 +22,8 @@ class SnippetObject
         $this->_desc = null;
         $this->_languageid = null;
         $this->_apikey = null;
-        $this->_date = date("Y-m-d");
-		$this->_updated = date("Y-m-d h:i:s");
+        $this->_date = $datetime;
+		$this->_updated = $datetime;
     }
     
     public function __get($property)

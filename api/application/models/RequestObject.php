@@ -83,12 +83,20 @@ class RequestObject
 
         foreach ($this as $key => $value) {
             if ($value != null) {
-                if ($key != '_datefrom' && $key != '_dateto' && $key != '_sort' && $key != '_desc' && $key != '_page' && $key != '_limit') {
-                    if ($first) {
-                        $select .= ' WHERE ' . substr($key, 1) . ' = ?';
+                if ($key != '_datefrom' && $key != '_dateto' && $key != '_sort' && $key != '_desc' && $key != '_page' && $key != '_limit') {					
+					if ($first) {
+						if ($key == '_date') {
+							$select .= ' WHERE DATE(updated) = ?';
+						} else {
+							$select .= ' WHERE ' . substr($key, 1) . ' = ?';
+						}
                         $first = false;
                     } else {
-                        $select .= ' AND ' . substr($key, 1) . ' = ?';
+						if ($key == '_date') {
+							$select .= ' AND DATE(updated) = ?';
+						} else {
+							$select .= ' AND ' . substr($key, 1) . ' = ?';
+						}   
                     }
                     $type .= 's';
                     array_push($paramvalue, $value);
@@ -113,10 +121,10 @@ class RequestObject
         
         if ($datefrom && $dateto) {
             if ($first) {
-                $select .= ' WHERE snippet.date BETWEEN ? AND ?';
+                $select .= ' WHERE DATE(snippet.updated) BETWEEN ? AND ?';
                 $first = false;
             } else {
-                $select .= ' AND snippet.date BETWEEN ? AND ?';
+                $select .= ' AND DATE(snippet.updated) BETWEEN ? AND ?';
             }
             $type .= 'ss';
             array_push($paramvalue, $datefromvalue, $datetovalue);

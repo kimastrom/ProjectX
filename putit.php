@@ -6,7 +6,7 @@
 
         //set POST variables
         $url = 'localhost/ProjectX/api/snippets';
-        $fields = array('id'=>'77', 'userid' => '2', 'code' => 'Yo! Green is good', 'desc' => 'Cool blue and green Pants', 'title' => 'Yo! I need new pants!', 'languageid' => '2', 'apikey' => '5435gdfhghdghdf');
+        $fields = array('id'=>'74621', 'userid' => '2', 'code' => 'Yo! good good GodZilla', 'desc' => 'Cool green Pants', 'title' => 'Im a T-Rex, Super-Dinousaur', 'languageid' => '2', 'apikey' => '5435gdfhghdghdf');
 
         tourl($url, $fields);
         
@@ -31,7 +31,7 @@
 
         curl_close($post);
         
-        var_dump($result);
+        echo $result;
     }
     
     test();

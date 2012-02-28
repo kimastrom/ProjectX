@@ -8,7 +8,7 @@ class SnippetModel
 
     private $_dbHandler;
     private $_requestObject;
-
+	
     public function __construct()
     {
         $this->_dbHandler = new DbHandler();
@@ -87,17 +87,22 @@ class SnippetModel
             if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO snippet (userid, code, title, description, languageid, date, updated) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
                 $databaseQuery->bind_param('sssssss', $userid, $code, $title, $desc, $languageid, $date, $updated);
                 $databaseQuery->execute();
+				$id = $databaseQuery->insert_id;
                 if ($databaseQuery->affected_rows == null) {
                     $databaseQuery->close();
-                    return false;
+                    return array('status' => false);
                 }
                 $databaseQuery->close();
             } else {
-                return false;
-            }
-
+                return array('status' => false);
+            }	
             $this->_dbHandler->close();
-            return true;
+			
+			//Uppdatera indexet
+			$this->updateIndex($snippet, $id);
+			
+			
+			return array('status' => true, 'id' => $id);
         } else {
             throw new RestException(401);
         }
@@ -122,15 +127,18 @@ class SnippetModel
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {
                     $databaseQuery->close();
-                    return false;
+                    return array('status' => false);
                 }
                 $databaseQuery->close();
             } else {
-                return false;
+                return array('status' => false);
             }
 
-            $this->_dbHandler->close();
-            return true;
+			$this->_dbHandler->close();
+			$this->deleteIndex($id);
+			$this->updateIndex($snippet, $id);
+			
+			return array('status' => true);
         } else {
             throw new RestException(404);
         }
@@ -150,17 +158,50 @@ class SnippetModel
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {
                     $databaseQuery->close();
-                    return false;
+                    return array('status' => false);
                 }
                 $databaseQuery->close();
             } else {
-                return false;
+                return array('status' => false);
             }
 
             $this->_dbHandler->close();
-            return true;
+			$this->deleteIndex($id);
+            return array('status' => true);
         } else {
             throw new RestException(401);
         }
+    }
+	
+	public function updateIndex($snippet, $snippetid)
+    {
+		// create index
+		$index = Zend_Search_Lucene::open(APPLICATION_PATH . '/indexes');
+		Zend_Search_Lucene_Analysis_Analyzer::setDefault( 
+			new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8Num_CaseInsensitive() 
+		); 
+		
+        
+		$doc = new Zend_Search_Lucene_Document();
+		// Store document URL to identify it in search result.
+		$doc->addField(Zend_Search_Lucene_Field::text('snippetid', $snippetid));
+		$doc->addField(Zend_Search_Lucene_Field::text('title', $snippet->__get('_title')));
+		$doc->addField(Zend_Search_Lucene_Field::text('description', $snippet->__get('_desc')));
+		$doc->addField(Zend_Search_Lucene_Field::text('code', $snippet->__get('_code')));
+		 
+		// Add document to the index.
+		$index->addDocument($doc);
+		$index->optimize();
+    }
+	
+	public function deleteIndex($snippetid)
+    {
+		$index = Zend_Search_Lucene::open(APPLICATION_PATH . '/indexes');
+
+		$snippetId = $index->TermDocs(new Zend_Search_Lucene_Index_Term($snippetid, 'snippetid')); 
+		foreach ($snippetId as $deleteId) { 
+			$index->delete($deleteId); 
+		}
+		$index->optimize();
     }
 }
