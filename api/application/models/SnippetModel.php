@@ -14,6 +14,17 @@ class SnippetModel
         $this->_dbHandler = new DbHandler();
         $this->_requestObject = new RequestObject();
     }
+    
+	private function refValues($arr){
+        if (strnatcmp(phpversion(),'5.3') >= 0) //Reference is required for PHP 5.3+
+        {
+            $refs = array();
+            foreach($arr as $key => $value)
+                $refs[$key] = &$arr[$key];
+            return $refs;
+        }
+        return $arr;
+    }
 
     public function getSnippet($request)
     {
@@ -31,18 +42,18 @@ class SnippetModel
         $this->_dbHandler->__wakeup();
         if ($stmt = $this->_dbHandler->PrepareStatement($select[0])) {
             if ($select[1] != '') {
-                call_user_func_array('mysqli_stmt_bind_param', array_merge(array($stmt, $select[1]),
-                    $select[2]));
+            	//DEPRECATED 5.3.0 <
+            	//call_user_func_array('mysqli_stmt_bind_param', array_merge(array($stmt, $select[1]), $select[2]));
+                
+            	call_user_func_array(array($stmt, 'bind_param'), $this->refValues(array_merge(array( $select[1]), $select[2])));    
             }
             $stmt->execute();
 
-            $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated,
-                $ratingId, $userId, $snippetId, $rating, $rating_created_date, $userId, $username,
-                $email, $apikey, $languageid, $language);
+            $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated, $userId, $username, $email, $apikey, $languageid, $language, $thumbsup, $thumbsdown);
             while ($stmt->fetch()) {
                 $snippet = array('language' => $language, 'languageid' => $languageid, 'title' =>
                     $title, 'description' => $description, 'code' => $code, 'username' => $username,
-                    'id' => $id, 'date' => $date, 'updated' => $updated, 'rating' => $rating);
+                    'id' => $id, 'date' => $date, 'updated' => $updated, 'thumbsup' => $thumbsup, 'thumbsdown' => $thumbsdown);
                 array_push($snippets, $snippet);
             }
 

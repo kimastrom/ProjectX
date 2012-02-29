@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Värd: localhost
--- Skapad: 28 feb 2012 kl 17:25
+-- Skapad: 29 feb 2012 kl 16:22
 -- Serverversion: 5.5.20
--- PHP-version: 5.2.9
+-- PHP-version: 5.3.9
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -35,7 +35,18 @@ CREATE TABLE IF NOT EXISTS `comment` (
   PRIMARY KEY (`commentId`),
   KEY `snippetId` (`snippetId`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+--
+-- Dumpning av Data i tabell `comment`
+--
+
+INSERT INTO `comment` (`commentId`, `snippetId`, `userId`, `comment`, `comment_created_date`) VALUES
+(1, 20000, 2, 'Testcomment', '2012-02-29 09:01:10'),
+(2, 20010, 1, 'Ojojoj, det här var bra grabben! GULDMEDALJ!', '2012-02-29 09:31:12'),
+(4, 20012, 5, 'Kanelbullar smakar gott till kaffet! Oh Yeah!', '2012-02-29 09:32:15'),
+(5, 20010, 1, 'Blue-Green Shoes', '2012-02-29 09:32:58'),
+(7, 20010, 1, 'Unika ord som glänser i solen', '2012-02-29 10:50:53');
 
 -- --------------------------------------------------------
 
@@ -52,7 +63,15 @@ CREATE TABLE IF NOT EXISTS `rating` (
   PRIMARY KEY (`ratingId`),
   KEY `userId` (`userId`),
   KEY `snippetId` (`snippetId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Dumpning av Data i tabell `rating`
+--
+
+INSERT INTO `rating` (`ratingId`, `userId`, `snippetId`, `rating`, `rating_created_date`) VALUES
+(2, 5, 20010, 0, '2012-02-29 13:00:24'),
+(6, 1, 20009, 1, '2012-02-29 14:58:41');
 
 -- --------------------------------------------------------
 

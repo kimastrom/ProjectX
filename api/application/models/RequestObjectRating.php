@@ -1,6 +1,6 @@
 <?php
 
-class RequestObject
+class RequestObjectRating
 {
     private $_username;
     private $_date;
@@ -11,13 +11,14 @@ class RequestObject
     private $_dateto;
     private $_code;
     private $_title;
+    private $_rating;
     private $_id;
     private $_description;
     private $_desc;
     private $_page;
     private $_limit;
-    private $_thumbsup;
-    private $_thumbsdown;
+    private $_ratingid;
+    private $_snippetid;
     
     public function __construct()
     {
@@ -30,13 +31,14 @@ class RequestObject
         $this->_dateto = null;
         $this->_code = null;
         $this->_title = null;
+        $this->_rating = null;
         $this->_id = null;
         $this->_description = null;
         $this->_desc = null;
         $this->_page = null;
         $this->_limit = null;
-        $this->_thumbsup = null;
-        $this->_thumbsdown = null;
+        $this->_ratingid = null;
+        $this->_snippetid = null;
     }
 
     public function __get($property)
@@ -70,15 +72,7 @@ class RequestObject
     
     public function select()
     {
-        $select = "SELECT *, (SELECT COUNT(rating.rating)
-					FROM rating
-					WHERE rating.rating = 1 AND snippet.id = rating.snippetId) AS thumbsup,
-					(SELECT COUNT(rating.rating)
-					FROM rating
-					WHERE rating.rating = 1 AND snippet.id = rating.snippetId) AS thumbsdown
-					FROM snippet
-					INNER JOIN user ON snippet.userId = user.userId 
-					INNER JOIN snippet_language ON snippet.languageId = snippet_language.snippet_languageid";
+        $select = "SELECT ratingId, snippetId, rating.userId, rating, rating_created_date, username, email, apikey FROM rating LEFT JOIN user on rating.userid = user.userid";
         $type = '';
         $paramvalue = array();
 
@@ -92,14 +86,14 @@ class RequestObject
                 if ($key != '_datefrom' && $key != '_dateto' && $key != '_sort' && $key != '_desc' && $key != '_page' && $key != '_limit') {					
 					if ($first) {
 						if ($key == '_date') {
-							$select .= ' WHERE DATE(updated) = ?';
+							$select .= ' WHERE DATE(rating_created_date) = ?';
 						} else {
 							$select .= ' WHERE ' . substr($key, 1) . ' = ?';
 						}
                         $first = false;
                     } else {
 						if ($key == '_date') {
-							$select .= ' AND DATE(updated) = ?';
+							$select .= ' AND DATE(rating_created_date) = ?';
 						} else {
 							$select .= ' AND ' . substr($key, 1) . ' = ?';
 						}   
@@ -127,10 +121,10 @@ class RequestObject
         
         if ($datefrom && $dateto) {
             if ($first) {
-                $select .= ' WHERE DATE(snippet.updated) BETWEEN ? AND ?';
+                $select .= ' WHERE DATE(rating_created_date) BETWEEN ? AND ?';
                 $first = false;
             } else {
-                $select .= ' AND DATE(snippet.updated) BETWEEN ? AND ?';
+                $select .= ' AND DATE(rating_created_date) BETWEEN ? AND ?';
             }
             $type .= 'ss';
             array_push($paramvalue, $datefromvalue, $datetovalue);
