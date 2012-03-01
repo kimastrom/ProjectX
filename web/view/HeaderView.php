@@ -32,7 +32,7 @@ class HeaderView
                             <a href='#'>About</a>
                         </li>
                         <li class ='right' id='logout-topbar'>
-                            <a href='?logout=true'>Logga ut</a>
+                            <a href='?logout=true'>Sign out</a>
                         </li>
 
                         <li class='right'>
@@ -65,22 +65,16 @@ class HeaderView
                             <a href='?page=listsnippets'>Snippets</a> /
                         </li>
                         <li>
-                        <a href='?page=addsnippet'>Add snippet</a> /
-                        </li>
-                        <li>
                             <a href='#'>News</a> /
                         </li>
                         <li>
                             <a href='#'>Downloads</a> /
                         </li>
                         <li>
-                            <a href='#'>About</a> /
-                        </li>
-                        <li>
-                            <a href='#'>Register</a>
+                            <a href='#'>About</a>
                         </li>
                         <li class='right'>
-                            <a class='janrainEngage' href='#'>Logga in</a>
+                            <a class='janrainEngage' href='#'>Sign in</a>
                         </li>
                     </ul>
                 </div>

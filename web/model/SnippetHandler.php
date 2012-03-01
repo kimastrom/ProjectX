@@ -27,38 +27,16 @@ class SnippetHandler
         $json = json_decode(file_get_contents($this->_api->GetURL() . "snippets/?id=".$id));
         foreach($json as $j)
         {
-            $snippet = new Snippet($j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, "0000-00-00 00:00:00", $j->id);
+            $snippet = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, "0000-00-00 00:00:00", $j->id);
         }
         
         return $snippet;
     }
-//    public function getAllSnippets()
-//    {
-//        $snippets = array();
-//        $created = 
-//        
-//        $this->_dbHandler->__wakeup();
-//        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet")) {
-//            $stmt->execute();
-//
-//            $stmt->bind_result($id, $code, $author, $title, $description, $language, $created, $updated);
-//            while ($stmt->fetch()) {
-//                $snippet = new Snippet($code, $author, $title, $description, $language, $id, $created, $updated);
-//                array_push($snippets, $snippet);
-//            }
-//
-//            $stmt->close();
-//        }
-//        $this->_dbHandler->close();
-//
-//        return $snippets;
-//    }
     
-    //by API
-//    /**
-//     * Get all the snippets
-//     * @return array
-//     */
+    /**
+        * Get all the snippets
+        * @return array
+    */
     public function getAllSnippets()
     {
         $snippets = array();
@@ -66,7 +44,7 @@ class SnippetHandler
         $jsonsnippet = json_decode(file_get_contents($this->_api->GetURL() . "snippets"));
 
         foreach ($jsonsnippet as $snippet) {
-            $snippets[] = new Snippet($snippet->username, $snippet->code, $snippet->title, $snippet->description, $snippet->languageid, $snippet->date, "0000-00-00 00:00:00", $snippet->id);
+            $snippets[] = new Snippet($snippet->userid, $snippet->username, $snippet->code, $snippet->title, $snippet->description, $snippet->languageid, $snippet->date, "0000-00-00 00:00:00", $snippet->id);
         }
         
         return $snippets;
@@ -187,11 +165,11 @@ class SnippetHandler
         curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
 
-        $result = curl_exec($post);
+        $result = json_decode(curl_exec($post));
 
         curl_close($post);
         
-        return $result;
+        return $result->id;
     }
 
     /**

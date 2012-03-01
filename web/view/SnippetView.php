@@ -11,7 +11,7 @@ class SnippetView
     public function singleView($snippet)
     {
         $sh = new Functions();
-
+        
         $html = "<h2 class='snippet-title'>" . $snippet->getTitle() . "</h2>
 		<div class='snippet-description'>
 			<p>" . $snippet->getDesc() . "</p>	
@@ -20,8 +20,17 @@ class SnippetView
 			<code>" . $sh->geshiHighlight($snippet->getCode(), $snippet->getLanguage()) . "</code>
 		</div>
 		<div class='snippet-author'>
-			<span>Posted by " . $snippet->getAuthor() . " <a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> <a href='?page=updatesnippet&snippet=" . $snippet->getID() . "'>Update</a></span>
-		</div>";
+			<span>Posted by " . $snippet->getAuthor();
+        
+        var_dump($snippet);
+        
+		if (AuthHandler::isLoggedIn() && $snippet->getAuthorID() === 2) {
+		    $html .= "<a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> 
+		    <a href='?page=updatesnippet&snippet=" . $snippet->getID() . "'>Update</a>";
+        }
+		
+		$html .= "</span>
+	          </div>";
         
         return $html;
     }
@@ -147,7 +156,7 @@ class SnippetView
                             url: 'model/RateSnippet.php',
                             data: {
                                 'snippet_id': " . $snippet_id . ",
-                                'user_id': ".$user_id.",
+                                'user_id': ". $user_id .",
                                 rating: 1
                             },
                             dataType: 'html',
@@ -161,7 +170,7 @@ class SnippetView
                             url: 'model/RateSnippet.php',
                             data: {
                                 'snippet_id': " . $snippet_id . ",
-                                'user_id': ".$user_id.",
+                                'user_id': ". $user_id .",
                                 rating: 0
                             },
                             dataType: 'html',

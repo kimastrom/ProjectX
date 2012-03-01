@@ -56,12 +56,18 @@ class SnippetController
                 }
             }
         } else if ($page == 'add') {
-            $this->_html = null;
-            $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
-
-            if ($this->_snippetView->triedToCreateSnippet()) {
-                $snippet = new Snippet(2, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate());
-                $this->_snippetHandler->createSnippet($snippet);
+            if (true) {
+                $this->_html = null;
+                $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
+    
+                if ($this->_snippetView->triedToCreateSnippet()) {
+                    $snippet = new Snippet(2, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate());
+                    $id = $this->_snippetHandler->createSnippet($snippet);
+                    header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $id);
+                    exit();
+                }
+            } else {
+                $this->_html = "<p>You must sign in to add a snippet.</p>";
             }
         } else if ($page == 'update') {
             $this->_html = null;
@@ -69,10 +75,14 @@ class SnippetController
             
             if ($this->_snippetView->triedToUpdateSnippet()) {
                 $this->_snippetHandler->updateSnippet($this->_snippetView->getUpdateSnippetName(), $this->_snippetView->getUpdateSnippetCode(), $this->_snippetView->getUpdateSnippetDesc(), $_GET['snippet'], $this->_snippetHandler->SetDate());
+                $_GET['page'] = 'listsnippets';
+                header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $_GET['snippet']);
+                exit();
             }
         } else if ($page == 'remove') {
-            $this->_html = "Removed";
             $this->_snippetHandler->deleteSnippet($this->_snippetHandler->getSnippetByID($_GET['snippet']));
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
         }
 
         return $this->_html;

@@ -15,12 +15,13 @@ class Snippet
     private $_created;
     private $_updated;
 
-    public function __construct($author, $code, $title, $desc, $languageID, $created, $updated, $id = null)
+    public function __construct($authorID, $author, $code, $title, $desc, $languageID, $created, $updated, $id = null)
     {
         if ($id != null) {
             $this->_id = $id;
         }
-        $this->_authorID = $author;
+        $this->_authorID = $authorID;
+        $this->_author = $author;
         $this->_code = $code;
         $this->_title = $title;
         $this->_desc = $desc;
