@@ -24,7 +24,7 @@ class CommentController
                 $id = $commentView->whichSnippetToComment();
 
                 if ($commentView->getCaptchaAnswer() == $_SESSION['security_number']) {
-                    $commentHandler->addComment($id, $text, $author);
+                    $commentHandler->addComment($id, $author, $text, AuthHandler::getApiKey());
                 }
             }
 

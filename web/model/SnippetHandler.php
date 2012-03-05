@@ -67,7 +67,6 @@ class SnippetHandler
             }
             return $snippets;
         }
-
         return false;
     }
 
