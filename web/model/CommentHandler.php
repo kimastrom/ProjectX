@@ -31,9 +31,15 @@ class CommentHandler
         return $data;
     }
 
-
+    /**
+     * CommentHandler::addComment()
+     *
+     * @return true if successful
+     * use it if you want to add a new commet för a snippet
+     * @param snippetId, userId, commentText and apikey
+     */
     public function addComment($snippetID, $userID, $comment, $apikey) {
-        $url = $this->_api->GetUrl().'comments';
+        $url = $this->_api->GetUrl() . 'comments';
         $data = array('snippetid' => $snippetID, 'userid' => $userID, 'comment' => $comment, 'apikey' => $apikey);
         $data = $this->formtaData($data);
 
@@ -46,12 +52,18 @@ class CommentHandler
         $result = curl_exec($ch);
         curl_close($ch);
 
-        if(!$result) Log::apiError('could not create comment on snippet: '.$snippetID, $url);
+        if(!$result) Log::apiError('could not create comment on snippet: ' . $snippetID, $url);
         return $result;
     }
-
+    /**
+     * CommentHandler::updateComment()
+     *
+     * @return true if successful
+     * use it if you want to update a comment that exists in the database
+     * @param commentId, userId, commentText and apikey
+     */
     public function updateComment($commentID, $userID, $comment, $apikey) {
-        $url = $this->_api->GetUrl().'comments';
+        $url = $this->_api->GetUrl() . 'comments';
         $data = array('commentid' => $commentID, 'userid' => $userID, 'comment' => $comment, 'apikey' => $apikey);
         $data = $this->formtaData($data);
 
@@ -63,7 +75,7 @@ class CommentHandler
 
         $result = curl_exec($ch);
         curl_close($ch);
-        if(!$result) Log::apiError('could not update comment: '.$commentID, $url);   
+        if(!$result) Log::apiError('could not update comment: ' . $commentID, $url);   
         
         return $result;
     }
@@ -100,49 +112,6 @@ class CommentHandler
         }
 
         return $commentsArray;
-    }
-
-    /**
-     * CommentHandler::addComment()
-     *
-     * @return true if successful
-     * use it if you want to add a new commet för a snippet
-     * @param snippetId, commentText and userId
-     */
-    public function addCommentDEPRECATED($snippetId, $commentText, $userId)
-    {
-        $sqlQuery = "INSERT INTO comment (snippet_id, comment, user_id) VALUES(?,?,?)";
-        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param("isi", $snippetId, $commentText, $userId);
-            $stmt->execute();
-            $stmt->close();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * CommentHandler::updateComment()
-     *
-     * @return true if successful
-     * use it if you want to update a comment that exists in the database
-     * @param commentId, commentText
-     */
-    public function updateCommentDEPRECATED($commentId, $commentText)
-    {
-
-        $sqlQuery = "UPDATE comment SET comment = ? WHERE id = ?";
-
-        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param("si", $commentText, $commentId);
-
-            if ($stmt->execute()) {
-                $stmt->close();
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

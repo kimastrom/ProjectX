@@ -5,11 +5,11 @@ class ProfileView
 
     public function profile($avatar, $name, $data, $user)
     {
-        $html = $this->doProfileMenu($data['isAdmin'],$data['isOwner'], $data['email']);
+        $html = $this->doProfileMenu($data['isAdmin'], $data['isOwner'], $data['email']);
 
         $html .= "
-                <h3>Hi there $name</h3><br>
-                <img src='$avatar' alt='User' />
+                <h3>Hi there " . $name . "</h3><br>
+                <img src='" . $avatar . "' alt='User' />
                 <div id='stats'>
                     <p>Created snippets:" . count($data['snippets']) . "</p>
                     <p>Commented snippets: " . count($data['comments']) . "</p>
@@ -74,16 +74,16 @@ class ProfileView
     public function doProfileMenu($isAdmin, $isOwner, $email) {
         $html = "    
                 <ul>
-                <li><a href='?username=".$email."&amp;p=created'>Created snippets</a></li>
-                <li><a href='?username=".$email."&amp;p=commented'>Commented Snippets</a></li>
-                <li><a href='?username=".$email."&amp;p=liked'>Liked snippets</a></li>
-                <li><a href='?username=".$email."&amp;p=disliked'>DislikedSnippets</a></li>";
+                <li><a href='?username=" . $email . "&amp;p=created'>Created snippets</a></li>
+                <li><a href='?username=" . $email . "&amp;p=commented'>Commented Snippets</a></li>
+                <li><a href='?username=" . $email . "&amp;p=liked'>Liked snippets</a></li>
+                <li><a href='?username=" . $email . "&amp;p=disliked'>DislikedSnippets</a></li>";
                 if($isOwner || $isAdmin) {
-                    $html .= "<li><a href='?username=".$email."&p=settings'>Settings</a></li>";
+                    $html .= "<li><a href='?username=" . $email . "&p=settings'>Settings</a></li>";
                 }
                 
                 if($isAdmin) {
-                    $html .= "<li><a href='?username=".$email."&p=search'>Search for users</a></li>";
+                    $html .= "<li><a href='?username=" . $email . "&p=search'>Search for users</a></li>";
                 }
                 $html .= "</ul>";
         return $html;
@@ -98,12 +98,12 @@ class ProfileView
         if($users) {
             $html .= "<ul>";
             foreach ($users as $user) {
-                $html .= "<li><a href='?username=".$user->getUsername()."'>".$user->getName()."</a></li>";
+                $html .= "<li><a href='?username=" . $user->getUsername() . "'>" . $user->getName() . "</a></li>";
             }
             $html .= "</ul>";
         } else {
             if($this->doSearch()){
-                $html .= "no matches found";
+                $html .= "<p>No matches found.</p>";
             }
         }
 
@@ -113,15 +113,15 @@ class ProfileView
     public function settings($apiKey, $roles = null, $currentRole = null) {
         $username = $this->getUser();
         $html = '<span>api key ' . $apiKey . ' - </span>';
-        $html .= "<a href='/profile?username=".$username."&p=settings&amp;api_key=generate'>Generate new</a>";
+        $html .= "<a href='/profile?username=" . $username . "&p=settings&amp;api_key=generate'>Generate new</a>";
         if($roles != null) {
             $html .= "<form action='#' method='POST' >
                         <select name='role'>";
                             foreach ($roles as $k => $value) {
                                 if($k == $currentRole) {
-                                    $html .= "<option selected='selected' value='".$k."'>".$value."</option>";
+                                    $html .= "<option selected='selected' value='" . $k . "'>" . $value . "</option>";
                                 } else {
-                                    $html .= "<option value='".$k."'>".$value."</option>";
+                                    $html .= "<option value='" . $k . "'>" . $value . "</option>";
                                 }
                             }
             $html .= "</select>

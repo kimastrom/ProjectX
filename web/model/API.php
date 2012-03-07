@@ -29,7 +29,7 @@ class API
 
         if(!curl_exec($curl)) {
             curl_close($curl);
-            Log::apiError('page not exist', $url);
+            Log::apiError('page does not exist', $url);
             return false;
         } else {
             $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);

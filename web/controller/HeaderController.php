@@ -27,7 +27,7 @@ class HeaderController
             } else {
                 $userPic = $this->_gravatarHandler->getTopGravatar();
             }
-            $this->_html = $this->_headerView->inloggedHeader($user->getName(),$userPic,$user->getEmail());
+            $this->_html = $this->_headerView->inloggedHeader($user->getName(), $userPic,$user->getEmail());
         } else {
             $this->_html = $this->_headerView->notLoggedInHeader();
         }

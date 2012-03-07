@@ -40,14 +40,14 @@ class CommentView
                 $message .= "<p class='date'>2012-01-01</p>";
                 $message .= "<p class='text'>" . $comments[$i]->getCommentText() . "</p>";
                 if($comments[$i]->getUserId() == $userId && $userId != null) {
-                    $message .= "<a onclick=\"javascript: return confirm('Vill du verkligen ta bort kommentar? [" . $comments[$i]->getCommentId() . "]')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&deleteComment=" . $comments[$i]->getCommentId() . "'>Radera</a> ";
-                    $message .= "<a onclick=\"javascript: return confirm('Vill du verkligen editera kommentar? [" . $comments[$i]->getCommentId() . "]')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&editComment=" . $comments[$i]->getCommentId() . "'>Redigera</a>";
+                    $message .= "<a onclick=\"javascript: return confirm('Do you want to remove this comment?')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&deleteComment=" . $comments[$i]->getCommentId() . "'>Radera</a> ";
+                    $message .= "<a onclick=\"javascript: return confirm('Do you want to edit this comment?')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&editComment=" . $comments[$i]->getCommentId() . "'>Redigera</a>";
                 }
                 
                 $message .= "</div>";
             }
         } else {
-            $message .= "<p>There is no comments for this snippet.</p>";
+            $message .= "<p>There are no comments for this snippet.</p>";
         }
 
         return $message;
@@ -70,7 +70,7 @@ class CommentView
                         </form>
                     </div>";
         } else {
-            $form = "The comment you tries to edit does not exist.";
+            $form = "<p>The comment you tried to edit does not exist.</p>";
         }
         return $form;
     }

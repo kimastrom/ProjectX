@@ -22,74 +22,11 @@ class SnippetView
 		<div class='snippet-author'>
 			<span>Posted by " . $snippet->getAuthor();
         
-		if (AuthHandler::isLoggedIn() && $snippet->getAuthorID() === AuthHandler::getUser()->getId()) {
 		    $html .= "<a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> 
 		    <a href='?page=updatesnippet&snippet=" . $snippet->getID() . "'>Update</a>";
-        }
 		
 		$html .= "</span>
 	          </div>";
-        
-        return $html;
-    }
-
-    /**
-     * Transform an array of snippets to html-code
-     * @param array $aSnippets is an array of snippets
-     * @return string
-     */
-    public function listView($snippets, $previousLink, $links, $beforeLinks, $afterLinks, $nextLink, $showPrevious, $showNext)
-    {
-        $html = '<h1>Snippets</h1>';
-
-        foreach ($snippets as $snippet) {
-            $html .= '
-                <div class="snippet-list-item">
-                    <div class="snippet-title">
-                        <p><a href="?page=listsnippets&snippet=' . $snippet->getID() . '">' . $snippet->getTitle() . '</a></p>
-                    </div>
-                    <div class="snippet-author">
-                        <p>' . $snippet->getDesc() . '</p>
-                    </div>
-                </div>
-            ';
-        }
-
-        if ($showPrevious == true) {
-            if($_GET['pagenumber'] != 2) {
-                $html .= ' | <a href="?page=listsnippets&pagenumber=1">First</a> ';    
-            }
-            
-            $html .= ' | <a href="?page=listsnippets&pagenumber=' . $previousLink . '"><</a> | ';
-        }
-        if (isset($_GET['pagenumber'])) {
-            foreach ($beforeLinks as $i) {
-                if ($i > 0) {
-                    $html .= '<a href="?page=listsnippets&pagenumber=' . $i . '">' . $i . '</a> ';    
-                }
-            }
-
-            foreach ($links as $i) {
-                if ($i == $_GET['pagenumber']) {
-
-                    $html .= '<a href="?page=listsnippets&pagenumber=' . $i . '"><span id="activePage">' . $i . '</span></a> ';
-                }
-            }
-
-            foreach ($afterLinks as $i) {
-                if ($i < (count($links) + 1 )) {
-                    $html .= '<a href="?page=listsnippets&pagenumber=' . $i . '">' . $i . '</a> ';    
-                }
-            }
-        }
-        
-        if ($showNext == true) {
-            $html .= ' | <a href="?page=listsnippets&pagenumber=' . $nextLink . '">></a> ';
-            
-            if ($_GET['pagenumber'] != (count($links) - 1)) {
-                $html .= ' | <a href="?page=listsnippets&pagenumber=' . count($links). '">Last</a> | ';
-            }    
-        }
         
         return $html;
     }

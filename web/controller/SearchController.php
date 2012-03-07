@@ -33,19 +33,18 @@ class SearchController
         }
     
         if($this->_searchView->doSearch()) {
-            $this->_pagingHandler = new PagingHandler($this->_snippetHandler->getAllSnippets(), 1, 3); // borde få in resultat som ska pagineras
             $searchQuery = $this->_searchView->getSearchQuery();
             //För pageningen
-            $arrToPreventError = array(1,1,1,1,1);
-            $this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearch($searchQuery),1,$arrToPreventError,1,false,false);  
+            $arrToPreventError = array(1, 1, 1, 1, 1);
+            $this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearch($searchQuery), 1, $arrToPreventError, 1, false, false);  
         }
         
         if($this->_searchView->doAdvSearch()) {
             $searchQuery = $this->_searchView->getSearchQuery();
             $lang = $this->_searchView->getSearchLang();
             //För pageningen
-            $arrToPreventError = array(1,1,1,1,1);
-            $this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearchWithLang($searchQuery, $lang),1,$arrToPreventError,1,false,false);  
+            $arrToPreventError = array(1, 1, 1, 1, 1);
+            $this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearchWithLang($searchQuery, $lang), 1, $arrToPreventError, 1, false, false);  
         }
         
         

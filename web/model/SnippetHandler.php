@@ -3,6 +3,7 @@
 require_once 'DbHandler.php';
 require_once 'Snippet.php';
 require_once 'API.php';
+require_once 'AuthHandler.php';
 
 class SnippetHandler
 {
@@ -40,32 +41,13 @@ class SnippetHandler
     public function getSnippetByID($id)
     {
         $snippet = null;
-        $url = $this->_api->GetURL() . "snippets/?id=".$id;
+        $url = $this->_api->GetURL() . "snippets/?id=" . $id;
         if($json = $this->getJson($url)) {
             foreach($json as $j)
             {
-                $snippet = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, "0000-00-00 00:00:00", $j->id);
+                $snippet = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->id);
             }
             return $snippet;
-        }
-        return false;
-    }
-    
-    /**
-        * Get all the snippets
-        * @return array
-    */
-    public function getAllSnippets()
-    {
-        $url = $this->_api->GetURL() . "snippets";
-
-        //Check if page contain json and if http_respons is 200
-        if($json = $this->getJson($url)) {
-            $snippets = array();
-            foreach ($json as $snippet) {
-                $snippets[] = new Snippet($snippet->userid, $snippet->username, $snippet->code, $snippet->title, $snippet->description, $snippet->languageid, $snippet->date, "0000-00-00 00:00:00", $snippet->id);
-            }
-            return $snippets;
         }
         return false;
     }
@@ -232,7 +214,7 @@ class SnippetHandler
 
     public function deleteSnippet(Snippet $snippet)
     {
-        $url = $this->_api->GetURL() . 'snippets/' . $snippet->getID() . '/2/5435gdfhghdghdf';
+        $url = $this->_api->GetURL() . 'snippets/' . $snippet->getID() . '/' . $snippet->getAuthorId() . '/' . AuthHandler::getApiKey();
         $ch = curl_init($url);
         
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -242,7 +224,7 @@ class SnippetHandler
         $result = curl_exec($ch);
 
         if(!$result) {
-            Log::apiError('could not delete snippet:'.$snippet->getID(), $url);
+            Log::apiError('could not delete snippet:' . $snippet->getID(), $url);
         }
         
         return $result;

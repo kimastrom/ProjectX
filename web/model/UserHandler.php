@@ -104,7 +104,7 @@ class UserHandler
     public function addUser($identifier, $provider, $name, $email = null, $role = 1)
     {
         $insertedKey = -1;
-        //$apiKey = $this->generateApiKey();
+        $apiKey = $this->generateApiKey();
         $apiKey = 'apikey';
         //@TODO ÄNDRA OM TILL TRANSAKTIONER OM MÖJLIGT
         //Insert data into user table
@@ -319,7 +319,7 @@ WHERE auth.identifier = ?")) {
 
             $stmt->close();
         } else {
-            echo "fel";
+            return false;
         }
         $this->_dbHandler->close();
         return $userArr;

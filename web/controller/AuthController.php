@@ -75,13 +75,11 @@ class AuthController
                 AuthHandler::login($user);
 
             } else {
-                echo "fel uppstod under inlogg";
                 Log::siteError('login failed, unknown user or serverproblem');
                 return false;
             }
         } else {
             Log::siteError('login failed, token not set');
-            echo "token !isset";
         }
         
         header('location: /');

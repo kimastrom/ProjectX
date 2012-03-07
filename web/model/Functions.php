@@ -50,23 +50,6 @@ class Functions
     }
 
     /**
-     * <p>Strip snippet from spaces and indentations.</p>
-     *
-     * @param  string $snippet
-     * @return string $snippet formatted code
-     * @access public
-     */
-    public function stripSnippetString($snippet)
-    {
-
-        $needles = array("\t", "\n", "\r");
-        $snippet = str_replace($needles, "", $snippet);
-        $snippet = str_replace("<?php", "<?php ", $snippet);
-        $snippet = str_replace("?>", " ?>", $snippet);
-        return $snippet;
-    }
-
-    /**
      * <p>Check if string dont exceeds maxlenght</p>
      *
      * @param  string $str String you want to check

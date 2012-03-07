@@ -56,16 +56,16 @@ class ProfileController
                             $this->generateApiKey($id, $email);
                             $this->showSettingsPage($id, $user->getApiKey(), $user);
                         } else {
-                            $this->_data['content'] = 'nope!';
+                            $this->_data['content'] = 'You must be the owner of to do this.';
                         }
                     } else if($page == 'search') {
                         if($user->isAdmin()) {
                             $this->showUserSearch($id);
                         } else {
-                            $this->_data['content'] = 'nein!';
+                            $this->_data['content'] = 'You must be an admin to do this.';
                         }
                     } else {
-                        $this->_data['content'] = 'Sidan du söker finns inte';
+                        $this->_data['content'] = 'The page you are looking for does not exist.';
                     }
 
                 }
@@ -102,7 +102,7 @@ class ProfileController
                     $this->_data['apiKey'] = AuthHandler::getUser()->getApiKey();
                 } else {
                     Log::userError('could not generate new api key', $email);
-                    echo "Något gick fel när api-key genererades";
+                    return false;
                 }
             }
         }
