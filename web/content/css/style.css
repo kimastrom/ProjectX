@@ -97,44 +97,6 @@ a {
 }
 
 /*
- * SEARCH
- * ---------------------------- */
-
-.content .search {
-    text-align: center;
-    margin: 100px 0;
-}
-
-.content .search img {
-    display: block;
-    margin: 0 auto 20px auto;
-}
-
-.content .search input[type="text"] {
-    width: 250px;
-    margin-bottom: 10px;
-    display: inline;
-}
-
-.content .search input[type="submit"] {
-    border: 0;
-    background: #0d3b51;
-    color: #fff;
-    padding: 3px 10px;
-    display: inline;
-}
-
-.content .search a {
-    font-style: italic;
-}
-
-.content .search .langDropdown {
-    padding: 2px;
-    text-align: left;
-    display: inline;
-}
-
-/*
  * SNIPPET LIST
  * ---------------------------- */
 .snippet-list-item {
@@ -245,4 +207,7 @@ textarea {
 .comments .text {
     word-wrap: break-word;
     margin-top: 10px;
+}
+#activePage {
+    font-weight:bold;
 }

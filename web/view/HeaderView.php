@@ -9,42 +9,39 @@ class HeaderView
      */
     public function inloggedHeader($name, $userPic, $email)
     {
-        $html = "<div class='topbar-wrapper'>
-            <div class='topbar'>
-                <div class='topbar-inner'>
-                    <ul class='nav'>
-                        <li>
-                            <a href='index.php'>Home</a> |
-                        </li>
-                        <li>
-                            <a href='?page=listsnippets'>Browse</a> |
-                        </li>
-                        <li>
-                            <a href='?page=addsnippet'>Add snippet</a> |
-                        </li>
-                        <li>
-                            <a href='#'>News</a> |
-                        </li>
-                        <li>
-                            <a href='#'>Downloads</a> |
-                        </li>
-                        <li>
-                            <a href='#'>About</a>
-                        </li>
-                        <li class ='right' id='logout-topbar'>
-                            <a href='?logout=true'>Sign out</a>
-                        </li>
-
-                        <li class='right'>
-                            <a href='/profile'>$name</a>
-                        </li>
-                        <li class='right'>
-                            <img id='topAvatar' src='$userPic' alt='as' />
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>";
+        $html = "<header id='mainHeader'>
+                    
+                        <nav id='mainNav'>
+                            <ul id='siteNav'>
+                                <li>
+                                    <a class='border-right' href='index.php'>Home</a>
+                                </li>
+                                <li>
+                                    <a class='border-right' href='?page=addsnippet'>Add snippet</a> 
+                                </li>
+                                <li>
+                                    <a class='border-right' href='#'>News</a> 
+                                </li>
+                                <li>
+                                    <a class='border-right' href='#'>Downloads</a> 
+                                </li>
+                                <li>
+                                    <a href='#'>About</a>
+                                </li>
+                                <li class ='right' id='logout-topbar'>
+                                    <a href='?logout=true'>Sign out</a>
+                                </li>
+        
+                                <li class='right'>
+                                    <a href='/profile'>$name</a>
+                                </li>
+                                <li class='login'>
+                                    <img id='topAvatar' src='$userPic' alt='as' />
+                                </li>
+                            </ul>
+                        </nav>
+                        
+                </header>";
 
         return $html;
     }
@@ -54,32 +51,27 @@ class HeaderView
      */
     public function notLoggedInHeader()
     {
-        $html = "<div class='topbar-wrapper'>
-            <div class='topbar'>
-                <div class='topbar-inner'>
-                    <ul class='nav'>
-                        <li>
-                            <a href='index.php'>Home</a> |
-                        </li>
-                        <li>
-                            <a href='?page=listsnippets'>Snippets</a> |
-                        </li>
-                        <li>
-                            <a href='#'>News</a> |
-                        </li>
-                        <li>
-                            <a href='#'>Downloads</a> |
-                        </li>
-                        <li>
-                            <a href='#'>About</a>
-                        </li>
-                        <li class='right'>
-                            <a class='janrainEngage' href='#'>Sign in</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>";
+        $html = "<header id='mainHeader'>
+                    <nav id='mainNav'>
+                        <ul id='siteNav'>
+                            <li>
+                                <a class='border-right' href='index.php'>Home</a> 
+                            </li>
+                            <li>
+                                <a  class='border-right' href='#'>News</a> 
+                            </li>
+                            <li>
+                                <a  class='border-right' href='#'>Downloads</a> 
+                            </li>
+                            <li>
+                                <a class='no-border' href='#'>About</a>
+                            </li>
+                            <li class='right'>
+                                <a class='janrainEngage' href='#'>Sign in</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </header>";
 
         return $html;
     }
