@@ -18,6 +18,7 @@ class SearchView {
                             });
                             
                             function search() {
+                                $("#result").html("<img src=\"content/image/ajax-loader.gif\" />");
                                 var search_input = $(".search_input").val();
                                 var query = encodeURIComponent(search_input);
                                 
