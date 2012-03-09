@@ -18,11 +18,12 @@ class SearchView {
                             });
                             
                             function search() {
-                                $("#result").html("<img src=\"content/image/ajax-loader.gif\" />");
+                                $("#result").html("");
                                 var search_input = $(".search_input").val();
                                 var query = encodeURIComponent(search_input);
                                 
                                 if (query.length > 2) {
+                                    $("#result").html("<img src=\"content/image/ajax-loader.gif\" />");
                                     $.ajax({
                                         type: "GET",
                                         url: "model/SearchSnippet.php",
