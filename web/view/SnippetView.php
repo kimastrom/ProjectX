@@ -21,9 +21,10 @@ class SnippetView
 		</div>
 		<div class='snippet-author'>
 			<span>Posted by " . $snippet->getAuthor();
-        
+        if (AuthHandler::isLoggedIn() && $snippet->getAuthorID() === AuthHandler::getUser()->getId()) {
 		    $html .= "<a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> 
 		    <a href='?page=updatesnippet&snippet=" . $snippet->getID() . "'>Update</a>";
+	    }
 		
 		$html .= "</span>
 	          </div>";

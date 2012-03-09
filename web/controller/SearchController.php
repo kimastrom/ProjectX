@@ -23,30 +23,7 @@ class SearchController
 
     public function doControll() {
 
-        
-        if($this->_searchView->wantsAdvSearch()) {
-            
-            $this->_html .= $this->_searchView->doAdvSearchForm($this->_langHandler->getAllLang());
-        }
-        else {
-            $this->_html .= $this->_searchView->doSearchForm();
-        }
-    
-        if($this->_searchView->doSearch()) {
-            $searchQuery = $this->_searchView->getSearchQuery();
-            //För pageningen
-            $arrToPreventError = array(1, 1, 1, 1, 1);
-            $this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearch($searchQuery), 1, $arrToPreventError, 1, false, false);  
-        }
-        
-        if($this->_searchView->doAdvSearch()) {
-            $searchQuery = $this->_searchView->getSearchQuery();
-            $lang = $this->_searchView->getSearchLang();
-            //För pageningen
-            $arrToPreventError = array(1, 1, 1, 1, 1);
-            $this->_html .= $this->_searchView->searchAnswerView($this->_snippetHandler->fullSearchWithLang($searchQuery, $lang), 1, $arrToPreventError, 1, false, false);  
-        }
-        
+        $this->_html .= $this->_searchView->doSearchForm();
         
         return $this->_html;
     }
