@@ -37,7 +37,7 @@ class CommentView
             for ($i = 0; $i < count($comments); $i++) {
                 $message .= "<div class='comments'>";
                 $message .= "<p class='snippet-author'>" . $comments[$i]->getUsername() . "</p>";
-                $message .= "<p class='date'>2012-01-01</p>";
+                $message .= "<p class='date'>" . $comments[$i]->getCommentDate() . "</p>";
                 $message .= "<p class='text'>" . $comments[$i]->getCommentText() . "</p>";
                 if($comments[$i]->getUserId() == $userId && $userId != null) {
                     $message .= "<a onclick=\"javascript: return confirm('Do you want to remove this comment?')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&deleteComment=" . $comments[$i]->getCommentId() . "'>Radera</a> ";

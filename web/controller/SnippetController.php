@@ -41,28 +41,6 @@ class SnippetController
                 } else {
                     return false;
                 }
-            } else {
-                // Show list of snippets
-                if($snippets = $this->_snippetHandler->getAllSnippets()) {
-                    $this->_pagingHandler = new PagingHandler($this->_snippetHandler->getAllSnippets(), 1, 3);
-                    if (isset($_GET['pagenumber']) == false || $_GET['pagenumber'] < 1) {        
-                         $_GET['pagenumber'] = 1;
-                     } else {
-                         $this->_pagingHandler->setPage($_GET['pagenumber']);
-                     }
-                     
-                     $this->_pagingHandler->setOffset($_GET['pagenumber']);
-                     
-                     if ($_GET['pagenumber'] - 1 == 0) {
-                         $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), 1,$this->_pagingHandler->getLinks(), $this->_pagingHandler->getBeforeLinks(), $this->_pagingHandler->getAfterLinks(),  $this->_pagingHandler->getNext(), false, true);
-                     } else if ($_GET['pagenumber'] == $this->_pagingHandler->getTotal()) {
-                         $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getBeforeLinks(), $this->_pagingHandler->getAfterLinks(), $this->_pagingHandler->getTotal(), true, false);    
-                     } else {
-                         $this->_html .= $this->_snippetView->listView($this->_pagingHandler->fetchSnippets(), $this->_pagingHandler->getPrevious(),$this->_pagingHandler->getLinks(), $this->_pagingHandler->getBeforeLinks(), $this->_pagingHandler->getAfterLinks(), $this->_pagingHandler->getNext(), true, true);    
-                     }
-                 } else {
-                    return false;
-                 }
             }
         } else if ($page == 'add') {
             if (AuthHandler::isLoggedIn()) {

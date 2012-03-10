@@ -36,7 +36,7 @@ class CommentController
                 $comment = $commentHandler->getCommentByID($commentView->whichCommentToDelete());
                 if ($comment != null) {
                     if ($comment->getUserId() == AuthHandler::getUser()->getId()) {
-                        $commentHandler->deleteComment($commentView->whichCommentToDelete());
+                        $commentHandler->deleteComment($comment);
                     }
                 }
             }

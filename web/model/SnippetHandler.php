@@ -55,27 +55,18 @@ class SnippetHandler
      * @param id of user
      *
      */
-    public function getSnippetsByUser($id)
+    public function getSnippetsByUser($userid)
     {
-        $snippetArr = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->prepareStatement("SELECT * FROM snippet WHERE user_id = ?")) {
-            $stmt->bind_param('i', $id);
-            $stmt->execute();
-            $stmt->bind_result($id, $userID, $code, $title, $description, $languageID, $created, $updated);
-
-            while ($stmt->fetch()) {
-                $temtSnippet = new Snippet($userID, $code, $title, $description, $languageID, $created, $updated, $id);
-                array_push($snippetArr, $temtSnippet);
+        $snippets = null;
+        $url = $this->_api->GetURL() . "snippets/?userid=" . $userid;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $snippets[] = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->id);
             }
-            $stmt->close();
-        } else {
-            $stmt->close();
-            $this->_dbHandler->close();
-            return false;
+            return $snippets;
         }
-        $this->_dbHandler->close();
-        return $snippetArr;
+        return false;
     }
 
     /**
@@ -150,7 +141,7 @@ class SnippetHandler
         $created = $snippet->getCreatedDate();
         
         $url = $this->_api->GetURL() . "snippets";
-        $query = array('userid' => $snippet->getAuthorId(), 'code' => $snippet->getCode(), 'desc' => $snippet->getDesc(), 'title' => $snippet->getTitle(), 'languageid' => $snippet->getLanguageID(), 'apikey' => '5435gdfhghdghdf');
+        $query = array('userid' => $snippet->getAuthorId(), 'code' => $snippet->getCode(), 'desc' => $snippet->getDesc(), 'title' => $snippet->getTitle(), 'languageid' => $snippet->getLanguageID(), 'apikey' => AuthHandler::getApiKey());
         
         $fields = '';
         foreach ($query as $key => $value) {
@@ -226,39 +217,6 @@ class SnippetHandler
         }
         
         return $result;
-    }
-
-    /**
-     * returns a defined number of snippets
-     * @param int number of snippets to return
-     * @return array with snippets
-     */
-    public function getNrOfSnippets($nr)
-    {
-        if ($nr <= 0) {
-            $nr = 1;
-        }
-        $snippets = array();
-
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet LIMIT ?")) {
-            $stmt->bind_param("i", $nr);
-            $stmt->execute();
-
-            $stmt->bind_result($id, $code, $author, $title, $description, $language, $created, $updated);
-            while ($stmt->fetch()) {
-                $snippet = new Snippet($author, $code, $title, $description, $language, $created, $updated, $id);
-                array_push($snippets, $snippet);
-            }
-
-            $stmt->close();
-        } else {
-            return null;
-        }
-
-        $this->_dbHandler->close();
-
-        return $snippets;
     }
 
     /**

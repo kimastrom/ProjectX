@@ -47,7 +47,7 @@ class CommentHandler
 
     public function getComments($id) {
         $url = $this->_api->GetURL().'comments?snippetid='.$id;  
-        if($json = $this->getJson('asd')) {
+        if($json = $this->getJson($url)) {
             $comments = array();
             foreach($json as $j) {
                 $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date);
@@ -110,60 +110,29 @@ class CommentHandler
     }
 
     /**
-     * CommentHandler::getAllCommentsForSnippet()
-     *
-     * @return an array with all comments for one snippet
-     * together with data of the User object
-     */
-    public function getAllCommentsForSnippetDEPRICATED($snippetId)
-    {
-
-        $commentsArray = array();
-        $sqlQuery = "SELECT comment.snippet_id, comment.id, comment.comment, user.name, user.id
-                        FROM comment
-                        INNER JOIN user 
-                        ON user.id= comment.user_id
-                        WHERE comment.snippet_id = ?
-                        ORDER by comment.id DESC
-        ";
-
-        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param('i', $snippetId);
-            $stmt->execute();
-            $stmt->bind_result($snippetId, $commentId, $commentText, $username, $userId);
-
-            while ($stmt->fetch()) {
-                $comment = new Comment($snippetId, $commentId, $userId, $commentText);
-                $comment->setUsername($username);
-                array_push($commentsArray, $comment);
-            }
-            $stmt->close();
-        }
-
-        return $commentsArray;
-    }
-
-    /**
      * CommentHandler::deleteComment()
      *
      * @return true if successful
      * use it if you want to delete a comment
      * @param an id of the comment to delete
      */
-    public function deleteComment($commentId)
+    public function deleteComment($comment)
     {
 
-        $sqlQuery = "DELETE FROM comment WHERE id=?";
+        $url = $this->_api->GetURL() . 'comments/' . $comment->getID() . '/' . $comment->getUserId() . '/' . AuthHandler::getApiKey();
+        $ch = curl_init($url);
+        
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        $result = curl_exec($ch);
 
-        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param("i", $commentId);
-
-            if ($stmt->execute()) {
-                $stmt->close();
-                return true;
-            }
+        if(!$result) {
+            Log::apiError('could not delete snippet:' . $comment->getID(), $url);
         }
-        return false;
+        
+        return $result;
     }
 
     /**
