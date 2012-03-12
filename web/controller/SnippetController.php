@@ -1,0 +1,89 @@
+<?php
+
+require_once dirname(__FILE__) . '/../model/SnippetHandler.php';
+require_once dirname(__FILE__) . '/../view/SnippetView.php';
+require_once dirname(__FILE__) . '/../model/DbHandler.php';
+require_once dirname(__FILE__) . '/../controller/CommentController.php';
+require_once dirname(__FILE__) . '/../model/CommentHandler.php';
+require_once dirname(__FILE__) . '/../view/CommentView.php';
+require_once dirname(__FILE__) . '/../model/AuthHandler.php';
+
+class SnippetController
+{
+    private $_dbHandler;
+    private $_snippetHandler;
+    private $_snippetView;
+    private $_html;
+    private $_commentController;
+    private $_pagingHandler;
+
+    public function __construct()
+    {
+        $this->_dbHandler = new DbHandler();
+        $this->_snippetHandler = new SnippetHandler($this->_dbHandler);
+        $this->_snippetView = new SnippetView();
+        $this->_commentController = new CommentController($this->_dbHandler);
+        $this->_html = '';
+    }
+
+    public function doControll($page)
+    {
+        if ($page == 'list') {
+            // Show single snippet
+            if (isset($_GET['snippet'])) {
+                //Check if snippet exist
+                if($snippet = $this->_snippetHandler->getSnippetByID($_GET['snippet'])) {
+                    //Check if user is admin or owner of snippet
+                    $isOwner = AuthHandler::isOwnerByID($snippet->getAuthorId());
+                    $this->_html .= $this->_snippetView->singleView($snippet, $isOwner);
+                    if(AuthHandler::isLoggedIn()) {
+                        $this->_html .= $this->_snippetView->rateSnippet($_GET['snippet'], AuthHandler::getUser()->getId(), $this->_snippetHandler->getSnippetRating($_GET['snippet']));  
+                    }
+                    $this->_html .= $this->_commentController->doControll();
+                } else {
+                    return false;
+                }
+            }
+        } else if ($page == 'add') {
+            if (AuthHandler::isLoggedIn()) {
+                $this->_html = null;
+                $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
+    
+                if ($this->_snippetView->triedToCreateSnippet()) {
+                    $authID = AuthHandler::getUser()->getID();
+                    $authName = AuthHandler::getUser()->getName();
+                    $snippet = new Snippet($authID, $authName, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate(), 'ett språk');
+                    if($id = $this->_snippetHandler->createSnippet($snippet)){
+                        header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $id);
+                        exit();
+                    }
+                    $this->_html .= "<h1>Ett fel uppstod men din snippet kan ha skapats</h1> snygg felhantering...";
+                }
+            } else {
+                $this->_html = "<p>You must sign in to add a snippet.</p>";
+            }
+        } else if ($page == 'update') {
+            $this->_html = null;
+            $snippet = $this->_snippetHandler->getSnippetByID($_GET['snippet']);
+            $this->_html .= $this->_snippetView->updateSnippet($snippet);
+            
+            if ($this->_snippetView->triedToUpdateSnippet()) {
+                $snippet->setTitle($this->_snippetView->getUpdateSnippetName());
+                $snippet->setCode($this->_snippetView->getUpdateSnippetCode());
+                $snippet->setDesc($this->_snippetView->getUpdateSnippetDesc());
+                $snippet->setUpdatedDate($this->_snippetHandler->SetDate());
+                
+                $this->_snippetHandler->updateSnippet($snippet);
+                header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $_GET['snippet']);
+                exit();
+            }
+        } else if ($page == 'remove') {
+            $this->_snippetHandler->deleteSnippet($this->_snippetHandler->getSnippetByID($_GET['snippet']));
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+
+        return $this->_html;
+    }
+
+}
