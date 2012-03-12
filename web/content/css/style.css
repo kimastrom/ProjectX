@@ -207,13 +207,13 @@ a {
     margin: 5px 0;
 }
 
-#ratingbars .likes { 
+#ratingbars #likes { 
     background-color: #7FAF1B;
     float: left;
     height: 5px;
 }
 
-#ratingbars .dislikes {
+#ratingbars #dislikes {
     background-color: #A40802;
     float: left;
     height: 5px;

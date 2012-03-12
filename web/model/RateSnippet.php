@@ -13,9 +13,9 @@ $rating = $_POST['rating'];
 if ($stmt = $dbHandler->PrepareStatement($sqlQuery)) {
     $stmt->bind_param("iii", $user_id, $snippet_id, $rating);
     if ($stmt->execute()) {
-        echo "<p>Thank you for voting!</p>";
+        echo 1; // Echoes '1' if the rating was successfully applied
     } else {
-        echo "<p>You have already voted on this snippet</p>";
+        echo 0; // Echoes '0' if the user has already voted
     }
     $stmt->close();
 }

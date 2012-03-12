@@ -203,7 +203,6 @@ CREATE TABLE `user_auth` (
 
 INSERT INTO `user_auth` VALUES(12, 'kim.astrom@gmail.com', 'Google', 'https://www.google.com/profiles/114454620248657786834', 18);
 INSERT INTO `user_auth` VALUES(18, 'null', 'Twitter', 'http://twitter.com/account/profile?user_id=226693886', 24);
-INSERT INTO `user_auth` VALUES(19, 'kim.90@hotmail.com', 'Windows Live', 'http://cid-aa4ae54b5aca67c3.spaces.live.com/', 25);
 
 -- --------------------------------------------------------
 
