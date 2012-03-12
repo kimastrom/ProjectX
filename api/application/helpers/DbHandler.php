@@ -1,36 +1,25 @@
 <?php
 
+// 
+//  DbHandler.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
+
 require_once 'Settings.php';
 
-/**
- * DbHandler
- * 
- * @package ProjectX  
- * @author ProjectX
- * @copyright ProjectX
- * @version 2012
- * @access public
- */
 class DbHandler
 {
     private $mMySqliObject = null;
     private $mSettings = null;
 
-    /**
-     * DbHandler::__construct()
-     * 
-     * @return
-     */
     public function __construct()
     {
         $this->connect();
     }
 
-    /**
-     * DbHandler::connect()
-     * 
-     * @return
-     */
     public function connect()
     {
         $this->mSettings = new Settings();
@@ -46,42 +35,21 @@ class DbHandler
         return true;
     }
 
-    /**
-     * DbHandler::__wakeup()
-     * 
-     * @return
-     */
     public function __wakeup()
     {
         $this->connect();
     }
 
-    /**
-     * DbHandler::close()
-     * 
-     * @return
-     */
     public function close()
     {
         $this->mMySqliObject->Close();
     }
 
-    /**
-     * DbHandler::prepareStatement()
-     * 
-     * @param mixed $aSqlStatement
-     * @return
-     */
     public function prepareStatement($aSqlStatement)
     {
         return $this->mMySqliObject->prepare($aSqlStatement);
     }
 
-    /**
-     * DbHandler::error()
-     * 
-     * @return
-     */
     public function error()
     {
         return $this->mMySqliObject->error;

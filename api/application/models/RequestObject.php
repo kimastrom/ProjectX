@@ -1,4 +1,11 @@
 <?php
+// 
+//  RequestObject.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 class RequestObject
 {
@@ -18,6 +25,8 @@ class RequestObject
     private $_limit;
     private $_thumbsup;
     private $_thumbsdown;
+    private $_userid;
+    
     
     public function __construct()
     {
@@ -37,6 +46,7 @@ class RequestObject
         $this->_limit = null;
         $this->_thumbsup = null;
         $this->_thumbsdown = null;
+        $this->_userid = null;
     }
 
     public function __get($property)
@@ -68,6 +78,8 @@ class RequestObject
         }
     }
     
+    //This fuctions is used to create dynamic calls for snippets without the 
+    //concern of parameter order. 
     public function select()
     {
         $select = "SELECT *, (SELECT COUNT(rating.rating)
@@ -90,7 +102,11 @@ class RequestObject
         foreach ($this as $key => $value) {
             if ($value != null) {
                 if ($key != '_datefrom' && $key != '_dateto' && $key != '_sort' && $key != '_desc' && $key != '_page' && $key != '_limit') {					
-					if ($first) {
+					if ($key == '_userid') {
+						$key = '_snippet.userid';
+					}
+                	
+                	if ($first) {
 						if ($key == '_date') {
 							$select .= ' WHERE DATE(updated) = ?';
 						} else {

@@ -1,4 +1,11 @@
 <?php
+// 
+//  comments.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 require_once APPLICATION_PATH . '/helpers/DbHandler.php';
 require_once APPLICATION_PATH . '/models/CommentModel.php';
@@ -19,10 +26,7 @@ class Comments
 
     public function index($request_data = null)
     {
-    	if (isset($request_data['snippetid'])) {
-    		return $this->_commentModel->getComment($request_data);
-    	}
-	 	return array('error' => ' You have to enter a snippetid. (comments?snippetid=...)');
+	 	return $this->_commentModel->getComment($request_data);
     }
 
     public function post($request_data = null)
@@ -44,7 +48,7 @@ class Comments
         $this->setValues($request_data);
         return $this->_commentModel->deleteComment($this->_comment);
     }
-
+	
     public function setValues($values)
     {
         foreach ($values as $action => $value) {

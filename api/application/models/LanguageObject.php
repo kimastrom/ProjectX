@@ -1,30 +1,21 @@
 <?php
 // 
-//  RatingObject.php
+//  LanguageObject.php
 //  ProjectX
 //  
 //  Created by Pontus & Tomas on 2012-03-12.
 //  Copyright 2012 Pontus & Tomas. All rights reserved.
 //
 
-class RatingObject
+class LanguageObject
 {
-	private $_ratingid;
-    private $_snippetid;
-    private $_userid;
-    private $_rating;
-    private $_apikey;
-    private $_date;
-   
+	private $_languageid;
+    private $_language;
 
     public function __construct()
     {
-    	$this->_ratingid = null;
-        $this->_snippetid = null;
-        $this->_userid = null;
-        $this->_rating = null;
-        $this->_apikey = null;
-        $this->_date = date("Y-m-d h:i:s");
+    	$this->_languageid = null;
+        $this->_language = null;
     }
     
     public function __get($property)

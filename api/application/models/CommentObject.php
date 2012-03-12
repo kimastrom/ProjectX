@@ -1,4 +1,11 @@
 <?php
+// 
+//  CommentObject.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 class CommentObject
 {

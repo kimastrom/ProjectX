@@ -1,4 +1,11 @@
 <?php
+// 
+//  RatingModel.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 require_once APPLICATION_PATH . '/helpers/DbHandler.php';
 require_once 'RequestObjectRating.php';
@@ -58,7 +65,7 @@ class RatingModel
         if (count($ratings) > 0) {
             return $ratings;
         } else {
-            throw new RestException(404);
+            throw new RestException(204);
         }
     }
 

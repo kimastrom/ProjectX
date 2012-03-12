@@ -1,4 +1,11 @@
 <?php
+// 
+//  RequestObjectRating.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 class RequestObjectRating
 {
@@ -19,6 +26,7 @@ class RequestObjectRating
     private $_limit;
     private $_ratingid;
     private $_snippetid;
+    private $_userid;
     
     public function __construct()
     {
@@ -39,6 +47,7 @@ class RequestObjectRating
         $this->_limit = null;
         $this->_ratingid = null;
         $this->_snippetid = null;
+        $this->_userid = null;
     }
 
     public function __get($property)
@@ -70,6 +79,8 @@ class RequestObjectRating
         }
     }
     
+    //This fuctions is used to create dynamic calls for snippets without the 
+    //concern of parameter order. 
     public function select()
     {
         $select = "SELECT ratingId, snippetId, rating.userId, rating, rating_created_date, username, email, apikey FROM rating LEFT JOIN user on rating.userid = user.userid";
@@ -84,7 +95,11 @@ class RequestObjectRating
         foreach ($this as $key => $value) {
             if ($value != null) {
                 if ($key != '_datefrom' && $key != '_dateto' && $key != '_sort' && $key != '_desc' && $key != '_page' && $key != '_limit') {					
-					if ($first) {
+					if ($key == '_userid') {
+						$key = '_rating.userid';
+					}
+                	
+                	if ($first) {
 						if ($key == '_date') {
 							$select .= ' WHERE DATE(rating_created_date) = ?';
 						} else {

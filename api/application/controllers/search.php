@@ -1,4 +1,11 @@
 <?php
+// 
+//  search.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+// 
 
 set_include_path(APPLICATION_PATH . '/helpers');
 require_once 'Zend/Search/Lucene.php';
@@ -16,6 +23,9 @@ class Search
     public function index($keywords){
 			if(strpos($keywords, '*') && strlen($keywords) <= 3){
 				 return array('error' => 'You must specify at least three characters in a wildcard search.');
+			}
+			else if($keywords[0] == '*') {
+				return array('error' => 'You can not use a * as first character.');
 			}
             Zend_Search_Lucene::setResultSetLimit('50');
 			$query = Zend_Search_Lucene_Search_QueryParser::parse($keywords);

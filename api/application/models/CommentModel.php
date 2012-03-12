@@ -1,4 +1,11 @@
 <?php
+// 
+//  CommentModel.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 require_once APPLICATION_PATH . '/helpers/DbHandler.php';
 require_once 'RequestObjectComment.php';
@@ -57,7 +64,7 @@ class CommentModel
         if (count($comments) > 0) {
             return $comments;
         } else {
-            throw new RestException(404);
+            throw new RestException(204);
         }
     }
     private function validateUser($userId, $apikey)

@@ -1,4 +1,11 @@
 <?php
+// 
+//  ratings.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 require_once APPLICATION_PATH . '/helpers/DbHandler.php';
 require_once APPLICATION_PATH . '/models/RatingModel.php';
@@ -18,11 +25,8 @@ class Ratings
     }
 
     public function index($request_data = null)
-    {
-    	if (isset($request_data['snippetid'])) {
-    		return $this->_ratingModel->getRating($request_data);
-    	}
-	 	return array('error' => ' You have to enter a snippetid. (rating?snippetid=...)');
+	{ 	
+	 	return $this->_ratingModel->getRating($request_data);
     }
 
     public function post($request_data = null)

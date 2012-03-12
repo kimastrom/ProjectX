@@ -356,3 +356,17 @@ textarea {
 	bottom:130px;
 	left:610px;
 }
+
+/*
+  * Learn more
+  * ---------------------------- */
+  
+#learn-more-wrap{
+	position:fixed;
+	top:0px;
+	width:960px;
+	color:white;
+	background:black;
+	left:25%;
+	text-align:center;
+}  

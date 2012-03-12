@@ -1,4 +1,11 @@
 <?php
+// 
+//  SnippetModel.php
+//  ProjectX
+//  
+//  Created by Pontus & Tomas on 2012-03-12.
+//  Copyright 2012 Pontus & Tomas. All rights reserved.
+//
 
 require_once APPLICATION_PATH . '/helpers/DbHandler.php';
 require_once 'RequestObject.php';
@@ -52,7 +59,7 @@ class SnippetModel
             $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated, $userId, $username, $email, $apikey, $languageid, $language, $thumbsup, $thumbsdown);
             while ($stmt->fetch()) {
                 $snippet = array('language' => $language, 'languageid' => $languageid, 'title' =>
-                    $title, 'description' => $description, 'code' => $code, 'username' => $username,
+                    $title, 'description' => $description, 'code' => $code, 'username' => $username, 'userid' => $userId,
                     'id' => $id, 'date' => $date, 'updated' => $updated, 'thumbsup' => $thumbsup, 'thumbsdown' => $thumbsdown);
                 array_push($snippets, $snippet);
             }
@@ -64,7 +71,7 @@ class SnippetModel
         if (count($snippets) > 0) {
             return $snippets;
         } else {
-            throw new RestException(404);
+            throw new RestException(204);
         }
     }
     private function validateUser($userId, $apikey)
@@ -151,7 +158,7 @@ class SnippetModel
 			
 			return array('status' => true);
         } else {
-            throw new RestException(404);
+            throw new RestException(401);
         }
     }
 
@@ -199,6 +206,7 @@ class SnippetModel
 		$doc->addField(Zend_Search_Lucene_Field::text('title', $snippet->__get('_title')));
 		$doc->addField(Zend_Search_Lucene_Field::text('description', $snippet->__get('_desc')));
 		$doc->addField(Zend_Search_Lucene_Field::text('code', $snippet->__get('_code')));
+		$doc->addField(Zend_Search_Lucene_Field::text('language', $snippet->__get('_language')));
 		 
 		// Add document to the index.
 		$index->addDocument($doc);

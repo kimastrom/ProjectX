@@ -26,7 +26,7 @@ class HeaderView
                             <a href='#'>Downloads</a> |
                         </li>
                         <li>
-                            <a href='#'>About</a>
+                            <a id='about' href='#'>About</a>
                         </li>
                         <li class ='right' id='logout-topbar'>
                             <a href='?logout=true'>Sign out</a>
@@ -65,7 +65,7 @@ class HeaderView
                             <a href='#'>Downloads</a> |
                         </li>
                         <li>
-                            <a href='#'>About</a>
+                            <a id='about' href='#'>About</a>
                         </li>
                         <li class='right'>
                             <a class='janrainEngage' href='#'>Sign in</a>
