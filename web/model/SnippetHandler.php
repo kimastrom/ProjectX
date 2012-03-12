@@ -43,8 +43,9 @@ class SnippetHandler
         if($json = $this->getJson($url)) {
             foreach($json as $j)
             {
-                $snippet = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->id);
+                $snippet = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->id, $j->language);
             }
+            
             return $snippet;
         }
         return false;
@@ -62,7 +63,7 @@ class SnippetHandler
         if($json = $this->getJson($url)) {
             foreach($json as $j)
             {
-                $snippets[] = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->id);
+                $snippets[] = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->id, $j->language);
             }
             return $snippets;
         }

@@ -10,7 +10,7 @@ class CommentHandler
 
     private $_dbHandler;
     private $_api;
-
+    
     public function __construct()
     {
         $this->_dbHandler = new DbHandler();
@@ -42,7 +42,7 @@ class CommentHandler
                 return $json;
             }
         }
-        Log::apiError('could not get content ' , $httpCode);
+        Log::apiError('could not get content ' , $url);
         return false;
     }
 
@@ -82,7 +82,7 @@ class CommentHandler
 
         if($httpCode == 200) return true;
 
-        Log::apiError('could not create comment on snippet: ' . $snippetID, $httpCode);
+        Log::apiError('could not create comment on snippet: ' . $snippetID, $url);
         return $result;
     }
     /**
