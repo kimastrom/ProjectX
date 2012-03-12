@@ -18,5 +18,9 @@ $(document).ready(function(){
 	//Toogle on click
 	$('#about').click(function() {	
 		aboutFx.toggle();
-	}); 	
+	}); 
+	$('#close-learn-more').click(function() {	
+		aboutFx.toggle();
+	}); 
+		
 });//End document ready
