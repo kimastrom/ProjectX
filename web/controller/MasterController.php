@@ -7,6 +7,7 @@ require_once dirname(__FILE__) . '/SearchController.php';
 require_once dirname(__FILE__) . '/HeaderController.php';
 require_once dirname(__FILE__) . '/AuthController.php';
 require_once dirname(__FILE__) . '/ProfileController.php';
+require_once dirname(__FILE__) . '/BlogController.php';
 
 class MasterController
 {
@@ -15,6 +16,7 @@ class MasterController
     private $_headerController;
     private $_authController;
     private $_profileController;
+    private $_blogController;
     private $_html;
 
     public function __construct()
@@ -48,7 +50,19 @@ class MasterController
             } else if ($_GET['page'] == 'profile') {
                 $this->_profileController = new ProfileController();
                 $this->_html .= $this->_profileController->doControll();
-            }
+            } else if ($_GET['page'] == 'listblogposts') {
+                $this->_blogController = new BlogController();
+                $this->_html .= $this->_blogController->doControll('list');
+            }else if ($_GET['page'] == 'addblogpost') {
+                $this->_blogController = new BlogController();
+                $this->_html .= $this->_blogController->doControll('add');
+            }else if ($_GET['page'] == 'editblogpost') {
+                $this->_blogController = new BlogController();
+                $this->_html .= $this->_blogController->doControll('edit');            
+            }else if ($_GET['page'] == 'removeblogpost') {
+                $this->_blogController = new BlogController();
+                $this->_html .= $this->_blogController->doControll('remove');      
+            } 
         } else {
             $this->_searchController = new SearchController();
             $this->_html .= $this->_searchController->doControll();

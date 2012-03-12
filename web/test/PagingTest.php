@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . '/simpletest/autorun.php';
 require_once dirname(__FILE__) . '/../model/PagingHandler.php';
 require_once dirname(__FILE__) . '/../model/SnippetHandler.php';
 
-class PagingHandlerTest extends unitTestcase
+class PagingHandlerTest extends UnitTestcase
 {
     private $_snippets;
     private $_page;

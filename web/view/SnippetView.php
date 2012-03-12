@@ -32,6 +32,31 @@ class SnippetView
         return $html;
     }
 
+    /**
+     * Transform an array of snippets to html-code
+     * @param array $aSnippets is an array of snippets
+     * @return string
+     */
+    public function listView($snippets)
+    {
+        $html = '<h1>Snippets</h1>';
+
+        foreach ($snippets as $snippet) {
+            $html .= '
+                <div class="snippet-list-item">
+                    <div class="snippet-title">
+                        <p><a href="?page=listsnippets&snippet=' . $snippet->getID() . '">' . $snippet->getTitle() . '</a></p>
+                    </div>
+                    <div class="snippet-author">
+                        <p>' . $snippet->getDesc() . '</p>
+                    </div>
+                </div>
+            ';
+        }
+        
+        return $html;
+    }
+
     public function createSnippet($languages)
     {
         $html = '<h1>Add a new snippet</h1>

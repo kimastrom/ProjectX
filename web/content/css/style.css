@@ -9,8 +9,6 @@ html,body{height:100%}
     }
     html>body #container{height:auto}/* not ie6- */
 
- 
- 
 body {
     font-family: Arial;
     font-size: 13px;
@@ -59,6 +57,8 @@ input, textarea, select  {
 
 .topbar ul {
     list-style-type: none;
+    margin-top: 0px;
+    padding: 0px;
 }
 
 .topbar li {
@@ -264,6 +264,48 @@ textarea {
     margin-top: 10px;
 }
 
+/*
+ * BLOG
+ * ---------------------------- */
+
+.blogpost-title {
+    font-size: 18px;
+    text-transform: uppercase;
+    margin: 5px 0;    
+}
+
+.blogpost-title a{
+    text-decoration: none;   
+}
+
+.blog-content {
+    border-top: dashed 1px #ddd;
+    border-bottom: dashed 1px #ddd;
+    padding: 10px 0 10px 0;  
+}
+
+.blogpost-author {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;    
+}
+
+.blogpost-list-item {
+    border-top: dashed 1px #ddd;
+    margin: 5px 0;    
+}
+
+.blogpost-edit {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.blogpost-edit a{
+    text-decoration: none;    
+}
+
+.blogpost-read-more {
+    font-style: italic;
 /*
  * PROFILE
  * ---------------------------- */
