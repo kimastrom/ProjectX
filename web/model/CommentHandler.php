@@ -47,7 +47,7 @@ class CommentHandler
     }
 
     public function getComments($id) {
-        $url = $this->_api->GetURL().'comments?snippetid='.$id;  
+        $url = $this->_api->GetURL() . 'comments?snippetid=' . $id;  
         if($json = $this->getJson($url)) {
             $comments = array();
             foreach($json as $j) {
@@ -65,9 +65,9 @@ class CommentHandler
      * use it if you want to add a new commet för a snippet
      * @param snippetId, userId, commentText and apikey
      */
-    public function addComment($snippetID, $userID, $comment, $apikey) {
+    public function addComment($snippetID, $userID, $comment) {
         $url = $this->_api->GetUrl() . 'comments';
-        $data = array('snippetid' => $snippetID, 'userid' => $userID, 'comment' => $comment, 'apikey' => $apikey);
+        $data = array('snippetid' => $snippetID, 'userid' => $userID, 'comment' => $comment, 'apikey' => AuthHandler::getApiKey());
         $data = $this->formtaData($data);
 
         $ch = curl_init();
@@ -92,9 +92,9 @@ class CommentHandler
      * use it if you want to update a comment that exists in the database
      * @param commentId, userId, commentText and apikey
      */
-    public function updateComment($commentID, $userID, $comment, $apikey) {
+    public function updateComment($commentID, $userID, $comment) {
         $url = $this->_api->GetUrl() . 'comments';
-        $data = array('commentid' => $commentID, 'userid' => $userID, 'comment' => $comment, 'apikey' => $apikey);
+        $data = array('commentid' => $commentID, 'userid' => $userID, 'comment' => $comment, 'apikey' => AuthHandler::getApiKey());
         $data = $this->formtaData($data);
 
         $ch = curl_init();      

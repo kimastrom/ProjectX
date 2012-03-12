@@ -82,7 +82,7 @@ class AuthController
             Log::siteError('login failed, token not set');
         }
         
-        header('location: /');
+        header("Location: " . $_SERVER['PHP_SELF']);
     }
 
 }

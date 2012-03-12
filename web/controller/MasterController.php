@@ -56,7 +56,7 @@ class MasterController
 
         if (!empty($_GET['logout']) && $_GET['logout'] == 'true') {
             AuthHandler::logout();
-            header('location: /');
+            header("Location: " . $_SERVER['PHP_SELF']);
         }
         return $this->_html;
     }

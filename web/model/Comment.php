@@ -124,7 +124,7 @@ class Comment
     /**
      * Comment::getCommentUp()
      *
-     * @return int, how many finds the comment usefull
+     * @return int, how many finds the comment useful
      */
     public function getCommentUp()
     {
@@ -134,11 +134,11 @@ class Comment
     /**
      * Comment::getCommentDown()
      *
-     * @return inte, how many dosn't' find the comment usefull
+     * @return int, how many dosn't' find the comment useful
      */
     public function getCommentDown()
     {
-        return $this->_getCommentDownt;
+        return $this->_getCommentDown;
     }
 
 }

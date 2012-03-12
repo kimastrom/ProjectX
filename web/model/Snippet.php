@@ -133,5 +133,25 @@ class Snippet
     {
         return $this->_updated;
     }
+    
+    public function setTitle($title)
+    {
+        $this->_title = $title;
+    }
+    
+    public function setCode($code)
+    {
+        $this->_code = $code;
+    }
+    
+    public function setDesc($desc)
+    {
+        $this->_desc = $desc;
+    }
+    
+    public function setUpdatedDate($updated)
+    {
+        $this->_updated = $updated;
+    }
 
 }

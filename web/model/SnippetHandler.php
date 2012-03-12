@@ -134,12 +134,6 @@ class SnippetHandler
      */
     public function createSnippet(Snippet $snippet)
     {
-        $author = $snippet->getAuthorId();
-        $code = $snippet->getCode();
-        $title = $snippet->getTitle();
-        $desc = $snippet->getDesc();
-        $language = $snippet->getLanguageID();
-        $created = $snippet->getCreatedDate();
         
         $url = $this->_api->GetURL() . "snippets";
         $query = array('userid' => $snippet->getAuthorId(), 'code' => $snippet->getCode(), 'desc' => $snippet->getDesc(), 'title' => $snippet->getTitle(), 'languageid' => $snippet->getLanguageID(), 'apikey' => AuthHandler::getApiKey());
@@ -165,7 +159,7 @@ class SnippetHandler
             Log::apiError('could not create snippet', $url);
             return false;
         }
-
+        
         return $result->id;
     }
 
@@ -174,10 +168,10 @@ class SnippetHandler
      * @param string $snippetName, string $snippetCode, string $snippetDesc, int $snippetID, date $updated
      * @return bool
      */
-    public function updateSnippet($snippetName, $snippetCode, $snippetDesc, $snippetID, $updated)
+    public function updateSnippet(Snippet $snippet)
     {
         $url = $this->_api->GetURL() . "snippets";
-        $query = array('id' => $snippetID, 'userid' => 2, 'code' => $snippetCode, 'desc' => $snippetDesc, 'title' => $snippetName, 'languageid' => '2', 'apikey' => '5435gdfhghdghdf');
+        $query = array('id' => $snippet->getID(), 'userid' => $snippet->getAuthorId(), 'code' => $snippet->getCode(), 'desc' => $snippet->getDesc(), 'title' => $snippet->getTitle(), 'languageid' => $snippet->getLanguageID(), 'apikey' => AuthHandler::getApiKey());
         
         $fields = '';
         foreach ($query as $key => $value) {

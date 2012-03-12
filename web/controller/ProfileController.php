@@ -83,7 +83,7 @@ class ProfileController
             $name = $user->getName();
             $html .= $this->_profileView->profile($avatar, $name, $this->_data, $user);
         } else {
-            header('location: /');
+            header("Location: " . $_SERVER['PHP_SELF']);
         }
 
         return $html;
