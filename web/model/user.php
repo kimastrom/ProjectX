@@ -34,7 +34,6 @@ class User
      */
     public function getId()
     {
-        return 26;
         return $this->_id;
     }
 
