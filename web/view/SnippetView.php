@@ -134,6 +134,7 @@ class SnippetView
                                 if (data === '1') {
                                     $('#test').html((likes + 1) + ' likes, ' + dislikes + ' dislikes');
                                     $('#likes').css('width', ((total + 1) != 0 ? Math.round(((likes + 1) / (total + 1)) * 100) : 0) + '%');
+                                    $('#dislikes').css('width', ((total + 1) != 0 ? Math.round(((dislikes) / (total + 1)) * 100) : 0) + '%');
                                     $('#message').html('<p>Thank you for voting!</p>');
                                 } else if (data === '0') {
                                     $('#message').html('<p>You have already voted on this snippet</p>');
@@ -154,6 +155,7 @@ class SnippetView
                                 if (data === '1') {
                                     $('#test').html(likes + ' likes, ' + (dislikes + 1) + ' dislikes');
                                     $('#dislikes').css('width', ((total + 1) != 0 ? Math.round(((dislikes + 1) / (total + 1)) * 100) : 0) + '%');
+                                    $('#likes').css('width', ((total + 1) != 0 ? Math.round(((likes) / (total + 1)) * 100) : 0) + '%');
                                     $('#message').html('<p>Thank you for voting!</p>');
                                 } else if (data === '0') {
                                     $('#message').html('<p>You have already voted on this snippet</p>');
