@@ -1,21 +1,35 @@
 <?php
-require_once 'DbHandler.php';
 require_once 'AuthHandler.php';
+require_once 'API.php';
 
-$dbHandler = new DbHandler();
-$sqlQuery = "INSERT INTO rating (userId, snippetId, rating) VALUES (?, ?, ?)";
+$api = new API();
+$url = $api->GetURL() . "ratings";
 
-$user_id = $_POST['user_id']; // Should get user_id from cookie or something here
+$user_id = $_POST['user_id'];
 $snippet_id = $_POST['snippet_id'];
 $rating = $_POST['rating'];
 
+$query = array('snippetid' => $snippet_id, 1 => $user_id, 'rating' => $rating, 'apikey' => AuthHandler::getApiKey());
 
-if ($stmt = $dbHandler->PrepareStatement($sqlQuery)) {
-    $stmt->bind_param("iii", $user_id, $snippet_id, $rating);
-    if ($stmt->execute()) {
-        echo 1; // Echoes '1' if the rating was successfully applied
-    } else {
-        echo 0; // Echoes '0' if the user has already voted
-    }
-    $stmt->close();
+$fields = '';
+foreach ($query as $key => $value) {
+    $fields .= $key . '=' . $value . '&';
+}
+rtrim($fields, '&');
+
+$post = curl_init();
+
+curl_setopt($post, CURLOPT_URL, $url);
+curl_setopt($post, CURLOPT_POST, count($query));
+curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
+curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
+
+$result = curl_exec($post);
+
+curl_close($post);
+
+if ($result) {
+    echo 1;
+} else {
+    echo 0;
 }
