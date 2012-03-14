@@ -9,7 +9,7 @@ $user_id = $_POST['user_id'];
 $snippet_id = $_POST['snippet_id'];
 $rating = $_POST['rating'];
 
-$query = array('snippetid' => $snippet_id, 1 => $user_id, 'rating' => $rating, 'apikey' => AuthHandler::getApiKey());
+$query = array('snippetid' => $snippet_id, 'userid' => $user_id, 'rating' => $rating, 'apikey' => AuthHandler::getApiKey());
 
 $fields = '';
 foreach ($query as $key => $value) {
