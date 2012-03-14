@@ -1,8 +1,11 @@
 <?php
 require_once dirname(__FILE__) . '/../model/Functions.php';
+require_once dirname(__FILE__) . '/../model/recaptcha/recaptchalib.php';
 
 class SnippetView
 {
+	private $_publicKey = '6LcjpsoSAAAAAAjPNFHJLc-_hSeDGa1F7m_bdnkz';
+	
     /**
      * return html code for a single snippet
      * @param Snippet a snippet Object
@@ -75,8 +78,9 @@ class SnippetView
             $html .= '<option value="' . $language->getLangId() . '">' . $language->getLanguage() . '</option>';
         }
         $html .= '</select>
-                    <textarea name="createSnippetCodeInput" maxlength="1500" placeholder="Your snippet"></textarea>
-                    <input type="submit" name="createSnippetSaveButton" id="createSnippetSaveButton" value="Create snippet" />
+                    <textarea name="createSnippetCodeInput" maxlength="1500" placeholder="Your snippet"></textarea>'
+                    . recaptcha_get_html($this->_publicKey) .
+                    '<input type="submit" name="createSnippetSaveButton" id="createSnippetSaveButton" value="Create snippet" />
                 </form>
             </div>
         ';
@@ -228,6 +232,22 @@ class SnippetView
             return null;
         } else {
             return $snippetCode;
+        }
+        return false;
+    }
+	
+  	public function getRecaptchaChallenge()
+    {
+        if (isset($_POST["recaptcha_challenge_field"])) {
+            return $_POST["recaptcha_challenge_field"];
+        }
+        return false;
+    }
+	
+  	public function getRecaptchaResponse()
+    {
+        if (isset($_POST["recaptcha_response_field"])) {
+            return $_POST["recaptcha_response_field"];
         }
         return false;
     }

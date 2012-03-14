@@ -1,14 +1,17 @@
 <?php
 
 require_once dirname(__file__) . '/../model/AuthHandler.php';
+require_once dirname(__FILE__) . '/../model/recaptcha/recaptchalib.php';
 
 class CommentController
 {
     private $_dbHandler = NULL;
+	private $_privateKey;
 
     public function __construct()
     {
         $this->_dbHandler = new DbHandler();
+		$this->_privateKey = '6LcjpsoSAAAAAH7uTWckrCZL87jizsHpUQuP-dRy';
     }
 
     public function doControll()
@@ -16,20 +19,21 @@ class CommentController
         $html = "<h2>Comments</h2>";
         $commentHandler = new CommentHandler($this->_dbHandler);
         $commentView = new CommentView();
+		$recaptchaAnswer = recaptcha_check_answer ($this->_privateKey, $_SERVER["REMOTE_ADDR"], $commentView->getRecaptchaChallenge(), $commentView->getRecaptchaResponse());
 
         if (AuthHandler::isLoggedIn()) {
             //add Comment
             if ($commentView->triedToSubmitComment()) {
-                $text = $commentView->getCommentText();
-                $author = AuthHandler::getUser()->getId();
-                $id = $commentView->whichSnippetToComment();
+                if($recaptchaAnswer->is_valid) {
+	                $text = $commentView->getCommentText();
+	                $author = AuthHandler::getUser()->getId();
+	                $id = $commentView->whichSnippetToComment();
 
-                if ($commentView->getCaptchaAnswer() == $_SESSION['security_number']) {
                     $result = $commentHandler->addComment($id, $author, $text);
                     if($result !== true) {
                         echo print_r($result);
                     }
-                }
+				}
             }
             //Delete Comments
             if ($commentView->triesToRemoveComment()) {

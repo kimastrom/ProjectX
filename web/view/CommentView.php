@@ -1,8 +1,9 @@
 <?php
-require_once dirname(__file__) . '/../model/Captcha.php';
+require_once dirname(__FILE__) . '/../model/recaptcha/recaptchalib.php';
 
 class CommentView
 {
+	private $_publicKey = '6LcjpsoSAAAAAAjPNFHJLc-_hSeDGa1F7m_bdnkz';
     /**
      * CommentView::doCommentForm()
      * html form for adding a new comment
@@ -10,15 +11,12 @@ class CommentView
      */
     public function doCommentForm()
     {
-        $captcha = new Captcha();
         $form = "<div id='comment'>
                     <h3>Post a comment</h3>
                     <form action='#' method='POST'>
-                        <textarea name='commentText' maxlength='1500' placeholder='Your comment'></textarea>
-                        <label for='secure'></label>
-                        <img src='secure.jpg' alt='Captcha image'/>
-                        <input type='text' name='secure' placeholder='Are you a human?' />
-                        <input type='submit' name='submitComment' value='Post comment'/>
+                        <textarea name='commentText' maxlength='1500' placeholder='Your comment'></textarea>"
+                        . recaptcha_get_html($this->_publicKey) .                     
+                        "<input type='submit' name='submitComment' value='Post comment'/>
                     </form>
                 </div>";
         return $form;
@@ -113,18 +111,20 @@ class CommentView
         }
         return false;
     }
-
-    /**
-     * CommentView::getCaptchaAnswer()
-     *
-     * @return
-     */
-    public function getCaptchaAnswer()
+    
+  	public function getRecaptchaChallenge()
     {
-        if (isset($_POST['secure'])) {
-            return trim($_POST['secure']);
-        } 
-        
+        if (isset($_POST["recaptcha_challenge_field"])) {
+            return $_POST["recaptcha_challenge_field"];
+        }
+        return false;
+    }
+	
+  	public function getRecaptchaResponse()
+    {
+        if (isset($_POST["recaptcha_response_field"])) {
+            return $_POST["recaptcha_response_field"];
+        }
         return false;
     }
 

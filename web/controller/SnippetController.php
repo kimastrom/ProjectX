@@ -7,6 +7,7 @@ require_once dirname(__FILE__) . '/../controller/CommentController.php';
 require_once dirname(__FILE__) . '/../model/CommentHandler.php';
 require_once dirname(__FILE__) . '/../view/CommentView.php';
 require_once dirname(__FILE__) . '/../model/AuthHandler.php';
+require_once dirname(__FILE__) . '/../model/recaptcha/recaptchalib.php';
 
 class SnippetController
 {
@@ -16,6 +17,8 @@ class SnippetController
     private $_html;
     private $_commentController;
     private $_pagingHandler;
+	private $_privateKey;
+	private $_recaptchaAnswer;
 
     public function __construct()
     {
@@ -24,6 +27,8 @@ class SnippetController
         $this->_snippetView = new SnippetView();
         $this->_commentController = new CommentController($this->_dbHandler);
         $this->_html = '';
+		$this->_privateKey = '6LcjpsoSAAAAAH7uTWckrCZL87jizsHpUQuP-dRy';
+		$this->_recaptchaAnswer = recaptcha_check_answer ($this->_privateKey, $_SERVER["REMOTE_ADDR"], $this->_snippetView->getRecaptchaChallenge(), $this->_snippetView->getRecaptchaResponse());
     }
 
     public function doControll($page)
@@ -60,14 +65,18 @@ class SnippetController
                 $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
     
                 if ($this->_snippetView->triedToCreateSnippet()) {
-                    $authID = AuthHandler::getUser()->getID();
-                    $authName = AuthHandler::getUser()->getName();
-                    $snippet = new Snippet($authID, $authName, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate(), 'ett språk');
-                    if($id = $this->_snippetHandler->createSnippet($snippet)){
-                        header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $id);
-                        exit();
-                    }
-                    $this->_html .= "<h1>Ett fel uppstod men din snippet kan ha skapats</h1> snygg felhantering...";
+                	if($this->_recaptchaAnswer->is_valid) {
+	                    $authID = AuthHandler::getUser()->getID();
+	                    $authName = AuthHandler::getUser()->getName();
+	                    $snippet = new Snippet($authID, $authName, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate(), 'ett språk');
+	                    if($id = $this->_snippetHandler->createSnippet($snippet)){
+	                        header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $id);
+	                        exit();
+	                    }
+	                    $this->_html .= "<h1>Ett fel uppstod men din snippet kan ha skapats</h1> snygg felhantering...";
+					} else {
+						$this->_html = "<p>The reCAPTCHA answer given is not correct</p>";	
+					}
                 }
             } else {
                 $this->_html = "<p>You must sign in to add a snippet.</p>";
