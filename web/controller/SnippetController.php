@@ -75,7 +75,7 @@ class SnippetController
 	                    }
 	                    $this->_html .= "<h1>Ett fel uppstod men din snippet kan ha skapats</h1> snygg felhantering...";
 					} else {
-						$this->_html = "<p>The reCAPTCHA answer given is not correct</p>";	
+						$this->_html .= "<p>The reCAPTCHA answer given is not correct</p>";	
 					}
                 }
             } else {
