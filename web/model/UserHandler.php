@@ -105,7 +105,6 @@ class UserHandler
     {
         $insertedKey = -1;
         $apiKey = $this->generateApiKey();
-        $apiKey = 'apikey';
         //@TODO ÄNDRA OM TILL TRANSAKTIONER OM MÖJLIGT
         //Insert data into user table
         $this->_dbHandler->__wakeup();

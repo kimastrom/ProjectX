@@ -83,7 +83,8 @@ class RequestObjectRating
     //concern of parameter order. 
     public function select()
     {
-        $select = "SELECT ratingId, snippetId, rating.userId, rating, rating_created_date, username, email, apikey FROM rating LEFT JOIN user on rating.userid = user.userid";
+        $select = "SELECT ratingId, snippetId, rating.userId, rating, rating_created_date, username, apikey, title 
+        			FROM rating LEFT JOIN user on rating.userId = user.userId LEFT JOIN snippet on rating.snippetId = snippet.id";
         $type = '';
         $paramvalue = array();
 

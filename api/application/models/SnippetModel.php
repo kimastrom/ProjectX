@@ -56,7 +56,7 @@ class SnippetModel
             }
             $stmt->execute();
 
-            $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated, $userId, $username, $email, $apikey, $languageid, $language, $thumbsup, $thumbsdown);
+            $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated, $userId, $name, $username, $apikey, $role_id, $languageid, $language, $thumbsup, $thumbsdown);
             while ($stmt->fetch()) {
                 $snippet = array('language' => $language, 'languageid' => $languageid, 'title' =>
                     $title, 'description' => $description, 'code' => $code, 'username' => $username, 'userid' => $userId,
@@ -102,7 +102,7 @@ class SnippetModel
 		$updated = $snippet->__get('_updated');
 
         if ($this->validateUser($userid, $apikey)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO snippet (userid, code, title, description, languageid, date, updated) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO snippet (userId, code, title, description, languageId, date, updated) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
                 $databaseQuery->bind_param('sssssss', $userid, $code, $title, $desc, $languageid, $date, $updated);
                 $databaseQuery->execute();
 				$id = $databaseQuery->insert_id;
@@ -139,7 +139,7 @@ class SnippetModel
         $apikey = $snippet->__get('_apikey');
 
         if ($this->validateUser($userid, $apikey)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("UPDATE snippet SET userid = ?, code= ?, title= ?, description= ?, languageid= ? WHERE id = ? AND userid = ?")) {
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("UPDATE snippet SET userId = ?, code= ?, title= ?, description= ?, languageId= ? WHERE id = ? AND userId = ?")) {
                 $databaseQuery->bind_param('sssssss', $userid, $code, $title, $desc, $languageid,
                     $id, $userid);
                 $databaseQuery->execute();
@@ -171,7 +171,7 @@ class SnippetModel
         $apikey = $snippet->__get('_apikey');
 
         if ($this->validateUser($userid, $apikey)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("DELETE FROM snippet WHERE id = ? AND userid = ?")) {
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("DELETE FROM snippet WHERE id = ? AND userId = ?")) {
                 $databaseQuery->bind_param('ss', $id, $userid);
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {
