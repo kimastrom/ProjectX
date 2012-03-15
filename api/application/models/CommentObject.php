@@ -26,7 +26,7 @@ class CommentObject
         $this->_userid = null;
         $this->_comment = null;
         $this->_apikey = null;
-        $this->_date = date("Y-m-d h:i:s");
+        $this->_date = date("Y-m-d H:i:s");
     }
     
     public function __get($property)
