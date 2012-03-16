@@ -71,7 +71,7 @@ class MasterController
             AuthHandler::logout();
             header("Location: " . $_SERVER['PHP_SELF']);
         }
-         //mail('martajohnsson@gmail.com', 'subject', 'message från MasterControllen 444');
+
         return $this->_html;
     }
 

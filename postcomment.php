@@ -5,8 +5,8 @@
         //extract($_POST);
 
         //set POST variables
-        $url = 'localhost/ProjectX/api/comments';
-        $fields = array('snippetid' => '20010', 'userid' => '1', 'comment' => 'Unika ord som glänser i solen', 'apikey' => '23434jdkfdjfkfdslfds');
+        $url = 'tmpn.se/api/comments';
+        $fields = array('snippetid' => '20010', 'userid' => '23', 'comment' => 'Unika ord som glänser i solen', 'apikey' => '789209373dea333e71a1ad5194b43d7fc19f3ec1');
 
         tourl($url, $fields);
         

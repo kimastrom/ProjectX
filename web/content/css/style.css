@@ -42,10 +42,11 @@ input, textarea, select  {
  * TOPBAR
  * ---------------------------- */
 .topbar {
-	position:fixed;
-	top:20px;
+	position:relative;
+	top:0px;
 	left:0px;
-	width:100%;
+	width:920px;
+	margin-left:10px;
     height: 30px;
     background: #000;
     color: #fff;
@@ -83,7 +84,7 @@ input, textarea, select  {
 }
 
 .topbar-inner {
-    width: 940px;
+    width: 900px;
     line-height: 30px;
     margin: 0 auto;
 }
@@ -367,18 +368,6 @@ textarea {
     border-right: 1px solid black;
 }
 
-#setting-wrapper h4 {
-    background-color: blue;
-    width: 550px;
-    padding: 5px 0 5px 0;
-
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C4C4C4), to(#FFFFFF));
-    background: -webkit-linear-gradient(top, #F2F2F2, #DBDBDB);
-    background: -moz-linear-gradient(top, #C4C4C4, #FFFFFF);
-    background: -ms-linear-gradient(top, #C4C4C4, #FFFFFF);
-    background: -o-linear-gradient(top, #C4C4C4, #FFFFFF);
-}
-
 #setting-wrapper p {
     margin:0px;
     padding:0px;
@@ -498,7 +487,7 @@ textarea {
   * ---------------------------- */
   
 #learn-more-wrap{
-	position: fixed;
+	position: absolute;
 	top: -35px;
 	width: 100%;
 	color: white;

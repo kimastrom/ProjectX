@@ -90,7 +90,14 @@ class SnippetView
 
     public function createSnippet($languages)
     {
-        $html = '<h1>Add a new snippet</h1>
+    	
+        $html = '
+        <script type="text/javascript">
+			var RecaptchaOptions = {
+    		theme : "clean"
+ 		};
+ 		</script>
+        <h1>Add a new snippet</h1>
             <div id="createSnippetContainer">
                 <form action="" method="post">
                     <input type="text" name="snippetTitle" placeholder="Title" />

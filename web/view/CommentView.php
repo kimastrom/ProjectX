@@ -11,7 +11,13 @@ class CommentView
      */
     public function doCommentForm()
     {
-        $form = "<div id='comment'>
+        $form = "
+        	<script type='text/javascript'>
+			var RecaptchaOptions = {
+    		theme : 'clean'
+ 			};
+ 			</script>
+        	<div id='comment'>
                     <h3>Post a comment</h3>
                     <form action='#' method='POST'>
                         <textarea name='commentText' maxlength='1500' placeholder='Your comment'></textarea>"

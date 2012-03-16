@@ -33,7 +33,7 @@ class ProfileView
                     <ul>";
 
         foreach ($likedSnippets as $snippet) {
-            $html .= "<li><a href='?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
+            $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
         }
         $html .= "</ul>";
         return $html;
@@ -44,7 +44,7 @@ class ProfileView
         $html = "<h3>Disliked snippets</h3>
                     <ul>";
         foreach ($dislikedSnippets as $snippet) {
-            $html .= "<li><a href='?page=listsnippetssnippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
+            $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippetssnippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
         }
         $html .= "</ul>";
         return $html;
@@ -56,7 +56,7 @@ class ProfileView
                     <ul>";
         if($createdSnippets) {
             foreach ($createdSnippets as $snippet) {
-                $html .= "<li><a href='?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
+                $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
             }
         } else {
             $html .= 'You have no created snippets';
@@ -70,7 +70,7 @@ class ProfileView
         $html = "<h3>Commented snippets</h3>
                     <ul>";
         foreach ($commentedSnippets as $snippet) {
-            $html .= "<li><a href='?&page=listsnippets&snippet=" . $snippet['id'] . "'>" . $snippet['title'] . '</a><br />' . $snippet['comment'] . '</li>';
+            $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $snippet['id'] . "'>" . $snippet['title'] . '</a><br />' . $snippet['comment'] . '</li>';
         }
         $html .= "</ul>";
         return $html;
@@ -80,16 +80,16 @@ class ProfileView
     {
         $html = "    
                 <ul id='profile-menu'>
-                <li><a href='/?page=profile&amp;p=created&amp;username=" . $email . "'>Created snippets</a></li>
-                <li><a href='/?page=profile&amp;p=commented&amp;username=" . $email . "'>Commented snippets</a></li>
-                <li><a href='/?page=profile&amp;p=liked&amp;username=" . $email . "'>Liked snippets</a></li>
-                <li><a href='/?page=profile&amp;p=disliked&amp;username=" . $email . "'>Disliked snippets</a></li>";
+                <li><a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;p=created&amp;username=" . $email . "'>Created snippets</a></li>
+                <li><a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;p=commented&amp;username=" . $email . "'>Commented snippets</a></li>
+                <li><a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;p=liked&amp;username=" . $email . "'>Liked snippets</a></li>
+	            <li><a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;p=disliked&amp;username=" . $email . "'>Disliked snippets</a></li>";
                 if($isOwner || $isAdmin) {
-                    $html .= "<li><a href='/?page=profile&amp;p=settings&amp;username=" . $email . "'>Settings</a></li>";
+                    $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;p=settings&amp;username=" . $email . "'>Settings</a></li>";
                 }
                 
                 if($isAdmin) {
-                    $html .= "<li><a href='/?page=profile&amp;p=reported'>Reported snippets</a></li>";
+                    $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;p=reported'>Reported snippets</a></li>";
                 }
                 $html .= "</ul>";
         return $html;
@@ -102,7 +102,7 @@ class ProfileView
         $html .= "<div id='setting-wrapper'>";
         $html .= "<h4>This is your api-key <img class='info' data-info='Use the api-key to verify yourself in the desktop app' src='/content/image/info.png' alt='info'/></h4>";
         $html .= '<span>' . $apiKey . ' - </span>';
-        $html .= "<a href='/profile?username=" . $username . "&p=settings&amp;api_key=generate'>Generate new</a>";
+        $html .= "<a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;username=" . $username . "&amp;p=settings&amp;api_key=generate'>Generate new</a>";
         $html .= '<h4>This is your user role - change it if you want..</h4>';
         if($roles != null) {
             $html .= "<p><form action='#' method='POST' >

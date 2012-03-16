@@ -71,12 +71,13 @@ class SnippetController
                 	if($this->_recaptchaAnswer->is_valid) {
 	                    $authID = AuthHandler::getUser()->getID();
 	                    $authName = AuthHandler::getUser()->getName();
-	                    $snippet = new Snippet($authID, $authName, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate(), 'ett språk');
-	                    if($id = $this->_snippetHandler->createSnippet($snippet)){
+	                    $snippet = new Snippet($authID, $authName, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate(), "Ett språk");
+	                    $id = $this->_snippetHandler->createSnippet($snippet);
+	                    if($id != false){
 	                        header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $id);
 	                        exit();
 	                    }
-	                    $this->_html .= "<h1>Ett fel uppstod men din snippet kan ha skapats</h1> snygg felhantering...";
+	                    $this->_html .= "<p>Error, your snippet was not created. Please try again! ". $id ."</p>";
 					} else {
 						$this->_html .= "<p>The reCAPTCHA answer given is not correct</p>";	
 					}

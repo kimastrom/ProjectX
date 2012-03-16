@@ -28,11 +28,12 @@ class CommentController
 	                $text = $commentView->getCommentText();
 	                $author = AuthHandler::getUser()->getId();
 	                $id = $commentView->whichSnippetToComment();
-
+	                
+	                
                     $result = $commentHandler->addComment($id, $author, $text);
-                    if($result !== true) {
-                        echo print_r($result);
-                    }
+                    //if($result !== true) {
+                    //    echo print_r($result);
+                    //}
 				}
             }
             //Delete Comments

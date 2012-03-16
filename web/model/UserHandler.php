@@ -109,7 +109,7 @@ class UserHandler
         //Insert data into user table
         $this->_dbHandler->__wakeup();
         if ($stmt = $this->_dbHandler->PrepareStatement("INSERT INTO user (name, username, api_key, role_id) VALUES (?, ?, ?, ?)")) {
-            $stmt->bind_param('ssis', $name, $email, $apiKey, $role);
+            $stmt->bind_param('ssss', $name, $email, $apiKey, $role);
             $stmt->execute();
             if ($stmt->affected_rows == null) {
                 $stmt->close();
