@@ -38,6 +38,8 @@ class CommentHandler
      */
     private function getJson($url) {
         if($content = @file_get_contents($url)) {
+            $header = get_headers($url);
+            if($header[0] != 'HTTP/1.1 200 OK') return false;
             if($json = json_decode($content)) {
                 return $json;
             }
@@ -47,13 +49,16 @@ class CommentHandler
     }
 
     public function getComments($id) {
+
+        $comments = array();
         $url = $this->_api->GetURL() . 'comments?snippetid=' . $id;  
         if($json = $this->getJson($url)) {
-            $comments = array();
-            foreach($json as $j) {
-                $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date);
+            if (!$json->error) {
+                foreach($json as $j) {
+                    $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date);
+                }
+                return $comments;
             }
-            return $comments;
         }
         return false;
     }
@@ -78,7 +83,7 @@ class CommentHandler
 
         $result = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        curl_close($ch);     
 
         if($httpCode == 200) return true;
 
@@ -137,50 +142,24 @@ class CommentHandler
     }
 
     /**
-     * CommentHandler::removeAllComments()
-     *
-     * @return true if successful
-     * taking away all comments from the db
-     */
-    public function removeAllComments()
-    {
-
-        $sqlQuery = "DELETE FROM comment";
-
-        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->execute();
-            $stmt->close();
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * CommentHandler::getCommentToEditByCommentId()
      *
      * @return Comment object to edit
      * @param id of the comment you want to edit
      *
      */
-    public function getCommentByID($commentId)
+    public function getCommentByID($id)
     {
         $comment = null;
-        $sqlQuery = "   SELECT comment.snippet_id, comment.id, comment.comment, comment.user_id, user.username
-                        FROM comment
-                        INNER JOIN user ON user.id = comment.user_id
-                        WHERE comment.id = ?
-                    ";
-        if ($stmt = $this->_dbHandler->PrepareStatement($sqlQuery)) {
-            $stmt->bind_param('i', $commentId);
-            $stmt->execute();
-            $stmt->bind_result($snippetId, $commentId, $commentText, $userId, $username);
-
-            if ($stmt->fetch()) {
-                $comment = new Comment($snippetId, $commentId, $userId, $commentText);
+        $url = $this->_api->GetURL() . "comments?commentid=" . $id;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $comment = new Comment($j->snippetid, $j->commentid, $j->userid, $j->comment);
             }
+            return $comment;
         }
-        $stmt->close();
-        return $comment;
+        return false;
     }
 
     /**
@@ -190,25 +169,16 @@ class CommentHandler
      */
     public function getCommentsByUser($id)
     {
-        $commentArr = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->prepareStatement("SELECT * FROM comment WHERE user_id = ?")) {
-            $stmt->bind_param('i', $id);
-            $stmt->execute();
-            $stmt->bind_result($id, $snippetID, $comment, $userID);
-
-            while ($stmt->fetch()) {
-                $tempComment = new Comment($snippetID, $id, $userID, $comment);
-                array_push($commentArr, $tempComment);
+        $comments = null;
+        $url = $this->_api->GetURL() . "api/comments?userid=" . $id;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $comments[] = new Comment($j->snippetid, $j->commentid, $j->userid, $j->comment);
             }
-            $stmt->close();
-        } else {
-            $stmt->close();
-            $this->_dbHandler->close();
-            return false;
+            return $comments;
         }
-        $this->_dbHandler->close();
-        return $commentArr;
+        return false;
     }
 
 }

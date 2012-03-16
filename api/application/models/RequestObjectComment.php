@@ -85,7 +85,8 @@ class RequestObjectComment
     //concern of parameter order. 
     public function select()
     {
-        $select = "SELECT commentId, snippetId, comment.userId, comment, comment_created_date, username, email, apikey FROM comment LEFT JOIN user on comment.userid = user.userid";
+        $select = "	SELECT commentId, snippetId, comment.userId, comment, comment_created_date, user.username, apikey, title
+        			FROM comment LEFT JOIN user on comment.userid = user.userid LEFT JOIN snippet on comment.snippetId = snippet.id";
         $type = '';
         $paramvalue = array();
 

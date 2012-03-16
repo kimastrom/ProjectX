@@ -10,6 +10,11 @@ $query = $_GET['query'];
 $url = $api->GetURL() . "search/" . $query . "*";
 
 if ($json = json_decode(@file_get_contents($url))) {
+    $header = get_headers($url);
+    if($header[0] != 'HTTP/1.1 200 OK') {
+        echo "<p>No results</p>";
+        return;
+    }
     foreach($json as $j)
     {
         $snippets[] = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->language, $j->id);

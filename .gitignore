@@ -1,0 +1,14 @@
+.DS_Store
+.project
+.settings
+model/settings.php
+.classpath
+proguard.cfg
+nbproject/
+web/secure.jpg
+web/secure.jpg
+web/Log/api_error.log
+web/Log/site_error.log
+web/Log/user_error.log
+*.o
+moc_*

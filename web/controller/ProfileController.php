@@ -50,6 +50,11 @@ class ProfileController
                     $this->showLikedSnippets($userId);
                 } else if ($page == 'disliked') {
                     $this->showDislikedSnippets($userId);
+                } else if ($page == 'reported') {
+                    if(isset($_GET['id'])) {
+                        $this->_snippetHandler->deleteReport($_GET['id']);
+                    }
+                    $this->showReportedSnippets();
                 } else {
                     if($page == 'settings') {
                         // True så länge allt inte är fixat på servern
@@ -60,12 +65,6 @@ class ProfileController
                             $this->showSettingsPage($userId, $user->getApiKey(), $user);
                         } else {
                             $this->_data['content'] = 'You must be the owner of to do this.';
-                        }
-                    } else if($page == 'search') {
-                        if($user->isAdmin()) {
-                            $this->showUserSearch($userId);
-                        } else {
-                            $this->_data['content'] = 'You must be an admin to do this.';
                         }
                     } else {
                         $this->_data['content'] = 'The page you are looking for does not exist.';
@@ -204,19 +203,6 @@ class ProfileController
     }
 
     /**
-     *Search for a user
-     */
-    private function showUserSearch() 
-    {
-        //Search for user 
-        $users = null;
-        if($query = $this->_profileView->doSearch()) {
-            $users = $this->_userHandler->searchUser($query);
-        }
-        $this->_data['content'] = $this->_profileView->searchForUsers($users);
-    }
-
-    /**
      * change user role for a
      */
      private function changeUserRole(User $user)
@@ -226,6 +212,27 @@ class ProfileController
                 $role = $this->_profileView->GetUserRole();
                 $this->_userHandler->changeUserRole($id, $role);
             }
+        }
+     }
+
+     /**
+      *
+      */
+     private function showReportedSnippets() 
+     {
+        if(AuthHandler::isAdmin()) {
+            $reports = $this->_snippetHandler->getReportedSnippets();
+            $this->getAvatars($reports);
+            $this->_data['content'] = $this->_profileView->reportedSnippets($reports);
+        } else {
+            $this->_data['content'] = 'Nope, you do not belong here';
+        }
+     }
+
+     private function getAvatars(&$reports) {
+        foreach ($reports as &$report) {
+            $url = $this->_gravatarHandler->getPostGravatar($report['email']);
+            $report['gravatar'] = $url;
         }
      }
 }

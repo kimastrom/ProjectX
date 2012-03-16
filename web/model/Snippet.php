@@ -55,7 +55,7 @@ class Snippet
             $sh = new SnippetHandler();
 
             $lang = $sh->getLanguageByID($this->_languageID);
-            $this->_language = $lang['name'];
+            $this->_language = $lang->getLanguage();
         }
     }
 

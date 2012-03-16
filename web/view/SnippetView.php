@@ -1,8 +1,11 @@
 <?php
 require_once dirname(__FILE__) . '/../model/Functions.php';
+require_once dirname(__FILE__) . '/../model/recaptcha/recaptchalib.php';
 
 class SnippetView
 {
+	private $_publicKey = '6LcjpsoSAAAAAAjPNFHJLc-_hSeDGa1F7m_bdnkz';
+	
     /**
      * return html code for a single snippet
      * @param Snippet a snippet Object
@@ -12,25 +15,53 @@ class SnippetView
     {
         $sh = new Functions();
         
-        $html = "<h2 class='snippet-title'>" . $snippet->getTitle() . "</h2>
+        $html = "<h2 class='snippet-title' id='snippetTitle'>" . $snippet->getTitle() . "</h2>
 		<div class='snippet-description'>
 			<p>" . $snippet->getDesc() . "</p>	
 		</div>
-		<div class='snippet-code'>
-			<code>" . $sh->geshiHighlight($snippet->getCode(), $snippet->getLanguage()) . "</code>
+		<div class='snippet-code' id='snippet-text'>
+			<code id='code' class='snippet-text'>" . $sh->geshiHighlight($snippet->getCode(), $snippet->getLanguage()) . "</code>
 		</div>
+
+        <div id='hidden'>".$snippet->getCode()."</div>
+        
 		<div class='snippet-author'>
 			<span>Posted by " . $snippet->getAuthor();
         if ($isOwner ){
 		    $html .= "<a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> 
 		    <a href='?page=updatesnippet&snippet=" . $snippet->getID() . "'>Update</a>";
 	    }
+        $html .= '<br /><a id="report" href="#">Report this snippet!</a>';
+        $html .= '<div id="report-wrap"><form action="#" method="POST" name="reportsnippet">
+                    <textarea placeholder="What is wrong with the snippet?" name="report-message"></textarea>
+                    <input type="submit" name="send-report" value="Report!" />
+                </form></div>';
 		
 		$html .= "</span>
 	          </div>";
+              
+        $html .= "  <form action='' method='post'>
+                        <input type='submit' name='sendSnippetByMail' id='mail' value='Send Snippet by Mail' />
+                    </form>";
         
         return $html;
     }
+    
+    public function mailView()
+    {
+        $html = '<div class="mail">
+            		<form id="formmail" action="" method ="POST">
+            			<label>Your mail :</label>
+            			<input type="text" name="mail" id="mailAddress" />
+            			<input type="submit" id="sendByMail" name="sendByMail" value="send mail" />
+            		</form>
+                    <div id="response">
+                    </div>
+        	</div>';
+
+        return $html;
+    }    
+
 
     /**
      * Transform an array of snippets to html-code
@@ -59,19 +90,27 @@ class SnippetView
 
     public function createSnippet($languages)
     {
-        $html = '<h1>Add a new snippet</h1>
+    	
+        $html = '
+        <script type="text/javascript">
+			var RecaptchaOptions = {
+    		theme : "clean"
+ 		};
+ 		</script>
+        <h1>Add a new snippet</h1>
             <div id="createSnippetContainer">
                 <form action="" method="post">
                     <input type="text" name="snippetTitle" placeholder="Title" />
                     <input type="text" name="snippetDescription" placeholder="Description" />
                     <select name="snippetLanguage">
                         <option >Choose language</option>';
-        foreach ($languages as $languages) {
-            $html .= '<option value="' . $languages['id'] . '">' . $languages['name'] . '</option>';
+        foreach ($languages as $language) {
+            $html .= '<option value="' . $language->getLangId() . '">' . $language->getLanguage() . '</option>';
         }
         $html .= '</select>
-                    <textarea name="createSnippetCodeInput" maxlength="1500" placeholder="Your snippet"></textarea>
-                    <input type="submit" name="createSnippetSaveButton" id="createSnippetSaveButton" value="Create snippet" />
+                    <textarea name="createSnippetCodeInput" maxlength="1500" placeholder="Your snippet"></textarea>'
+                    . recaptcha_get_html($this->_publicKey) .
+                    '<input type="submit" name="createSnippetSaveButton" id="createSnippetSaveButton" value="Create snippet" />
                 </form>
             </div>
         ';
@@ -129,6 +168,7 @@ class SnippetView
                                 if (data === '1') {
                                     $('#test').html((likes + 1) + ' likes, ' + dislikes + ' dislikes');
                                     $('#likes').css('width', ((total + 1) != 0 ? Math.round(((likes + 1) / (total + 1)) * 100) : 0) + '%');
+                                    $('#dislikes').css('width', ((total + 1) != 0 ? Math.round(((dislikes) / (total + 1)) * 100) : 0) + '%');
                                     $('#message').html('<p>Thank you for voting!</p>');
                                 } else if (data === '0') {
                                     $('#message').html('<p>You have already voted on this snippet</p>');
@@ -149,6 +189,7 @@ class SnippetView
                                 if (data === '1') {
                                     $('#test').html(likes + ' likes, ' + (dislikes + 1) + ' dislikes');
                                     $('#dislikes').css('width', ((total + 1) != 0 ? Math.round(((dislikes + 1) / (total + 1)) * 100) : 0) + '%');
+                                    $('#likes').css('width', ((total + 1) != 0 ? Math.round(((likes) / (total + 1)) * 100) : 0) + '%');
                                     $('#message').html('<p>Thank you for voting!</p>');
                                 } else if (data === '0') {
                                     $('#message').html('<p>You have already voted on this snippet</p>');
@@ -160,7 +201,7 @@ class SnippetView
                 
         return $html;
     }
-
+    
     public function triedToCreateSnippet()
     {
         if (isset($_POST['createSnippetSaveButton'])) {
@@ -221,6 +262,22 @@ class SnippetView
             return null;
         } else {
             return $snippetCode;
+        }
+        return false;
+    }
+	
+  	public function getRecaptchaChallenge()
+    {
+        if (isset($_POST["recaptcha_challenge_field"])) {
+            return $_POST["recaptcha_challenge_field"];
+        }
+        return false;
+    }
+	
+  	public function getRecaptchaResponse()
+    {
+        if (isset($_POST["recaptcha_response_field"])) {
+            return $_POST["recaptcha_response_field"];
         }
         return false;
     }
@@ -310,6 +367,32 @@ class SnippetView
     {
         if (isset($_POST['gotoCreateSnippetViewButton'])) {
             return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function sendByMail()
+    {
+        if (isset($_POST['sendByMail'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }      
+    
+    public function wantsToSendByMail()
+    {
+        if (isset($_POST['sendSnippetByMail'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }  
+
+    public function getReportMessage() {
+        if (isset($_POST['report-message'])) {
+            return $_POST['report-message'];
         } else {
             return false;
         }

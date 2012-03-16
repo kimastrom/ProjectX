@@ -4,9 +4,11 @@ require_once dirname(__FILE__) . '/../model/SnippetHandler.php';
 require_once dirname(__FILE__) . '/../view/SnippetView.php';
 require_once dirname(__FILE__) . '/../model/DbHandler.php';
 require_once dirname(__FILE__) . '/../controller/CommentController.php';
+//require_once dirname(__FILE__) . '/../controller/MailController.php';
 require_once dirname(__FILE__) . '/../model/CommentHandler.php';
 require_once dirname(__FILE__) . '/../view/CommentView.php';
 require_once dirname(__FILE__) . '/../model/AuthHandler.php';
+require_once dirname(__FILE__) . '/../model/recaptcha/recaptchalib.php';
 
 class SnippetController
 {
@@ -15,7 +17,10 @@ class SnippetController
     private $_snippetView;
     private $_html;
     private $_commentController;
+    //private $_mailController;
     private $_pagingHandler;
+	private $_privateKey;
+	private $_recaptchaAnswer;
 
     public function __construct()
     {
@@ -23,7 +28,10 @@ class SnippetController
         $this->_snippetHandler = new SnippetHandler($this->_dbHandler);
         $this->_snippetView = new SnippetView();
         $this->_commentController = new CommentController($this->_dbHandler);
+        //$this->_mailController = new MailController();
         $this->_html = '';
+		$this->_privateKey = '6LcjpsoSAAAAAH7uTWckrCZL87jizsHpUQuP-dRy';
+		$this->_recaptchaAnswer = recaptcha_check_answer ($this->_privateKey, $_SERVER["REMOTE_ADDR"], $this->_snippetView->getRecaptchaChallenge(), $this->_snippetView->getRecaptchaResponse());
     }
 
     public function doControll($page)
@@ -44,20 +52,35 @@ class SnippetController
                     return false;
                 }
             }
+            if(isset($_POST['send-report'])) {
+                $userId = -1;
+                $message = $this->_snippetView->getReportMessage();
+                $snippetId = $_GET['snippet'];
+                if(AuthHandler::isLoggedIn()) {
+                    $userId = AuthHandler::getUser()->getId();
+                } 
+                $this->_snippetHandler->reportSnippet($snippetId, $userId, $message); 
+                
+            }
         } else if ($page == 'add') {
             if (AuthHandler::isLoggedIn()) {
                 $this->_html = null;
                 $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
     
                 if ($this->_snippetView->triedToCreateSnippet()) {
-                    $authID = AuthHandler::getUser()->getID();
-                    $authName = AuthHandler::getUser()->getName();
-                    $snippet = new Snippet($authID, $authName, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate(), 'ett språk');
-                    if($id = $this->_snippetHandler->createSnippet($snippet)){
-                        header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $id);
-                        exit();
-                    }
-                    $this->_html .= "<h1>Ett fel uppstod men din snippet kan ha skapats</h1> snygg felhantering...";
+                	if($this->_recaptchaAnswer->is_valid) {
+	                    $authID = AuthHandler::getUser()->getID();
+	                    $authName = AuthHandler::getUser()->getName();
+	                    $snippet = new Snippet($authID, $authName, $this->_snippetView->getCreateSnippetCode(), $this->_snippetView->getSnippetTitle(), $this->_snippetView->getSnippetDescription(), $this->_snippetView->getSnippetLanguage(), $this->_snippetHandler->SetDate(), $this->_snippetHandler->SetDate(), "Ett språk");
+	                    $id = $this->_snippetHandler->createSnippet($snippet);
+	                    if($id != false){
+	                        header("Location: " . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $id);
+	                        exit();
+	                    }
+	                    $this->_html .= "<p>Error, your snippet was not created. Please try again! ". $id ."</p>";
+					} else {
+						$this->_html .= "<p>The reCAPTCHA answer given is not correct</p>";	
+					}
                 }
             } else {
                 $this->_html = "<p>You must sign in to add a snippet.</p>";
@@ -82,7 +105,16 @@ class SnippetController
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
-
+        
+        if($this->_snippetView->wantsToSendByMail()){
+            $this->_html .= $this->_snippetView->mailView();
+        }
+//        if($this->_snippetView->sendByMail()) {
+//            //mail('martajohnsson@gmail.com', 'subject', 'message från doControll i mail controllen SZAFA GRA');
+//            mail('martajohnsson@gmail.com', $this->_snippetView->getSnippetTitle(), $this->_snippetView->getCreateSnippetCode() 
+//            );
+//        }
+        
         return $this->_html;
     }
 

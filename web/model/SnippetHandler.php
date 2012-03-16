@@ -4,6 +4,7 @@ require_once 'DbHandler.php';
 require_once 'Snippet.php';
 require_once 'API.php';
 require_once 'AuthHandler.php';
+require_once 'Language.php';
 
 class SnippetHandler
 {
@@ -23,9 +24,12 @@ class SnippetHandler
      * @return json content on succsess or FALSE failiure
      */
     private function getJson($url) {
-        if($content = @file_get_contents($url)) {
-            if($json = json_decode($content)) {
-                return $json;
+        $header = get_headers($url);
+        if($header[0] == 'HTTP/1.1 200 OK') {
+            if($content = @file_get_contents($url)) {
+                if($json = json_decode($content)) {
+                    return $json;
+                }
             }
         }
         return false;
@@ -76,25 +80,16 @@ class SnippetHandler
      */
     public function getRatedSnippetsByUser($id, $rating)
     {
-        $snippetArr = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->prepareStatement("SELECT snippet.id, snippet.title, snippet.description, snippet.language
-                                                        FROM snippet
-                                                        INNER JOIN rating
-                                                        ON rating.snippetId = snippet.id
-                                                        WHERE rating.rating = ?
-                                                        AND rating.userId = ?")) {
-            $stmt->bind_param('ii', $rating, $id);
-            $stmt->execute();
-            $stmt->bind_result($id, $title, $description, $lang);
-            while ($stmt->fetch()) {
-                $snippet = new Snippet(null, null, $title, $description, $lang, null, null, null, $id);
-                array_push($snippetArr, $snippet);
+        $snippets = null;
+        $url = $this->_api->GetURL() . "ratings?userid=" . $id . "&rating=" . $rating;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, $j->snippetId);
             }
-            $stmt->close();
+            return $snippets;
         }
-        $this->_dbHandler->close();
-        return $snippetArr;
+        return false;
     }
 
     /**
@@ -103,28 +98,16 @@ class SnippetHandler
      */
     public function getCommentedSnippetByUser($id)
     {
-        $snippetArr = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->prepareStatement("SELECT snippet.id, snippet.title, snippet.description,comment.comment
-                                                        FROM snippet
-                                                        INNER JOIN comment
-                                                        ON comment.snippet_id = snippet.id
-                                                        WHERE comment.user_id = ?")) {
-            $stmt->bind_param('i', $id);
-            $stmt->execute();
-            $stmt->bind_result($id, $title, $description,$comment);
-            $i = 0;
-            while ($stmt->fetch()) {
-                $snippetArr[$i]['id'] = $id;
-                $snippetArr[$i]['title'] = $title;
-                $snippetArr[$i]['description'] = $description;
-                $snippetArr[$i]['comment'] = $comment;
-                $i++;
+        $snippets = null;
+        $url = $this->_api->GetURL() . "comments?userid=" . $id;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, $j->snippetId);
             }
-            $stmt->close();
+            return $snippets;
         }
-        $this->_dbHandler->close();
-        return $snippetArr;
+        return false;
     }
     
     /**
@@ -145,22 +128,21 @@ class SnippetHandler
         rtrim($fields, '&');
         
         $post = curl_init();
-
+		
         curl_setopt($post, CURLOPT_URL, $url);
         curl_setopt($post, CURLOPT_POST, count($query));
         curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
 
         $result = json_decode(curl_exec($post));
-
+		
         curl_close($post);
         
-        if(!$result) {
+        if(!isset($result->id)) {
             Log::apiError('could not create snippet', $url);
             return false;
         }
-
-        if(!is_numeric($result->id)) return false;
+		
         return $result->id;
     }
 
@@ -222,26 +204,16 @@ class SnippetHandler
      */
     public function getLanguageByID($id)
     {
-        $language = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet_language WHERE id = ?")) {
-
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-
-            $stmt->bind_result($id, $name);
-            while ($stmt->fetch()) {
-                $language = array('id' => $id, 'name' => $name);
+        $language = null;
+        $url = $this->_api->GetURL() . "languages?languageid=" . $id;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $language = new Language($j->languageId, $j->language);
             }
-
-            $stmt->close();
-
-        } else {
-            return null;
+            return $language;
         }
-        $this->_dbHandler->Close();
-        return $language;
-
+        return false;
     }
 
     /**
@@ -250,24 +222,16 @@ class SnippetHandler
      */
     public function getLanguages()
     {
-        $languages = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT * FROM snippet_language")) {
-            $stmt->execute();
-
-            $stmt->bind_result($id, $name);
-            while ($stmt->fetch()) {
-                $language = array('id' => $id, 'name' => $name);
-                array_push($languages, $language);
+        $languages = null;
+        $url = $this->_api->GetURL() . "languages";
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $languages[] = new Language($j->languageId, $j->language);
             }
-
-            $stmt->close();
-
-        } else {
-            return null;
+            return $languages;
         }
-        $this->_dbHandler->Close();
-        return $languages;
+        return false;
     }
 
     /**
@@ -277,27 +241,82 @@ class SnippetHandler
      */
     public function getSnippetRating($id)
     {
-        $rating = array();
-
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->PrepareStatement("SELECT COUNT(IF(`rating` = 1, 1, null)) AS Likes, COUNT(IF(`rating` = 0, 1, null)) AS Dislikes FROM `rating` WHERE `snippetId` = ?")) {
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-
-            $stmt->bind_result($likes, $dislikes);
-            if ($stmt->fetch()) {
-                $rating['total'] = $likes + $dislikes;
-                $rating['likes'] = $likes;
-                $rating['dislikes'] = $dislikes;
+        $rating = null;
+        $url = $this->_api->GetURL() . "snippets?id=" . $id;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $rating['total'] = $j->thumbsup + $j->thumbsdown;
+                $rating['likes'] = $j->thumbsup;
+                $rating['dislikes'] = $j->thumbsdown;
             }
-
-            $stmt->close();
-
+            return $rating;
         }
+        return false;
+    }
 
-        $this->_dbHandler->Close();
+    public function reportSnippet($snippetId, $userId, $message)
+    {
+        $this->_dbHandler->__wakeup();
+        $result = false;
+        if($stmt = $this->_dbHandler->prepareStatement("INSERT INTO reported_snippet (message, user_id, snippet_id) VALUES (?,?,?)")){
+            $stmt->bind_param('sii', $message, $userId, $snippetId);
+            $stmt->execute();
+            $stmt->store_result();
+            if($stmt->affected_rows == 1) {
+                $result = true;
+            }
+        } 
 
-        return $rating;
+        $this->_dbHandler->close();
+        $stmt->close();
+        return $result;
+    }
+
+    public function getReportedSnippets()
+    {
+        $this->_dbHandler->__wakeup();
+        $reports = array();
+        if($stmt = $this->_dbHandler->prepareStatement("SELECT r.id, r.message, r.snippet_id, u.name, u.id, u.username
+                                                        FROM reported_snippet as r
+                                                        inner join user as u
+                                                        on r.user_id = u.id")) {
+            $stmt->execute();
+            $stmt->bind_result($id, $message, $snippetId, $userName, $userId, $email);
+            
+            $i = 0;
+            while($stmt->fetch()) {
+                $reports[$i]['id'] = $id;
+                $reports[$i]['message'] = $message;
+                $reports[$i]['userid'] = $userId;
+                $reports[$i]['username'] = $userName;
+                $reports[$i]['snippetid'] = $snippetId;
+                $reports[$i]['email'] = $email;
+                $i++;
+            }
+            $stmt->close();
+        }
+        $this->_dbHandler->close();
+
+        return $reports;
+    }
+
+    public function deleteReport($id)
+    {   
+        $result = false;
+        $this->_dbHandler->__wakeup();
+        if($stmt = $this->_dbHandler->prepareStatement("DELETE FROM reported_snippet WHERE id = ?")) {
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $stmt->store_result();
+
+            if($stmt->affected_rows == 1){
+                $result = true;
+            }
+            $stmt->close();
+        }
+        $this->_dbHandler->close();
+        return $result;
     }
     
     public function SetDate()

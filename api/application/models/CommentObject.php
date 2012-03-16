@@ -11,6 +11,7 @@ class CommentObject
 {
 	private $_commentid;
     private $_snippetid;
+	private $_title;
     private $_userid;
     private $_comment;
     private $_apikey;
@@ -21,10 +22,11 @@ class CommentObject
     {
     	$this->_commentid = null;
         $this->_snippetid = null;
+		$this->_title = null;
         $this->_userid = null;
         $this->_comment = null;
         $this->_apikey = null;
-        $this->_date = date("Y-m-d h:i:s");
+        $this->_date = date("Y-m-d H:i:s");
     }
     
     public function __get($property)

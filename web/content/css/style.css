@@ -42,10 +42,11 @@ input, textarea, select  {
  * TOPBAR
  * ---------------------------- */
 .topbar {
-	position:fixed;
+	position:relative;
 	top:0px;
 	left:0px;
-	width:100%;
+	width:920px;
+	margin-left:10px;
     height: 30px;
     background: #000;
     color: #fff;
@@ -83,7 +84,7 @@ input, textarea, select  {
 }
 
 .topbar-inner {
-    width: 940px;
+    width: 900px;
     line-height: 30px;
     margin: 0 auto;
 }
@@ -190,6 +191,15 @@ a {
 .snippet-tags {
     margin: 5px 0 10px;
 }
+
+/*
+ * SNIPPET SINGLE VIEW
+ * ---------------------------- */
+
+ #report-wrap textarea{
+    width: 250px;
+    height: 100px;
+ }
 
 /*
  * RATING
@@ -316,86 +326,146 @@ textarea {
  * PROFILE
  * ---------------------------- */
 
- #profile-menu {
+#profile-menu {
     margin-top: 50px;
     padding: 0px;
     width: 100%;
     border-bottom: #121212 1px solid;
- }
+}
 
- #profile-menu a{
+#profile-menu a{
     text-decoration: none;
- }
+}
 
- #profile-menu li {
+#profile-menu li {
     padding: 5px;
     margin-right: 10px;
     display: inline-block;
     border: #121212 1px solid;
     border-bottom: none;
- }
+}
 
- #profile-menu li:first-child {
-   margin-left: 110px;
- }
+#profile-menu li:first-child {
+    margin-left: 70px;
+}
 
- #profile-menu li:hover {
+#profile-menu li:hover {
     background-color: gray;
- }
+}
 
- #user-activity {
+#user-activity {
     float: left;
     margin-left: 50px;
- }
+}
 
- #profile-stats {
+#user-activity h3 {
+    font-size: 24px;
+}
+
+#profile-stats {
     float: left;
     width: 250px;
     border-right: 1px solid black;
- }
+}
 
- /*
-  * INFO POPUP
-  * ---------------------------- */
+#setting-wrapper p {
+    margin:0px;
+    padding:0px;
+}
 
- #info-popup-bg {
+/*
+* REPORTED SNIPPETS
+* ---------------------------- */
+
+.reported-snippet {
+    border-top: 1px solid gray;
+    width: 550px;
+    padding: 5px 5px 7px 10px;
+}
+
+.reported-snippet:nth-child(odd) {
+    background-color: #F0F0F0;
+}
+
+.reported-snippet h4 {
+    margin: 0px;
+    margin-bottom: 5px;
+    padding: 0px;
+    font-size: 15px;
+}
+
+.reported-snippet:last-child {
+    border-bottom: 1px solid gray;
+}
+
+.reported-message {
+    margin-left: 5px;
+    float: left;
+    padding-bottom: 7px;
+    width: 370px;
+}
+
+.reported-message p {
+    padding-top: 2px;
+    padding-left: 5px;
+}
+
+.reported-gravatar {
+    float: left;
+}
+
+.reported-link {
+    float: right;
+    margin-top: -15px;
+}
+
+.reported-delete img {
+    margin-top: 5px;
+    float: right;
+}
+
+/*
+* INFO POPUP
+* ---------------------------- */
+
+#info-popup-bg {
     position: absolute;
     top: 0px;
     left: 0px;
     background-color: black;
     z-index: 10;
- }
+}
 
- #info-popup {
+#info-popup {
     position: absolute;
     padding: 1px 5px 5px 5px;
     width: 250px;
     min-height: 50px;
     background-color: white;
     z-index: 20;
- }
+}
 
- #info-popup h4 {
+#info-popup h4 {
     margin: 0px;
     width: 100%;
     padding: 4px 0px 0px 0;
     text-align: center;
     background-color: green;
- }
+}
 
- #info-popup p {
+#info-popup p {
     padding-top: 10px;
     padding-bottom: 5px;
     text-align: center;
- }
+}
 
- #info-popup img {
+#info-popup img {
     position: absolute;
     right: -20px;
     top: -15px;
- }
+}
 
- .clear {
+.clear {
     clear: both;
 }
 
@@ -417,7 +487,7 @@ textarea {
   * ---------------------------- */
   
 #learn-more-wrap{
-	position: fixed;
+	position: absolute;
 	top: -35px;
 	width: 100%;
 	color: white;
@@ -426,15 +496,18 @@ textarea {
 	padding-top: 100px;
 	height: 100%;
 }  
+
 #learn-more-content {
 	width: 600px;
 	margin: 40px auto;
 	font-family: 'courier new';
 }
-#learn-more-content p{
+
+#learn-more-content p {
 	padding: 10px;
 	font-size: 16px;
 }
+
 footer {
 	position: fixed;
 	bottom: 0px;
@@ -443,4 +516,38 @@ footer {
 	background: black;
 	color: white;
 	width: 100%;
+    display: none;
+}
+
+ /*
+  * mail
+  * ---------------------------- */
+.mail{
+	width:500px;
+	margin:auto;
+}
+#formail{
+	width: 500px;
+	margin: auto;
+}
+#formail label{
+	display: block;
+	margin: 10px 0;
+}
+#text{
+	background: #f8f8f8;
+}
+#sendmail{
+	margin-top: 20px;
+	display: block;
+}
+#response{
+	display: none;
+	border: 1px solid #ccc;
+	background: #FFFFA0;
+	padding: 10px;
+	width: 450px;
+}
+#hidden{
+    display: none;
 }

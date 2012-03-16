@@ -1,0 +1,16 @@
+general:
+  architecture: all
+  authors:
+  - {email: noxxik@gmail.com, name: Jens Evertsson}
+  long_description: ' Snippt is a utility for the Snippt platform where you can search
+    for snippets against an API and get results with code snippets.'
+  maintainer: {email: noxxik@gmail.com, name: Jens Evertsson}
+  name: Snippt
+  package_name: snippt
+  priority: optional
+  section: utils
+  short_description: ' Snippt is a utility for the Snippt platform where you can search
+    for snippets against an API and get results with code snippets.'
+  version: '1.0'
+menu: {command: /usr/bin/Snippt, icon: /home/parallels/Downloads/icon_128x128x32.png,
+  needs: X11, section: Applications/}

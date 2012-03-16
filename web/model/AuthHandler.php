@@ -20,7 +20,6 @@ class AuthHandler
 
     public static function getApiKey() {
         if(self::isLoggedIn()) {
-            return '588887cd75e8943534d03c995bd499e582ebfe4f';
             return self::getUser()->getApiKey();
         }
         return false;

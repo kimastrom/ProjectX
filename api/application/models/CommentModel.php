@@ -50,9 +50,9 @@ class CommentModel
             }
             $stmt->execute();
 
-            $stmt->bind_result($commentId, $snippetId, $userId, $comment, $comment_created_date, $username, $email, $apikey);
+            $stmt->bind_result($commentId, $snippetId, $userId, $comment, $comment_created_date, $username, $apikey, $title);
             while ($stmt->fetch()) {
-                $comment = array('commentId' => $commentId, 'snippetId' => $snippetId, 'userId' =>
+                $comment = array('commentId' => $commentId, 'snippetId' => $snippetId, 'title' => $title, 'userId' =>
                     $userId, 'comment' => $comment, 'comment_created_date' => $comment_created_date, 'username' => $username);
                 array_push($comments, $comment);
             }
@@ -83,7 +83,7 @@ class CommentModel
     private function validateSnippetOwner($userId, $snippetid)
     {
         $this->_dbHandler->__wakeup();
-        $databaseQuery = $this->_dbHandler->PrepareStatement("SELECT userid FROM snippet WHERE id = ?");
+        $databaseQuery = $this->_dbHandler->PrepareStatement("SELECT userId FROM snippet WHERE id = ?");
         $databaseQuery->bind_param('s', $snippetid);
         $databaseQuery->execute();
         $databaseQuery->bind_result($snippetUserId);
@@ -110,7 +110,7 @@ class CommentModel
 
 
         if ($this->validateUser($userid, $apikey) && $this->validateSnippetOwner($userid, $snippetid)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO comment (snippetid, userid, comment) VALUES (?, ?, ?)")) {
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO comment (snippetId, userId, comment) VALUES (?, ?, ?)")) {
                 $databaseQuery->bind_param('sss', $snippetid, $userid, $comment);
                 $databaseQuery->execute();
 				$id = $databaseQuery->insert_id;
@@ -143,7 +143,7 @@ class CommentModel
 
 
         if ($this->validateUser($userid, $apikey)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("UPDATE comment SET comment= ? WHERE commentid = ? AND userid = ?")) {
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("UPDATE comment SET comment= ? WHERE commentId = ? AND userId = ?")) {
                 $databaseQuery->bind_param('sss', $comment, $commentid, $userid);
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {
@@ -172,7 +172,7 @@ class CommentModel
         $apikey = $comment->__get('_apikey');
 
         if ($this->validateUser($userid, $apikey)) {
-            if ($databaseQuery = $this->_dbHandler->PrepareStatement("DELETE FROM comment WHERE commentid = ? AND userid = ?")) {
+            if ($databaseQuery = $this->_dbHandler->PrepareStatement("DELETE FROM comment WHERE commentId = ? AND userId = ?")) {
                 $databaseQuery->bind_param('ss', $commentid, $userid);
                 $databaseQuery->execute();
                 if ($databaseQuery->affected_rows == null) {

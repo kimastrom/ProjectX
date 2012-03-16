@@ -30,7 +30,7 @@ class HeaderView
                         }
                         
                         $html .= "<li>
-                            <a href='#'>Downloads</a> |
+                            <a href='?page=downloads'>Downloads</a> |
                         </li>
                         <li>
                             <a id='about' href='#'>About</a>
@@ -69,7 +69,7 @@ class HeaderView
                             <a href='?page=listblogposts'>Blog</a> /
                         </li>
                         <li>
-                            <a href='#'>Downloads</a> |
+                            <a href='?page=downloads'>Downloads</a> |
                         </li>
                         <li>
                             <a id='about' href='#'>About</a>
