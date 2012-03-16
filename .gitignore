@@ -10,3 +10,5 @@ web/secure.jpg
 web/Log/api_error.log
 web/Log/site_error.log
 web/Log/user_error.log
+*.o
+moc_*

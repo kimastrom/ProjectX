@@ -1,0 +1,32 @@
+pkgname = "snippt"
+pkgver = "1.0"
+pkgrel = "3"
+pkgdesc = "Snippt is a platform for sharing snippets of code thru an API. This is the client for Windows, Mac OS X and Linux."
+pkgurl = ""
+pkgdeps = ["qt", "qjson", "libqxt"]
+pkgmdeps = ["qt", "git"]
+pkgsrcs = ["snippt.desktop", "genmoc.sh"]
+
+def pkgbuild():
+  return pkgshell("""
+  mv -v ProjectX ${srcdir}
+  cd ${srcdir}
+  #git clone https://jensevertsson@github.com/jensevertsson/ProjectX.git
+  cd ProjectX/apps/Source_and_executables/Win_Mac_Linux
+  sed -i "s/this->installEventFilter(this);/ /g" mainwindow.cpp
+  sed -i "s/<pointsize>11/<pointsize>9/g" mainwindow.ui
+  sed -i "s/<pointsize>11/<pointsize>9/g" settingsdialog.ui
+  sed -i "s/unix!mac:/ /g" Snippt.pro
+
+  #chmod 777 ${srcdir}/genmoc.sh
+  #cp -v ${srcdir}/genmoc.sh ${srcdir}/ProjectX/apps/Source_and_executables/Win_Mac_Linux
+  #sh genmoc.sh
+
+  #qmake -o Makefile Snippt.pro
+  mkdir -p ${pkgdir}/usr/bin
+  mkdir -p ${pkgdir}/usr/share/applications
+  mkdir -p ${pkgdir}/usr/share/icons/hicolor/48x48/apps
+  install -m755 ${srcdir}/ProjectX/apps/Source_and_executables/Win_Mac_Linux/Snippt ${pkgdir}/usr/bin/
+  install -Dm644 ${srcdir}/snippt.desktop ${pkgdir}/usr/share/applications/snippt.desktop
+  install -m755 ${srcdir}/ProjectX/apps/Icons_and_graphics/Resources/Linux/Snippt_icon_48x48x32.png ${pkgdir}/usr/share/icons/hicolor/48x48/apps/Snippt_icon_48x48x32.png
+  """)

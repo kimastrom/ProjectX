@@ -8,6 +8,7 @@ require_once dirname(__FILE__) . '/HeaderController.php';
 require_once dirname(__FILE__) . '/AuthController.php';
 require_once dirname(__FILE__) . '/ProfileController.php';
 require_once dirname(__FILE__) . '/BlogController.php';
+require_once dirname(__FILE__) . '/DownloadController.php';
 
 class MasterController
 {
@@ -17,6 +18,7 @@ class MasterController
     private $_authController;
     private $_profileController;
     private $_blogController;
+	private $_downloadController;
     private $_html;
 
     public function __construct()
@@ -63,6 +65,10 @@ class MasterController
                 $this->_blogController = new BlogController();
                 $this->_html .= $this->_blogController->doControll('remove');      
             }
+			} else if ($_GET['page'] == 'downloads') {
+                $this->_downloadController = new DownloadController();
+                $this->_html .= $this->_downloadController->doControll();			     
+            } 
         } else {
             $this->_searchController = new SearchController();
             $this->_html .= $this->_searchController->doControll();
