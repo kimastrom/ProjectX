@@ -80,25 +80,16 @@ class SnippetHandler
      */
     public function getRatedSnippetsByUser($id, $rating)
     {
-        $snippetArr = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->prepareStatement("SELECT snippet.id, snippet.title, snippet.description, snippet.language
-                                                        FROM snippet
-                                                        INNER JOIN rating
-                                                        ON rating.snippetId = snippet.id
-                                                        WHERE rating.rating = ?
-                                                        AND rating.userId = ?")) {
-            $stmt->bind_param('ii', $rating, $id);
-            $stmt->execute();
-            $stmt->bind_result($id, $title, $description, $lang);
-            while ($stmt->fetch()) {
-                $snippet = new Snippet(null, null, $title, $description, $lang, null, null, null, $id);
-                array_push($snippetArr, $snippet);
+        $snippets = null;
+        $url = $this->_api->GetURL() . "ratings?userid=" . $id . "&rating=" . $rating;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, $j->snippetId);
             }
-            $stmt->close();
+            return $snippets;
         }
-        $this->_dbHandler->close();
-        return $snippetArr;
+        return false;
     }
 
     /**
@@ -107,28 +98,16 @@ class SnippetHandler
      */
     public function getCommentedSnippetByUser($id)
     {
-        $snippetArr = array();
-        $this->_dbHandler->__wakeup();
-        if ($stmt = $this->_dbHandler->prepareStatement("SELECT snippet.id, snippet.title, snippet.description,comment.comment
-                                                        FROM snippet
-                                                        INNER JOIN comment
-                                                        ON comment.snippet_id = snippet.id
-                                                        WHERE comment.user_id = ?")) {
-            $stmt->bind_param('i', $id);
-            $stmt->execute();
-            $stmt->bind_result($id, $title, $description,$comment);
-            $i = 0;
-            while ($stmt->fetch()) {
-                $snippetArr[$i]['id'] = $id;
-                $snippetArr[$i]['title'] = $title;
-                $snippetArr[$i]['description'] = $description;
-                $snippetArr[$i]['comment'] = $comment;
-                $i++;
+        $snippets = null;
+        $url = $this->_api->GetURL() . "comments?userid=" . $id;
+        if($json = $this->getJson($url)) {
+            foreach($json as $j)
+            {
+                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, $j->snippetId);
             }
-            $stmt->close();
+            return $snippets;
         }
-        $this->_dbHandler->close();
-        return $snippetArr;
+        return false;
     }
     
     /**
