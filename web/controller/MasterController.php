@@ -65,7 +65,7 @@ class MasterController
                 $this->_blogController = new BlogController();
                 $this->_html .= $this->_blogController->doControll('remove');      
             }
-			} else if ($_GET['page'] == 'downloads') {
+		 	else if ($_GET['page'] == 'downloads') {
                 $this->_downloadController = new DownloadController();
                 $this->_html .= $this->_downloadController->doControll();			     
             } 
@@ -79,8 +79,7 @@ class MasterController
         }
 
         return $this->_html;
-    }
-
+	}
     public function doHeader()
     {
         $html = $this->_headerController->doControll();

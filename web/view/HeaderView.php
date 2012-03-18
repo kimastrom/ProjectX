@@ -14,26 +14,26 @@ class HeaderView
                 <div class='topbar-inner'>
                     <ul class='nav'>
                         <li>
-                            <a href='index.php'>Home</a> |
+                            <a href='index.php'>Home</a>
                         </li>
                         <li>
-                            <a href='?page=addsnippet'>Add snippet</a> |
+                            <a href='?page=addsnippet'>Add snippet</a>
                         </li>
                         <li>
-                            <a href='?page=listblogposts'>Blog</a> |
+                            <a href='?page=listblogposts'>Blog</a>
                         </li>";
                         
                         if (Authhandler::isAdmin()) {
                             $html .= "<li>
-                                <a href='?page=addblogpost'>Add blogpost</a> |
+                                <a href='?page=addblogpost'>Add blogpost</a>
                             </li>";    
                         }
                         
                         $html .= "<li>
-                            <a href='?page=downloads'>Downloads</a> |
+                            <a href='?page=downloads'>Downloads</a>
                         </li>
                         <li>
-                            <a id='about' href='#'>About</a>
+                            <a id='about' href='#'>Learn more</a>
                         </li>
                         <li class='right' id='logout-topbar'>
                             <a href='?logout=true'>Sign out</a>
@@ -63,16 +63,16 @@ class HeaderView
                 <div class='topbar-inner'>
                     <ul class='nav'>
                         <li>
-                            <a href='index.php'>Home</a> |
+                            <a href='index.php'>Home</a>
                         </li>
                         <li>
-                            <a href='?page=listblogposts'>Blog</a> /
+                            <a href='?page=listblogposts'>Blog</a>
                         </li>
                         <li>
-                            <a href='?page=downloads'>Downloads</a> |
+                            <a href='?page=downloads'>Downloads</a>
                         </li>
                         <li>
-                            <a id='about' href='#'>About</a>
+                            <a id='about' href='#'>Learn more</a>
                         </li>
                         <li class='right'>
                             <a class='janrainEngage' href='#'>Sign in</a>

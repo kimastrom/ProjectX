@@ -10,7 +10,7 @@ $(document).ready(function(){
 	//About page from menu
 	var aboutFx = new Fx.Slide('learn-more-wrap', {
 		duration: 1000,
-		transition: Fx.Transitions.Bounce.easeOut
+		transition: Fx.Transitions.easeOut
 	});
 	
 	aboutFx.hide();
