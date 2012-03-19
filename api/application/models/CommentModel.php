@@ -20,8 +20,10 @@ class CommentModel
         $this->_dbHandler = new DbHandler();
         $this->_requestObjectComment = new RequestObjectComment();
     }
-	private function refValues($arr){
-        if (strnatcmp(phpversion(),'5.3') >= 0) //Reference is required for PHP 5.3+
+	
+	private function refValues($arr)
+	{
+        if (strnatcmp(phpversion(),'5.3') >= 0) //Reference is required for PHP 5.3+ 
         {
             $refs = array();
             foreach($arr as $key => $value)
@@ -30,6 +32,7 @@ class CommentModel
         }
         return $arr;
     }
+	
     public function getComment($request)
     {
         foreach ($request as $action => $value) {
@@ -67,6 +70,7 @@ class CommentModel
             throw new RestException(204);
         }
     }
+
     private function validateUser($userId, $apikey)
     {
         $this->_dbHandler->__wakeup();
@@ -80,36 +84,15 @@ class CommentModel
         return false;
     }
     
-    private function validateSnippetOwner($userId, $snippetid)
-    {
-        $this->_dbHandler->__wakeup();
-        $databaseQuery = $this->_dbHandler->PrepareStatement("SELECT userId FROM snippet WHERE id = ?");
-        $databaseQuery->bind_param('s', $snippetid);
-        $databaseQuery->execute();
-        $databaseQuery->bind_result($snippetUserId);
-        
-        while ($databaseQuery->fetch()) {
-            if ($snippetUserId != $userId) {
-            	return true;
-            }
-        }
-        $databaseQuery->close();
-        return false;
-    }
-
     public function createComment(CommentObject $comment)
     {
         $this->_dbHandler->__wakeup();
-        
-        //var_dump($comment);
-		
         $snippetid = $comment->__get('_snippetid');
         $userid = $comment->__get('_userid');
         $apikey = $comment->__get('_apikey');
         $comment = $comment->__get('_comment');
 
-
-        if ($this->validateUser($userid, $apikey) && $this->validateSnippetOwner($userid, $snippetid)) {
+        if ($this->validateUser($userid, $apikey)) {
             if ($databaseQuery = $this->_dbHandler->PrepareStatement("INSERT INTO comment (snippetId, userId, comment) VALUES (?, ?, ?)")) {
                 $databaseQuery->bind_param('sss', $snippetid, $userid, $comment);
                 $databaseQuery->execute();
@@ -123,7 +106,6 @@ class CommentModel
                 return array('status' => false);
             }	
             $this->_dbHandler->close();
-			
 			
 			return array('status' => true, 'id' => $id);
         } else {
@@ -140,7 +122,6 @@ class CommentModel
         $userid = $comment->__get('_userid');
         $apikey = $comment->__get('_apikey');
         $comment = $comment->__get('_comment');
-
 
         if ($this->validateUser($userid, $apikey)) {
             if ($databaseQuery = $this->_dbHandler->PrepareStatement("UPDATE comment SET comment= ? WHERE commentId = ? AND userId = ?")) {
