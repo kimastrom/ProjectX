@@ -59,7 +59,7 @@ class SnippetModel
             $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated, $userId, $name, $username, $apikey, $role_id, $languageid, $language, $thumbsup, $thumbsdown);
             while ($stmt->fetch()) {
                 $snippet = array('language' => $language, 'languageid' => $languageid, 'title' =>
-                    $title, 'description' => $description, 'code' => $code, 'username' => $username, 'userid' => $userId,
+                    $title, 'description' => $description, 'code' => $code, 'username' => $username, 'name' => $name, 'userid' => $userId,
                     'id' => $id, 'date' => $date, 'updated' => $updated, 'thumbsup' => $thumbsup, 'thumbsdown' => $thumbsdown);
                 array_push($snippets, $snippet);
             }
@@ -197,7 +197,9 @@ class SnippetModel
 		$index = Zend_Search_Lucene::open(APPLICATION_PATH . '/indexes');
 		Zend_Search_Lucene_Analysis_Analyzer::setDefault( 
 			new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8Num_CaseInsensitive() 
-		); 
+		);
+		
+		 
 		
         
 		$doc = new Zend_Search_Lucene_Document();
@@ -206,7 +208,7 @@ class SnippetModel
 		$doc->addField(Zend_Search_Lucene_Field::text('title', $snippet->__get('_title')));
 		$doc->addField(Zend_Search_Lucene_Field::text('description', $snippet->__get('_desc')));
 		$doc->addField(Zend_Search_Lucene_Field::text('code', $snippet->__get('_code')));
-		$doc->addField(Zend_Search_Lucene_Field::text('language', $snippet->__get('_language')));
+		$doc->addField(Zend_Search_Lucene_Field::text('language', $this->getLanguageById($snippet->__get('_languageid'))));
 		 
 		// Add document to the index.
 		$index->addDocument($doc);
@@ -222,5 +224,14 @@ class SnippetModel
 			$index->delete($deleteId); 
 		}
 		$index->optimize();
+    }
+    
+    //Special for indexing
+	private function getLanguageById($id)
+    {	
+        $url = "http://tmpn.se/api/languages?languageid=" . $id;
+        $content = @file_get_contents($url);
+        $json = json_decode($content);
+        return $json->language;
     }
 }

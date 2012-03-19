@@ -87,7 +87,7 @@ class RequestObject
 					WHERE rating.rating = 1 AND snippet.id = rating.snippetId) AS thumbsup,
 					(SELECT COUNT(rating.rating)
 					FROM rating
-					WHERE rating.rating = 1 AND snippet.id = rating.snippetId) AS thumbsdown
+					WHERE rating.rating = 0 AND snippet.id = rating.snippetId) AS thumbsdown
 					FROM snippet
 					INNER JOIN user ON snippet.userId = user.userId 
 					INNER JOIN snippet_language ON snippet.languageId = snippet_language.snippet_languageid";

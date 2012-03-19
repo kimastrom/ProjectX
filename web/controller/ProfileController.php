@@ -134,10 +134,21 @@ class ProfileController
      */
     private function setStats($id) 
     {
-        $this->_data['snippets'] = $this->_snippetHandler->getSnippetsByUser($id);
-        $this->_data['likes'] = $this->_snippetHandler->getRatedSnippetsByUser($id, 1);
-        $this->_data['dislikes'] = $this->_snippetHandler->getRatedSnippetsByUser($id, 0);
-        $this->_data['comments'] = $this->_snippetHandler->getCommentedSnippetByUser($id);
+        //Get created snippets
+        $temp = $this->_snippetHandler->getSnippetsByUser($id);
+        $this->_data['snippets'] = ($temp == false) ? null : $temp;
+
+        //Get liked snippets
+        $temp = $this->_snippetHandler->getRatedSnippetsByUser($id, 1);
+        $this->_data['likes'] = ($temp == false) ? null : $temp;
+
+        //Get disliked snippets
+        $temp = $this->_snippetHandler->getRatedSnippetsByUser($id, 0);
+        $this->_data['dislikes'] = ($temp == false) ? null : $temp;
+
+        //get commented snippets
+        $temp = $this->_snippetHandler->getCommentedSnippetByUser($id);
+        $this->_data['comments'] = ($temp == false) ? null : $temp;
     }
 
     /**

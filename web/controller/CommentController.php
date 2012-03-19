@@ -24,17 +24,16 @@ class CommentController
         if (AuthHandler::isLoggedIn()) {
             //add Comment
             if ($commentView->triedToSubmitComment()) {
-                if($recaptchaAnswer->is_valid) {
+                //if($recaptchaAnswer->is_valid) {
 	                $text = $commentView->getCommentText();
 	                $author = AuthHandler::getUser()->getId();
 	                $id = $commentView->whichSnippetToComment();
-	                
 	                
                     $result = $commentHandler->addComment($id, $author, $text);
                     //if($result !== true) {
                     //    echo print_r($result);
                     //}
-				}
+				//}
             }
             //Delete Comments
             if ($commentView->triesToRemoveComment()) {
@@ -51,8 +50,8 @@ class CommentController
                 $comment = $commentHandler->getCommentByID($commentView->whichCommentToEdit());
                 if ($comment != null) {
                     if ($comment->getUserId() == AuthHandler::getUser()->getId()) {
-                        $comment = $commentHandler->getCommentByID($commentView->whichCommentToDelete());
-                        $commentHandler->updateComment($commentView->whichCommentToEdit(), $commentView->getCommentText());
+                        $comment->setCommentText($commentView->getCommentText());
+                        $commentHandler->updateComment($comment);
                     }
                 }
             }

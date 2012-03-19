@@ -85,7 +85,7 @@ class SnippetHandler
         if($json = $this->getJson($url)) {
             foreach($json as $j)
             {
-                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, $j->snippetId);
+                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, null, null, $j->snippetId);
             }
             return $snippets;
         }
@@ -103,7 +103,7 @@ class SnippetHandler
         if($json = $this->getJson($url)) {
             foreach($json as $j)
             {
-                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, $j->snippetId);
+                $snippets[] = new Snippet(null, null, null, $j->title, null, null, null, null, null, $j->snippetId);
             }
             return $snippets;
         }
@@ -255,6 +255,13 @@ class SnippetHandler
         return false;
     }
 
+    /**
+     * Report a snippet
+     * @param int snipppetId
+     * @param int userId
+     * @param string message
+     * @return true on success
+     */
     public function reportSnippet($snippetId, $userId, $message)
     {
         $this->_dbHandler->__wakeup();
@@ -273,6 +280,9 @@ class SnippetHandler
         return $result;
     }
 
+    /**
+     * Get all reports of reported snippets
+     */
     public function getReportedSnippets()
     {
         $this->_dbHandler->__wakeup();

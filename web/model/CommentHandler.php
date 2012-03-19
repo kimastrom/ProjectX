@@ -18,20 +18,6 @@ class CommentHandler
     }
 
     /**
-     * Format array before posting via curl
-     * @param Array data
-     * @return Array
-     */
-    private function formtaData($data) {
-        $fields = '';
-        foreach ($data as $key => $value) {
-            $fields .= $key . '=' . $value . '&';
-        }
-        rtrim($fields, '&');
-        return $data;
-    }
-
-    /**
      * Check response and content
      * @param string URL, url to API
      * @return json content on succsess or FALSE failiure
@@ -53,9 +39,10 @@ class CommentHandler
         $comments = array();
         $url = $this->_api->GetURL() . 'comments?snippetid=' . $id;  
         if($json = $this->getJson($url)) {
-            if (!$json->error) {
+            $header = get_headers($url);
+        	if($header[0] == 'HTTP/1.1 200 OK') {
                 foreach($json as $j) {
-                    $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date);
+                    $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date, $j->username);
                 }
                 return $comments;
             }
@@ -71,22 +58,29 @@ class CommentHandler
      * @param snippetId, userId, commentText and apikey
      */
     public function addComment($snippetID, $userID, $comment) {
-        $url = $this->_api->GetUrl() . 'comments';
-        $data = array('snippetid' => $snippetID, 'userid' => $userID, 'comment' => $comment, 'apikey' => AuthHandler::getApiKey());
-        $data = $this->formtaData($data);
+        $url = $this->_api->GetURL() . "comments";
+        $query = array('snippetid' => $snippetID, 'userid' => $userID, 'comment' => $comment, 'apikey' => AuthHandler::getApiKey());
+        
+        $fields = '';
+        foreach ($query as $key => $value) {
+            $fields .= $key . '=' . $value . '&';
+        }
+        rtrim($fields, '&');
+        
+        $post = curl_init();
+        
+        curl_setopt($post, CURLOPT_URL, $url);
+        curl_setopt($post, CURLOPT_POST, count($query));
+        curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, count($data));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        $result = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);     
-
+        $result = curl_exec($post);
+        $httpCode = curl_getinfo($post, CURLINFO_HTTP_CODE);
+        
+        curl_close($post);
+        
         if($httpCode == 200) return true;
-
+        
         Log::apiError('could not create comment on snippet: ' . $snippetID, $url);
         return $result;
     }
@@ -97,20 +91,28 @@ class CommentHandler
      * use it if you want to update a comment that exists in the database
      * @param commentId, userId, commentText and apikey
      */
-    public function updateComment($commentID, $userID, $comment) {
+    public function updateComment(Comment $comment) {
+        
         $url = $this->_api->GetUrl() . 'comments';
-        $data = array('commentid' => $commentID, 'userid' => $userID, 'comment' => $comment, 'apikey' => AuthHandler::getApiKey());
-        $data = $this->formtaData($data);
+        $query = array('commentid' => $comment->getCommentId(), 'userid' => $comment->getUserId(), 'comment' => $comment->getCommentText(), 'apikey' => AuthHandler::getApiKey());
+        
+        $fields = '';
+        foreach ($query as $key => $value) {
+            $fields .= $key . '=' . $value . '&';
+        }
+        rtrim($fields, '&');
+        
+        $post = curl_init();
+        
+        curl_setopt($post, CURLOPT_URL, $url);
+        curl_setopt($post, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
 
-        $ch = curl_init();      
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
-        if(!$result) Log::apiError('could not update comment: ' . $commentID, $url);   
+        $result = curl_exec($post);
+        curl_close($post);
+        
+        if(!$result) Log::apiError('could not update comment: ' . $comment->getCommentId(), $url);   
         
         return $result;
     }
@@ -122,10 +124,10 @@ class CommentHandler
      * use it if you want to delete a comment
      * @param an id of the comment to delete
      */
-    public function deleteComment($comment)
+    public function deleteComment(Comment $comment)
     {
 
-        $url = $this->_api->GetURL() . 'comments/' . $comment->getID() . '/' . $comment->getUserId() . '/' . AuthHandler::getApiKey();
+        $url = $this->_api->GetURL() . 'comments/' . $comment->getCommentId() . '/' . $comment->getUserId() . '/' . AuthHandler::getApiKey();
         $ch = curl_init($url);
         
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -155,7 +157,7 @@ class CommentHandler
         if($json = $this->getJson($url)) {
             foreach($json as $j)
             {
-                $comment = new Comment($j->snippetid, $j->commentid, $j->userid, $j->comment);
+                $comment = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date);
             }
             return $comment;
         }

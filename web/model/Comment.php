@@ -22,13 +22,14 @@ class Comment
      * @param int $aUserId
      * @param int $aCommentText
      */
-    public function __construct($snippetId, $commentId, $userId, $commentText, $commentDate)
+    public function __construct($snippetId, $commentId, $userId, $commentText, $commentDate, $username)
     {
         $this->_snippetId = $snippetId;
         $this->_commentId = $commentId;
         $this->_userId = $userId;
         $this->_commentText = $commentText;
         $this->_commentDate = $commentDate;
+        $this->_username = $username;
     }
 
     /**
@@ -118,6 +119,17 @@ class Comment
      */
     public function getCommentText()
     {
+        return $this->_commentText;
+    }
+
+    /**
+     * Comment::setCommentText()
+     *
+     * @return string; updates the text of the comment
+     */
+    public function setCommentText($commentText)
+    {
+        $this->_commentText = $commentText;
         return $this->_commentText;
     }
 

@@ -1,6 +1,6 @@
 <?php
-require_once 'AuthHandler.php';
 require_once 'API.php';
+require_once 'AuthHandler.php';
 
 $api = new API();
 $url = $api->GetURL() . "ratings";
@@ -8,8 +8,9 @@ $url = $api->GetURL() . "ratings";
 $user_id = $_POST['user_id'];
 $snippet_id = $_POST['snippet_id'];
 $rating = $_POST['rating'];
+$api = $_POST['api'];
 
-$query = array('snippetid' => $snippet_id, 'userid' => $user_id, 'rating' => $rating, 'apikey' => AuthHandler::getApiKey());
+$query = array('snippetid' => $snippet_id, 'userid' => $user_id, 'rating' => $rating, 'apikey' => $api);
 
 $fields = '';
 foreach ($query as $key => $value) {
