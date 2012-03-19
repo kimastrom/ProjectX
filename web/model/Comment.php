@@ -22,13 +22,14 @@ class Comment
      * @param int $aUserId
      * @param int $aCommentText
      */
-    public function __construct($snippetId, $commentId, $userId, $commentText, $commentDate)
+    public function __construct($snippetId, $commentId, $userId, $commentText, $commentDate, $username)
     {
         $this->_snippetId = $snippetId;
         $this->_commentId = $commentId;
         $this->_userId = $userId;
         $this->_commentText = $commentText;
         $this->_commentDate = $commentDate;
+        $this->_username = $username;
     }
 
     /**

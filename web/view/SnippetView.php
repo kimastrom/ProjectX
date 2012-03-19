@@ -27,8 +27,8 @@ class SnippetView
         
 		<div class='snippet-author'>
 			<span>Posted by " . $snippet->getAuthor();
-        if ($isOwner ){
-		    $html .= "<a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> 
+        if ($isOwner) {
+		    $html .= " <a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> 
 		    <a href='?page=updatesnippet&snippet=" . $snippet->getID() . "'>Update</a>";
 	    }
         $html .= '<br /><a id="report" href="#">Report this snippet!</a>';
@@ -144,8 +144,8 @@ class SnippetView
                     <button name="dislike" type="button" id="dislike"><img src="content/image/dislike.png" title="Dislike!" /></button>
                 
                     <div id="ratingbars">
-                        <div id="likes" style="width: ' . ($rating['total'] != 0 ? round($rating['likes'] / $rating['total'] * 100) : 0) . '%"></div>
-                        <div id="dislikes" style="width: ' . ($rating['total'] != 0 ? round($rating['dislikes'] / $rating['total'] * 100) : 0) . '%"></div>
+                        <div id="likes" style="width: ' . ($rating['total'] != 0 ? floor($rating['likes'] / $rating['total'] * 100) : 0) . '%"></div>
+                        <div id="dislikes" style="width: ' . ($rating['total'] != 0 ? floor($rating['dislikes'] / $rating['total'] * 100) : 0) . '%"></div>
                     </div>
                     <p id="test">' . $rating['likes'] . ' likes, ' . $rating['dislikes'] . ' dislikes</p>
                     <div id="message"></div>
