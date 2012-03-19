@@ -59,7 +59,7 @@ class SnippetModel
             $stmt->bind_result($id, $userId, $code, $title, $description, $languageId, $date, $updated, $userId, $name, $username, $apikey, $role_id, $languageid, $language, $thumbsup, $thumbsdown);
             while ($stmt->fetch()) {
                 $snippet = array('language' => $language, 'languageid' => $languageid, 'title' =>
-                    $title, 'description' => $description, 'code' => $code, 'username' => $username, 'userid' => $userId,
+                    $title, 'description' => $description, 'code' => $code, 'username' => $username, 'name' => $name, 'userid' => $userId,
                     'id' => $id, 'date' => $date, 'updated' => $updated, 'thumbsup' => $thumbsup, 'thumbsdown' => $thumbsdown);
                 array_push($snippets, $snippet);
             }

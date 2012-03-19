@@ -50,10 +50,10 @@ class CommentModel
             }
             $stmt->execute();
 
-            $stmt->bind_result($commentId, $snippetId, $userId, $comment, $comment_created_date, $username, $apikey, $title);
+            $stmt->bind_result($commentId, $snippetId, $userId, $comment, $comment_created_date, $username, $name, $apikey, $title);
             while ($stmt->fetch()) {
                 $comment = array('commentId' => $commentId, 'snippetId' => $snippetId, 'title' => $title, 'userId' =>
-                    $userId, 'comment' => $comment, 'comment_created_date' => $comment_created_date, 'username' => $username);
+                    $userId, 'comment' => $comment, 'comment_created_date' => $comment_created_date, 'username' => $username, 'name' => $name);
                 array_push($comments, $comment);
             }
 
