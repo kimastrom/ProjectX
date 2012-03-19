@@ -110,7 +110,7 @@ class ProfileView
         $username = $this->getUser();
         $html = '<h3>Settings</h3>';
         $html .= "<div id='setting-wrapper'>";
-        $html .= "<h4>This is your api-key <img class='info' data-info='Use the api-key to verify yourself in the desktop app' src='/content/image/info.png' alt='info'/></h4>";
+        $html .= "<h4>This is your api-key <img class='info' data-info='Use the api-key to verify yourself in the desktop app' src='content/image/info.png' alt='info'/></h4>";
         $html .= '<span>' . $apiKey . ' - </span>';
         $html .= "<a href='" . $_SERVER['PHP_SELF'] . "?page=profile&amp;username=" . $username . "&amp;p=settings&amp;api_key=generate'>Generate new</a>";
         $html .= '<h4>This is your user role - change it if you want..</h4>';

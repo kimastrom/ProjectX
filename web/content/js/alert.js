@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var popup = $("<div id='info-popup'><h4>info</h4><img src='/content/image/close_button.png' /></div>");
+    var popup = $("<div id='info-popup'><h4>info</h4><img src='content/image/close_button.png' /></div>");
     var bg = $('<div id="info-popup-bg"></div>');
     var isActive = false;
 
