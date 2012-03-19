@@ -70,7 +70,7 @@ class ProfileView
         $html = "<h3>Commented snippets</h3>
                     <ul>";
         foreach ($commentedSnippets as $snippet) {
-            $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $snippet['id'] . "'>" . $snippet['title'] . '</a><br />' . $snippet['comment'] . '</li>';
+            $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . '</a></li>';
         }
         $html .= "</ul>";
         return $html;

@@ -14,23 +14,23 @@ class HeaderView
                 <div class='topbar-inner'>
                     <ul class='nav'>
                         <li>
-                            <a href='index.php'>Home</a>
+                            <a href='index.php'>Home</a> &#149;
                         </li>
                         <li>
-                            <a href='?page=addsnippet'>Add snippet</a>
+                            <a href='?page=addsnippet'>Add snippet</a> &#149;
                         </li>
                         <li>
-                            <a href='?page=listblogposts'>Blog</a>
+                            <a href='?page=listblogposts'>Blog</a> &#149;
                         </li>";
                         
                         if (Authhandler::isAdmin()) {
                             $html .= "<li>
-                                <a href='?page=addblogpost'>Add blogpost</a>
+                                <a href='?page=addblogpost'>Add blogpost</a> &#149;
                             </li>";    
                         }
                         
                         $html .= "<li>
-                            <a href='?page=downloads'>Downloads</a>
+                            <a href='?page=downloads'>Downloads</a> &#149;
                         </li>
                         <li>
                             <a id='about' href='#'>Learn more</a>
@@ -63,13 +63,13 @@ class HeaderView
                 <div class='topbar-inner'>
                     <ul class='nav'>
                         <li>
-                            <a href='index.php'>Home</a>
+                            <a href='index.php'>Home</a>  &#149;
                         </li>
                         <li>
-                            <a href='?page=listblogposts'>Blog</a>
+                            <a href='?page=listblogposts'>Blog</a> &#149;
                         </li>
                         <li>
-                            <a href='?page=downloads'>Downloads</a>
+                            <a href='?page=downloads'>Downloads</a> &#149;
                         </li>
                         <li>
                             <a id='about' href='#'>Learn more</a>

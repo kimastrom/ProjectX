@@ -52,7 +52,7 @@ class CommentController
                 if ($comment != null) {
                     if ($comment->getUserId() == AuthHandler::getUser()->getId()) {
                         $comment = $commentHandler->getCommentByID($commentView->whichCommentToDelete());
-                        $commentHandler->updateComment($commentView->whichCommentToEdit(), $commentView->getCommentText());
+                        $commentHandler->updateComment($commentView->whichCommentToEdit(), $comment->getUserId(),  $commentView->getCommentText());
                     }
                 }
             }

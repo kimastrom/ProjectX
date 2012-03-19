@@ -53,7 +53,8 @@ class CommentHandler
         $comments = array();
         $url = $this->_api->GetURL() . 'comments?snippetid=' . $id;  
         if($json = $this->getJson($url)) {
-            if (!$json->error) {
+            $header = get_headers($url);
+        	if($header[0] == 'HTTP/1.1 200 OK') {
                 foreach($json as $j) {
                     $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date);
                 }
@@ -155,7 +156,7 @@ class CommentHandler
         if($json = $this->getJson($url)) {
             foreach($json as $j)
             {
-                $comment = new Comment($j->snippetid, $j->commentid, $j->userid, $j->comment);
+                $comment = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date);
             }
             return $comment;
         }
