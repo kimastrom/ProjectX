@@ -20,7 +20,7 @@ class CommentView
         	<div id='comment'>
                     <h3>Post a comment</h3>
                     <form action='#' method='POST'>
-                        <textarea name='commentText' maxlength='1500' placeholder='Your comment'></textarea>"
+                        <textarea name='commentText' maxlength='1500' placeholder='Your comment'>" . $_SESSION['comment'] . "</textarea>"
                         . recaptcha_get_html($this->_publicKey) .                     
                         "<input type='submit' name='submitComment' value='Post comment'/>
                     </form>

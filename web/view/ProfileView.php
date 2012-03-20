@@ -139,8 +139,8 @@ class ProfileView
         foreach ($reports as $report) {
             $html .= "<div class='reported-snippet'>";
                     $html .= "<div class='reported-delete'>
-                                <a href='/?page=profile&p=reported&id=" . $report['id'] . "' >
-                                    <img src='/content/image/del.png' />
+                                <a href='" . $_SERVER['PHP_SELF'] . "?page=profile&p=reported&id=" . $report['id'] . "' >
+                                    <img src='content/image/del.png' />
                                 </a>
                             </div>";
 
@@ -156,8 +156,8 @@ class ProfileView
 
                     $html .="<div class='clear'></div>";
                     $html .="<div class='reported-link'> 
-                                <a href='/?page=listsnippets&snippet=" . $report['snippetid'] . "' >
-                                    <img src='/content/image/go.png' />
+                                <a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $report['snippetid'] . "' >
+                                    <img src='content/image/go.png' />
                                 </a>
                             </div>";
                     $html .="<div class='clear'></div>";
