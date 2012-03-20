@@ -32,7 +32,7 @@ class ProfileView
                     <ul>";
         if($likedSnippets) {
             foreach ($likedSnippets as $snippet) {
-                $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
+                $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a></li>";
             }
         } else {
             $html .= "You have not liked any snippets.";
@@ -47,7 +47,7 @@ class ProfileView
                     <ul>";
         if($dislikedSnippets) {
             foreach ($dislikedSnippets as $snippet) {
-                $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
+                $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a></li>";
             }
         } else {
             $html .= "You have not disliked any snippets.";
@@ -77,7 +77,7 @@ class ProfileView
                     <ul>";
         if($commentedSnippets) {
             foreach ($commentedSnippets as $snippet) {
-                $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . '</a><br />' . $snippet->getTitle() . '</li>';
+                $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a></li>";
             }
         } else {
             $html .= "You have not commented on any snippets.";
