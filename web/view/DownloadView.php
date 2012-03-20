@@ -7,7 +7,7 @@ class DownloadView {
 			'
 				<h1>Downloads</h1>
 
-				<div class="search">
+				<div class="down">
 					<p>
 						<a href="https://github.com/downloads/jensevertsson/ProjectX/Snippt.exe">
 							<img src="content/image/snippt_downloadlink_windows.png" alt="Download Snippt for Windows" title="Download Snippt for Windows" />

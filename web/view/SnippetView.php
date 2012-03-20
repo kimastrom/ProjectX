@@ -94,7 +94,7 @@ class SnippetView
         $html = '
         <script type="text/javascript">
 			var RecaptchaOptions = {
-    		theme : "clean"
+    		theme : "white"
  		};
  		</script>
         <h1>Add a new snippet</h1>

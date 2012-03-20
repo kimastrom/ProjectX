@@ -1,0 +1,223 @@
+/* Tablet Layout: 768px.
+Gutters: 24px.
+Inherits styles from: Default Layout.
+-----------------------------------------------------------------
+cols 1 2 3 4 5 6 7 8
+px 68 160 252 344 436 528 620 712 */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+    body {
+        width: 768px;
+    }
+    .content .down img {
+        width: 75%;
+    }
+    #learn-more-wrap{
+    	padding-top: 10px;
+    } 
+    
+    #result img {
+    	left:478px;
+    }
+}
+
+
+/* Mobile Layout: 320px.
+Gutters: 24px.
+Inherits styles from: Default Layout.
+---------------------------------------------
+cols 1 2 3
+px 68 160 252 */
+
+@media only screen and (max-width: 767px) {
+
+    body {
+        width: 320px;
+    }
+    
+    header#mainHeader{
+        min-height: 300px;
+    }
+
+    header#mainHeader ul li{
+        display: block;
+        background-color: #041721;
+        color:#041721 ;
+    }
+    header#mainHeader ul li a{
+        color: white;
+        text-decoration: none;
+        font-family: Arial;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 5px;
+        padding-right: 5px;
+        display: block;
+        clear: both;
+    }
+    h1 {
+     font-size: 36px;
+     line-height: 36px;
+     letter-spacing: -1px;
+        padding-bottom: 10px;
+    }
+    .right {
+        float: left;
+        margin: 0 auto;
+        padding-right: 5px;
+    }
+    
+    .content .down img {
+        width: 90%;
+        margin: 0 auto 10px auto;
+    }
+    
+    nav#mainNav .right{
+        background-color: #041721;
+        display: block;
+        text-align: right;
+        margin-top: 10px;
+    }
+    
+    .content .search input[type="text"] {
+        width: 180px;
+        margin-bottom: 10px;
+        display: inline;
+    }
+    
+    .content{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    
+    textarea{
+        width: 200px;
+    }
+    
+    #result img {
+    	left:234px;
+    }
+    
+    #learn-more-wrap{
+    	padding-top: 10px;
+    } 
+    
+    #learn-more-content {
+    	width: 95%;
+    }
+    
+    #profile-menu {
+        border-bottom: hidden;
+        font-size: 16px;
+        margin-left: -20px;
+    }
+    #profile-menu li {
+        display: block;
+        border: 1px solid gray;
+    }
+    #profile-menu li:first-child {
+        margin-left: 0px;
+    }
+    #profile-stats {
+        float: left;
+        border-right: hidden;
+        margin-left: -20px;
+    }
+    #user-activity {
+        float: left;
+        margin-left: -20px;
+    }
+    
+    #topAvatar {
+        display: none;
+    }
+
+    #comment form {
+        margin-left:-18px;
+    }
+    .login{
+        float: left;
+        margin: 0 0px;
+        margin-left: -5px;
+        padding-top: 8px;
+    }
+}
+
+
+/* Wide Mobile Layout: 480px.
+Gutters: 24px.
+Inherits styles from: Default Layout, Mobile Layout.
+------------------------------------------------------------
+cols 1 2 3 4 5
+px 68 160 252 344 436 */
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+    body {
+        width: 480px;
+    }
+    
+    .content .down img {
+        width: 90%;
+    }
+    
+    .right {
+        margin: 0 auto;
+        padding-right: 5px;
+        float: left;
+    }
+    
+    header#mainHeader ul li a {
+        display: block;
+        clear: both;
+    }
+
+    
+    nav#mainNav .right{
+        background-color: #041721;
+        display: block;
+        text-align: right;
+        margin-top: -10px;
+    }
+    
+    #profile-menu {
+        border-bottom: hidden;
+        font-size: 16px;
+    }
+    #profile-menu li {
+        display: block;
+        border: 1px solid gray;
+    }
+    #profile-menu li:first-child {
+        margin-left: 0px;
+    }
+    #profile-stats {
+        float: left;
+        border-right: hidden;
+    }
+    #user-activity {
+        float: left;
+        margin-left: 0px;
+    }
+    
+    .content{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #learn-more-wrap{
+    	padding-top: 10px;
+    } 
+    #learn-more-content {
+    	width: 95%;
+    }
+    #result img {
+    	left:310px;
+    }
+    #createBlogpostContainer > form{
+        width: 95%;
+    }
+    .login{
+        padding-top: 18px;
+    }
+}
