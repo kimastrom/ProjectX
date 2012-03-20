@@ -100,15 +100,15 @@ class SnippetView
         <h1>Add a new snippet</h1>
             <div id="createSnippetContainer">
                 <form action="" method="post">
-                    <input type="text" name="snippetTitle" placeholder="Title" />
-                    <input type="text" name="snippetDescription" placeholder="Description" />
+                    <input type="text" name="snippetTitle" placeholder="Title" value="' . $_SESSION['title'] . '" />
+                    <input type="text" name="snippetDescription" placeholder="Description" value="' . $_SESSION['desc'] . '" />
                     <select name="snippetLanguage">
                         <option >Choose language</option>';
         foreach ($languages as $language) {
             $html .= '<option value="' . $language->getLangId() . '">' . $language->getLanguage() . '</option>';
         }
         $html .= '</select>
-                    <textarea name="createSnippetCodeInput" maxlength="1500" placeholder="Your snippet"></textarea>'
+                    <textarea name="createSnippetCodeInput" maxlength="1500" placeholder="Your snippet">' . $_SESSION['code'] . '</textarea>'
                     . recaptcha_get_html($this->_publicKey) .
                     '<input type="submit" name="createSnippetSaveButton" id="createSnippetSaveButton" value="Create snippet" />
                 </form>
