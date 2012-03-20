@@ -491,6 +491,7 @@ textarea {
   * ---------------------------- */
   
 #learn-more-wrap{
+	display:none;
 	width:100%;
 	margin-left:10px;
 	color: #999;
