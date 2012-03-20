@@ -37,6 +37,24 @@ $(document).ready(function(){
 			reportFx.toggle();
 		});
 	}
+    
+    
+    
+    if($('#mail-wrap').length > 0) {
+		var mailFx = new Fx.Slide('mail-wrap', {
+			duration: 100,
+			transition: Fx.Transitions.linear
+		});
+		
+		mailFx.hide();
+		
+		//Toogle on click
+		$('#mail').click(function() {
+			mailFx.toggle();
+		});
+	}
+    
+    
 
 		
 });//End document ready

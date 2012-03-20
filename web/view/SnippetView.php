@@ -23,8 +23,6 @@ class SnippetView
 			<code id='code' class='snippet-text'>" . $sh->geshiHighlight($snippet->getCode(), $snippet->getLanguage()) . "</code>
 		</div>
 
-        <div id='hidden'>".$snippet->getCode()."</div>
-        
 		<div class='snippet-author'>
 			<span>Posted by " . $snippet->getAuthor();
         if ($isOwner) {
@@ -39,28 +37,20 @@ class SnippetView
 		
 		$html .= "</span>
 	          </div>";
-              
-        $html .= "  <form action='' method='post'>
-                        <input type='submit' name='sendSnippetByMail' id='mail' value='Send Snippet by Mail' />
-                    </form>";
+                    
         
+        /** OBS LÅT STÅ KVAR
+ * $html .= '<br /><a id="mail" href="#">Send snippet by mail</a>';
+ *         $html .= '<div id="mail-wrap">
+ *                     <form action="#" method="POST" name="sendByMail">
+ *                         <input type="text" placeholder="Write your mail address" name="mailAddress"/>
+ *                         <input type="submit" name="send-mail" value="Send!" />
+ *                     </form>
+ *                   </div>';
+ */
+                  
         return $html;
-    }
-    
-    public function mailView()
-    {
-        $html = '<div class="mail">
-            		<form id="formmail" action="" method ="POST">
-            			<label>Your mail :</label>
-            			<input type="text" name="mail" id="mailAddress" />
-            			<input type="submit" id="sendByMail" name="sendByMail" value="send mail" />
-            		</form>
-                    <div id="response">
-                    </div>
-        	</div>';
-
-        return $html;
-    }    
+    }   
 
 
     /**
@@ -375,24 +365,6 @@ class SnippetView
         } else {
             return false;
         }
-    }
-    
-    public function sendByMail()
-    {
-        if (isset($_POST['sendByMail'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }      
-    
-    public function wantsToSendByMail()
-    {
-        if (isset($_POST['sendSnippetByMail'])) {
-            return true;
-        } else {
-            return false;
-        }
     }  
 
     public function getReportMessage() {
@@ -402,5 +374,12 @@ class SnippetView
             return false;
         }
     }
-
+    
+    public function getEmail() {
+        if (isset($_POST['mailAddress'])) {
+            return $_POST['mailAddress'];
+        } else {
+            return false;
+        }
+    }
 }

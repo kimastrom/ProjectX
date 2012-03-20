@@ -24,6 +24,7 @@ $_html = $_mc->doControll();
     </head>
     <body>
     	
+
          <div id="wrapper">
 
             <?php echo $_mc->doHeader();?>
@@ -44,13 +45,12 @@ $_html = $_mc->doControll();
             <footer>all rights reserved</footer>
 
          </div>
-        
+
         
 		<script type="text/javascript" src="content/js/lib/mootools-core.js"></script>
 		<script type="text/javascript" src="content/js/lib/mootools-slide.js"></script>
 		<script type="text/javascript" src="content/js/learn-more.js"></script>
         <script type="text/javascript" src="content/js/alert.js"></script>
-        <script type="text/javascript" src="content/js/ajax.js"></script>
         
     </body>
 </html>

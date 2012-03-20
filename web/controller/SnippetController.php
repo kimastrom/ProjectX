@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../model/SnippetHandler.php';
 require_once dirname(__FILE__) . '/../view/SnippetView.php';
 require_once dirname(__FILE__) . '/../model/DbHandler.php';
 require_once dirname(__FILE__) . '/../controller/CommentController.php';
-//require_once dirname(__FILE__) . '/../controller/MailController.php';
+require_once dirname(__FILE__) . '/../model/MailHandler.php';
 require_once dirname(__FILE__) . '/../model/CommentHandler.php';
 require_once dirname(__FILE__) . '/../view/CommentView.php';
 require_once dirname(__FILE__) . '/../model/AuthHandler.php';
@@ -17,7 +17,7 @@ class SnippetController
     private $_snippetView;
     private $_html;
     private $_commentController;
-    //private $_mailController;
+    private $_mailHandler;
     private $_pagingHandler;
 	private $_privateKey;
 	private $_recaptchaAnswer;
@@ -28,7 +28,7 @@ class SnippetController
         $this->_snippetHandler = new SnippetHandler($this->_dbHandler);
         $this->_snippetView = new SnippetView();
         $this->_commentController = new CommentController($this->_dbHandler);
-        //$this->_mailController = new MailController();
+        $this->_mailHandler = new MailHandler();
         $this->_html = '';
 		$this->_privateKey = '6LcjpsoSAAAAAH7uTWckrCZL87jizsHpUQuP-dRy';
 		$this->_recaptchaAnswer = recaptcha_check_answer ($this->_privateKey, $_SERVER["REMOTE_ADDR"], $this->_snippetView->getRecaptchaChallenge(), $this->_snippetView->getRecaptchaResponse());
@@ -62,6 +62,21 @@ class SnippetController
                 $this->_snippetHandler->reportSnippet($snippetId, $userId, $message); 
                 
             }
+            
+            //LÅT STÅ KVAR
+            
+//            if(isset($_POST['send-mail'])) {
+//
+//                $mail = $this->_snippetView->getEmail();
+//                $title = $this->_snippetView->getTitle();
+//                $code = $this->_snippetView->getCode();
+//                
+//                echo $mail . $title . $code;
+//                
+//                $this->_mailHandler->sendMail($mail, $title, $code); 
+//                
+//            }
+            
         } else if ($page == 'add') {
             if (AuthHandler::isLoggedIn()) {
                 $this->_html = null;
@@ -105,15 +120,6 @@ class SnippetController
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
-        
-        if($this->_snippetView->wantsToSendByMail()){
-            $this->_html .= $this->_snippetView->mailView();
-        }
-//        if($this->_snippetView->sendByMail()) {
-//            //mail('martajohnsson@gmail.com', 'subject', 'message från doControll i mail controllen SZAFA GRA');
-//            mail('martajohnsson@gmail.com', $this->_snippetView->getSnippetTitle(), $this->_snippetView->getCreateSnippetCode() 
-//            );
-//        }
         
         return $this->_html;
     }
