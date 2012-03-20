@@ -42,7 +42,7 @@ class CommentHandler
             $header = get_headers($url);
         	if($header[0] == 'HTTP/1.1 200 OK') {
                 foreach($json as $j) {
-                    $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date, $j->username);
+                    $comments[] = new Comment($j->snippetId, $j->commentId, $j->userId, $j->comment, $j->comment_created_date, $j->name);
                 }
                 return $comments;
             }

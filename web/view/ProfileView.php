@@ -35,7 +35,7 @@ class ProfileView
                 $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
             }
         } else {
-            $html .= "y u no have dislike any snippets?";
+            $html .= "You have not liked any snippets.";
         }
         $html .= "</ul>";
         return $html;
@@ -50,7 +50,7 @@ class ProfileView
                 $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippetssnippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
             }
         } else {
-            $html .= "y u no have liked any snippets?";
+            $html .= "You have not disliked any snippets.";
         }
         $html .= "</ul>";
         return $html;
@@ -65,7 +65,7 @@ class ProfileView
                 $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&amp;snippet=" . $snippet->getID() . "'>" . $snippet->getTitle() . "</a> - (" . $snippet->getLanguage() . ")</li>";
             }
         } else {
-            $html .= 'You have no created snippets';
+            $html .= 'You have not created any snippets.';
         }
         $html .= "</ul>";
         return $html;
@@ -80,7 +80,7 @@ class ProfileView
                 $html .= "<li><a href='" . $_SERVER['PHP_SELF'] . "?page=listsnippets&snippet=" . $snippet['id'] . "'>" . $snippet['title'] . '</a><br />' . $snippet['comment'] . '</li>';
             }
         } else {
-            $html .= "y u no have comment any snippets?";
+            $html .= "You have not commented on any snippets.";
         }
         $html .= "</ul>";
         return $html;
