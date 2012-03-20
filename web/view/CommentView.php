@@ -44,8 +44,8 @@ class CommentView
                 $message .= "<p class='date'>" . $comments[$i]->getCommentDate() . "</p>";
                 $message .= "<p class='text'>" . $comments[$i]->getCommentText() . "</p>";
                 if($comments[$i]->getUserId() == $userId && $userId != null) {
-                    $message .= "<a onclick=\"javascript: return confirm('Do you want to remove this comment?')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&deleteComment=" . $comments[$i]->getCommentId() . "'>Radera</a> ";
-                    $message .= "<a onclick=\"javascript: return confirm('Do you want to edit this comment?')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&editComment=" . $comments[$i]->getCommentId() . "'>Redigera</a>";
+                    $message .= "<a onclick=\"javascript: return confirm('Do you want to remove this comment?')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&deleteComment=" . $comments[$i]->getCommentId() . "'>Delete</a> ";
+                    $message .= "<a onclick=\"javascript: return confirm('Do you want to edit this comment?')\" href='index.php?page=listsnippets&snippet=" . $comments[$i]->getSnippetId() . "&editComment=" . $comments[$i]->getCommentId() . "'>Update</a>";
                 }
                 
                 $message .= "</div>";
