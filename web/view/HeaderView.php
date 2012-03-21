@@ -25,7 +25,7 @@ class HeaderView
                         
                         if (Authhandler::isAdmin()) {
                             $html .= "<li>
-                                <a href='/addblogpost'>Add blogpost</a> &#149;
+                                <a href='?page=addblogpost'>Add blogpost</a> &#149;
                             </li>";    
                         }
                         
