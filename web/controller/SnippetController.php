@@ -63,8 +63,8 @@ class SnippetController
                 
             }
             
-            //LÅT STÅ KVAR
-            
+//            LÅT STÅ KVAR
+//            
 //            if(isset($_POST['send-mail'])) {
 //
 //                $mail = $this->_snippetView->getEmail();

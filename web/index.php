@@ -51,6 +51,6 @@ $_html = $_mc->doControll();
 		<script type="text/javascript" src="content/js/lib/mootools-slide.js"></script>
 		<script type="text/javascript" src="content/js/learn-more.js"></script>
         <script type="text/javascript" src="content/js/alert.js"></script>
-        
+        <script type="text/javascript" src="content/js/ajax.js"></script>
     </body>
 </html>
