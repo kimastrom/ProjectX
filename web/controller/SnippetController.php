@@ -1,10 +1,8 @@
 <?php
-
 require_once dirname(__FILE__) . '/../model/SnippetHandler.php';
 require_once dirname(__FILE__) . '/../view/SnippetView.php';
 require_once dirname(__FILE__) . '/../model/DbHandler.php';
 require_once dirname(__FILE__) . '/../controller/CommentController.php';
-require_once dirname(__FILE__) . '/../model/MailHandler.php';
 require_once dirname(__FILE__) . '/../model/CommentHandler.php';
 require_once dirname(__FILE__) . '/../view/CommentView.php';
 require_once dirname(__FILE__) . '/../model/AuthHandler.php';
@@ -27,11 +25,9 @@ class SnippetController
         $this->_dbHandler = new DbHandler();
         $this->_snippetHandler = new SnippetHandler($this->_dbHandler);
         $this->_snippetView = new SnippetView();
-        $this->_commentController = new CommentController($this->_dbHandler);
-        $this->_mailHandler = new MailHandler();
         $this->_html = '';
 		$this->_privateKey = '6LcjpsoSAAAAAH7uTWckrCZL87jizsHpUQuP-dRy';
-		$this->_recaptchaAnswer = recaptcha_check_answer ($this->_privateKey, $_SERVER["REMOTE_ADDR"], $this->_snippetView->getRecaptchaChallenge(), $this->_snippetView->getRecaptchaResponse());
+		$this->_commentController = new CommentController($this->_dbHandler);
     }
 
     public function doControll($page)
@@ -52,37 +48,28 @@ class SnippetController
                     return false;
                 }
             }
-            if(isset($_POST['send-report'])) {
-                $userId = -1;
-                $message = $this->_snippetView->getReportMessage();
-                $snippetId = $_GET['snippet'];
-                if(AuthHandler::isLoggedIn()) {
-                    $userId = AuthHandler::getUser()->getId();
-                } 
-                $this->_snippetHandler->reportSnippet($snippetId, $userId, $message); 
-                
+            if(AuthHandler::isLoggedIn()) {
+                if(isset($_POST['send-report'])) {
+                    $userId = -1;
+                    $message = $this->_snippetView->getReportMessage();
+                    $snippetId = $_GET['snippet'];
+                    if(AuthHandler::isLoggedIn()) {
+                        $userId = AuthHandler::getUser()->getId();
+                    } 
+                    $this->_snippetHandler->reportSnippet($snippetId, $userId, $message);   
+                }
             }
-            
-//            LÅT STÅ KVAR
-//            
-//            if(isset($_POST['send-mail'])) {
-//
-//                $mail = $this->_snippetView->getEmail();
-//                $title = $this->_snippetView->getTitle();
-//                $code = $this->_snippetView->getCode();
-//                
-//                echo $mail . $title . $code;
-//                
-//                $this->_mailHandler->sendMail($mail, $title, $code); 
-//                
-//            }
             
         } else if ($page == 'add') {
             if (AuthHandler::isLoggedIn()) {
                 $this->_html = null;
+                $_SESSION['title'] = "";
+                $_SESSION['desc'] = "";
+                $_SESSION['code'] = "";
                 $this->_html .= $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
     
                 if ($this->_snippetView->triedToCreateSnippet()) {
+                	$this->_recaptchaAnswer = recaptcha_check_answer ($this->_privateKey, $_SERVER["REMOTE_ADDR"], $this->_snippetView->getRecaptchaChallenge(), $this->_snippetView->getRecaptchaResponse());
                 	if($this->_recaptchaAnswer->is_valid) {
 	                    $authID = AuthHandler::getUser()->getID();
 	                    $authName = AuthHandler::getUser()->getName();
@@ -94,7 +81,11 @@ class SnippetController
 	                    }
 	                    $this->_html .= "<p>Error, your snippet was not created. Please try again! ". $id ."</p>";
 					} else {
-						$this->_html .= "<p>The reCAPTCHA answer given is not correct</p>";	
+					    $_SESSION['title'] = $this->_snippetView->getSnippetTitle();
+                        $_SESSION['desc'] = $this->_snippetView->getSnippetDescription();
+                        $_SESSION['code'] = $this->_snippetView->getCreateSnippetCode();
+                        $this->_html = $this->_snippetView->createSnippet($this->_snippetHandler->getLanguages());
+						$this->_html .= "<p>The reCAPTCHA answer given is not correct</p>";
 					}
                 }
             } else {

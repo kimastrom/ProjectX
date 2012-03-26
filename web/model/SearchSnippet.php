@@ -17,7 +17,7 @@ if ($json = json_decode(@file_get_contents($url))) {
     }
     foreach($json as $j)
     {
-        $snippets[] = new Snippet($j->userid, $j->username, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->language, $j->id);
+        $snippets[] = new Snippet($j->userid, $j->name, $j->code, $j->title, $j->description, $j->languageid, $j->date, $j->updated, $j->language, $j->id);
     }
     
     foreach ($snippets as $snippet) {

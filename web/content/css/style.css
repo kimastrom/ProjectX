@@ -223,14 +223,13 @@ footer{
     font-style: italic;
     color:black;
 }
-
 /*
 * Learn more
 * ---------------------------- */
-  
 #learn-more-wrap{
+display:none;
 width:100%;
-/*margin-left:10px;*/
+margin-left:10px;
 color: #999;
 background-color: white;
 padding-bottom: 30px;
@@ -387,7 +386,7 @@ width:100%;
 * ---------------------------- */
 
 #rating {
-    margin: 10px 0;
+    margin: 10px 0px;
 }
 
 #rating button {
@@ -480,4 +479,50 @@ textarea {
 	background: #FFFFA0;
 	padding: 10px;
 	width: 450px;
+}
+
+
+/*
+* INFO POPUP
+* ---------------------------- */
+
+#info-popup-bg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: black;
+    z-index: 10;
+}
+
+#info-popup {
+    position: absolute;
+    padding: 1px 5px 5px 5px;
+    width: 250px;
+    min-height: 50px;
+    background-color: white;
+    z-index: 20;
+}
+
+#info-popup h4 {
+    margin: 0px;
+    width: 100%;
+    padding: 4px 0px 0px 0;
+    text-align: center;
+    background-color: green;
+}
+
+#info-popup p {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+#info-popup img {
+    position: absolute;
+    right: -20px;
+    top: -15px;
+}
+
+.clear {
+    clear: both;
 }

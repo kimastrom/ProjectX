@@ -22,8 +22,6 @@
 		else 
         {
 			var datastr ='&mail=' + mail + '&subject=' + subject + '&text=' + text;
-            
-            alert(text);
   			$("#response").css("display", "block");
   			$("#response").html("Sending message .... ");
   			$("#response").fadeIn("slow");

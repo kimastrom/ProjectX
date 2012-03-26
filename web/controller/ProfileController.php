@@ -117,7 +117,7 @@ class ProfileController
     {
         $user = AuthHandler::getUser(); 
         //Se ifall efterfrågade användaren finns
-        if($user->getRoleName() == 'admin' && isset($_GET['username'])){
+        if(AuthHandler::isAdmin() && isset($_GET['username'])){
             $user = $this->_userHandler->getUserByEmail($_GET['username']);
             
             //Om användaren inte existerar sätt den inloggade användaren
@@ -218,7 +218,8 @@ class ProfileController
      */
      private function changeUserRole(User $user)
      {
-        if($user->isAdmin() || $user->isOwner()) {
+        if(true) {
+        //if($user->isAdmin() {
             if($this->_profileView->changingSuerRole()) {
                 $role = $this->_profileView->GetUserRole();
                 $this->_userHandler->changeUserRole($id, $role);
