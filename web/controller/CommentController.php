@@ -53,6 +53,7 @@ class CommentController
                 $comment = $commentHandler->getCommentByID($this->_commentView->whichCommentToEdit());
                 if ($comment != null) {
                     if ($comment->getUserId() == AuthHandler::getUser()->getId()) {
+
                         $comment->setCommentText($this->_commentView->getCommentText());
                         $commentHandler->updateComment($comment);
                     }

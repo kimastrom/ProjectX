@@ -14,7 +14,7 @@ class CommentView
         $form = "
         	<script type='text/javascript'>
 			var RecaptchaOptions = {
-    		theme : 'clean'
+    		theme : 'white'
  			};
  			</script>
         	<div id='comment'>

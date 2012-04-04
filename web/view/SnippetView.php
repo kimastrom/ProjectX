@@ -22,47 +22,38 @@ class SnippetView
 		<div class='snippet-code' id='snippet-text'>
 			<code id='code' class='snippet-text'>" . $sh->geshiHighlight($snippet->getCode(), $snippet->getLanguage()) . "</code>
 		</div>
-
-        <div id='hidden'>".$snippet->getCode()."</div>
-        
 		<div class='snippet-author'>
 			<span>Posted by " . $snippet->getAuthor();
         if ($isOwner) {
 		    $html .= " <a onclick=\"javascript: return confirm('Do you want to remove this snippet?')\" href='?page=removesnippet&snippet=" . $snippet->getID() . "'>Delete</a> 
 		    <a href='?page=updatesnippet&snippet=" . $snippet->getID() . "'>Update</a>";
 	    }
-        if(AuthHandler::isLoggedIn()){    
-            $html .= '<br /><a id="report" href="#">Report this snippet!</a>';
-            $html .= '<div id="report-wrap"><form action="#" method="POST" name="reportsnippet">
-                        <textarea placeholder="What is wrong with the snippet?" name="report-message"></textarea>
-                        <input type="submit" name="send-report" value="Report!" />
-                    </form></div>';
-        }     
-		
+
+        $html .= '<br /><a id="report" href="#">Report this snippet!</a><br/>';
+        $html .= '<div id="report-wrap"><form action="#" method="POST" name="reportsnippet">
+                    <textarea placeholder="What is wrong with the snippet?" name="report-message"></textarea>
+                    <input type="submit" name="send-report" value="Report!" />
+                </form></div>';
 		$html .= "</span>
 	          </div>";
-          
-        $html .= "  <form action='' method='post'>
-                        <input type='submit' name='sendSnippetByMail' id='mail' value='Send Snippet by Mail' />
-                    </form>";      
+                  
+        $html .= '<br /><a id="mail" href="#">Send snippet by mail</a><br/>';
+        $html .= '<div id="mail-wrap">
+            
+                 <form id="formail" action="" action="#" method="POST" name="sendByMail">
+                     <input type="text" placeholder="Write your mail address" name="mailAddress" id="mailAddress"/>
+                     <input type="submit" id="send-mail" name="send-mail" value="Send!" />
+                 </form>
+                </div>
+                <div id="response">
+                </div>';      
+                  
+		$html .= "</span>
+	          </div>";
         
         return $html;
     }
     
-    public function mailView()
-    {
-        $html = '<div class="mail">
-            		<form id="formmail" action="" method ="POST">
-            			<label>Your mail :</label>
-            			<input type="text" name="mail" id="mailAddress" />
-            			<input type="submit" id="sendByMail" name="sendByMail" value="send mail" />
-            		</form>
-                    <div id="response">
-                    </div>
-        	</div>';
-
-        return $html;
-    }    
 
 
     /**
@@ -96,7 +87,7 @@ class SnippetView
         $html = '
         <script type="text/javascript">
 			var RecaptchaOptions = {
-    		theme : "clean"
+    		theme : "white"
  		};
  		</script>
         <h1>Add a new snippet</h1>
@@ -377,24 +368,6 @@ class SnippetView
         } else {
             return false;
         }
-    }
-    
-    public function sendByMail()
-    {
-        if (isset($_POST['sendByMail'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }      
-    
-    public function wantsToSendByMail()
-    {
-        if (isset($_POST['sendSnippetByMail'])) {
-            return true;
-        } else {
-            return false;
-        }
     }  
 
     public function getReportMessage() {
@@ -404,5 +377,12 @@ class SnippetView
             return false;
         }
     }
-
+    
+    public function getEmail() {
+        if (isset($_POST['mailAddress'])) {
+            return $_POST['mailAddress'];
+        } else {
+            return false;
+        }
+    }
 }
